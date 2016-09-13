@@ -33,7 +33,7 @@ html
           elements in an elegant, clean way.
         $
           click
-            this.color = blue
+            this.color = @blue
 
     footer
       Still in the works!
