@@ -1,0 +1,9 @@
+doc html
+
+html
+  head
+    link rel='stylesheet', href='css/main.css'
+
+  body
+    h1 Header
+    h2 Sub-header
