@@ -1,0 +1,6 @@
+button
+  $
+    click
+      log 'I was clicked.'
+    hover
+      log 'I was hovered.'
