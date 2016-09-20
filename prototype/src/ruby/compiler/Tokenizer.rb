@@ -6,7 +6,7 @@ require_relative 'Token'
 class Tokenizer
   def self.tokenize(input, tokens = [])
     puts "INPUT:\n#{input}\n"
-    return unless !input.empty?
+    return tokens unless !input.empty?
     if input.match(/\Ahtml\b/)
       tokenize(input[4..-1], tokens.push(Token.new('html', 'KEYWORD')))
     elsif input.match(/\Ahead\b/)
@@ -19,6 +19,8 @@ class Tokenizer
       tokenize(input[4..-1], tokens.push(Token.new('href', 'KEYWORD')))
     elsif input.match(/\Ascript\b/)
       tokenize(input[6..-1], tokens.push(Token.new('script', 'KEYWORD')))
+    elsif input.match(/\Adiv\b/)
+      tokenize(input[6..-1], tokens.push(Token.new('div', 'TAG')))
     elsif input.match(/\Ah1\b/)
       tokenize(input[2..-1], tokens.push(Token.new('h1', 'HEADER')))
     elsif input.match(/\Ah2\b/)
@@ -31,17 +33,17 @@ class Tokenizer
       tokenize(input[2..-1], tokens.push(Token.new('h5', 'HEADER')))
     elsif input.match(/\Ah6\b/)
       tokenize(input[2..-1], tokens.push(Token.new('h6', 'HEADER')))
-    elsif input.match(/\A=\b/)
+    elsif input.match(/\A=/)
       tokenize(input[1..-1], tokens.push(Token.new('=', 'EQUALS')))
-    elsif input.match(/\A=\b/)
+    elsif input.match(/\A,/)
       tokenize(input[1..-1], tokens.push(Token.new(',', 'COMMA')))
-    elsif input.match(/\A=\b/)
+    elsif input.match(/\A\./)
       tokenize(input[1..-1], tokens.push(Token.new('.', 'PERIOD')))
-    elsif input.match(/\A=\b/)
+    elsif input.match(/\A\+/)
       tokenize(input[1..-1], tokens.push(Token.new('+', 'SYMBOL')))
-    elsif input.match(/\A=\b/)
+    elsif input.match(/\A-/)
       tokenize(input[1..-1], tokens.push(Token.new('-', 'SYMBOL')))
-    elsif input.match(/\A=\b/)
+    elsif input.match(/\A\//)
       tokenize(input[1..-1], tokens.push(Token.new('/', 'SYMBOL')))
     elsif input.match(/\Ahref\b|\Ahref=/)
       tokenize(input[4..-1], tokens.push(Token.new('href', 'ATTR')))
@@ -62,9 +64,17 @@ class Tokenizer
       var = input.match(/\A(\w+)\b/).to_s
       len = var.length
       tokenize(input[len..-1], tokens.push(Token.new(var, 'VAR')))
-    # trim here, get length of trim
     elsif input.start_with? ' '
-      tokenize(input[1..-1], tokens.push(Token.new(' ', 'SPACE')))
+      spaces = input.lstrip!
+      len = input.length - spaces.length
+
+      # Inefficient, change for prod version.
+      spaces = ''
+      for i in 0..len
+        spaces += ' '
+      end
+
+      tokenize(input[len..-1], tokens.push(Token.new(spaces, 'SPACE')))
     else
       puts "ERROR: #{input}"
       tokenize(input[1..-1], tokens)
@@ -72,5 +82,12 @@ class Tokenizer
   end
 
   input = File.read('src/samples/emerald/' + ARGV[0])
-  tokenize(input)
+  tokens = tokenize(input)
+
+  output = ''
+  for i in tokens
+    output += i.value
+  end
+
+  puts output
 end
