@@ -1,3 +1,11 @@
 html
   head
+    title='Sample 1'
+    script src='js/script.js', type='text/javascript'
+
   body
+    div
+      h1 Test this out
+
+    div
+      h2 Another one

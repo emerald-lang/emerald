@@ -17,6 +17,10 @@ class Tokenizer
       tokenize(input[3..-1], tokens.push(Token.new('doc', 'KEYWORD')))
     elsif input.match(/\Ahref\b/)
       tokenize(input[4..-1], tokens.push(Token.new('href', 'KEYWORD')))
+    elsif input.match(/\Atitle\b/)
+      tokenize(input[5..-1], tokens.push(Token.new('title', 'KEYWORD')))
+    elsif input.match(/\Ameta\b/)
+      tokenize(input[4..-1], tokens.push(Token.new('meta', 'KEYWORD')))
     elsif input.match(/\Ascript\b/)
       tokenize(input[6..-1], tokens.push(Token.new('script', 'KEYWORD')))
     elsif input.match(/\Adiv\b/)
@@ -43,6 +47,8 @@ class Tokenizer
       tokenize(input[1..-1], tokens.push(Token.new('+', 'SYMBOL')))
     elsif input.match(/\A-/)
       tokenize(input[1..-1], tokens.push(Token.new('-', 'SYMBOL')))
+    elsif input.match(/\A\$/)
+      tokenize(input[1..-1], tokens.push(Token.new('$', 'SYMBOL')))
     elsif input.match(/\A\//)
       tokenize(input[1..-1], tokens.push(Token.new('/', 'SYMBOL')))
     elsif input.match(/\Ahref\b|\Ahref=/)
@@ -65,16 +71,7 @@ class Tokenizer
       len = var.length
       tokenize(input[len..-1], tokens.push(Token.new(var, 'VAR')))
     elsif input.start_with? ' '
-      spaces = input.lstrip!
-      len = input.length - spaces.length
-
-      # Inefficient, change for prod version.
-      spaces = ''
-      for i in 0..len
-        spaces += ' '
-      end
-
-      tokenize(input[len..-1], tokens.push(Token.new(spaces, 'SPACE')))
+      tokenize(input[1..-1], tokens.push(Token.new(' ', 'SPACE')))
     else
       puts "ERROR: #{input}"
       tokenize(input[1..-1], tokens)
@@ -91,3 +88,5 @@ class Tokenizer
 
   puts output
 end
+
+#input.match(/\A([^{]|\{[^{])+/)
