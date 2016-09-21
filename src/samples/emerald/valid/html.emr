@@ -1,7 +1,8 @@
 html
   head
-    title='Sample 1'
-    script src='js/script.js', type='text/javascript'
+    title Sample 1
+    scripts
+      "js/script.js"
 
   body
     div

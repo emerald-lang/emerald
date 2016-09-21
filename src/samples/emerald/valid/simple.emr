@@ -2,7 +2,8 @@ doctype html
 
 html
   head
-    link rel='stylesheet', href='css/main.css'
+    styles
+      "css/main.css"
 
   body
     h1 Header

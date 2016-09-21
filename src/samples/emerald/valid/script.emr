@@ -1,6 +1,6 @@
 html
   head
-    title="Simple script example."
+    title Simple script example.
 
   body
     h1 This is a script.
