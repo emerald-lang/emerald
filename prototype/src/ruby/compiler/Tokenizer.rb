@@ -8,7 +8,7 @@ class Tokenizer
   include Singleton
 
   def tokenize(input, tokens = [])
-    puts "INPUT:\n#{input}\n"
+    #puts "INPUT:\n#{input}\n"
     return tokens unless !input.empty?
     if input.match(/\Ahtml\b/)
       tokenize(input[4..-1], tokens.push(Token.new('html', 'KEYWORD')))
@@ -44,8 +44,20 @@ class Tokenizer
       tokenize(input[1..-1], tokens.push(Token.new('(', 'LPAREN')))
     elsif input.match(/\A\)/)
       tokenize(input[1..-1], tokens.push(Token.new(')', 'RPAREN')))
+    elsif input.match(/\A'/)
+      tokenize(input[1..-1], tokens.push(Token.new('\'', 'QUOTE')))
+    elsif input.match(/\A\>/)
+      tokenize(input[1..-1], tokens.push(Token.new('>', 'GREATER')))
+    elsif input.match(/\A\</)
+      tokenize(input[1..-1], tokens.push(Token.new('<', 'LESS')))
+    elsif input.match(/\A\@/)
+      tokenize(input[1..-1], tokens.push(Token.new('@', 'AT')))
     elsif input.match(/\A=/)
       tokenize(input[1..-1], tokens.push(Token.new('=', 'EQUALS')))
+    elsif input.match(/\A\?/)
+      tokenize(input[1..-1], tokens.push(Token.new('?', 'QUESTION')))
+    elsif input.match(/\A#/)
+      tokenize(input[1..-1], tokens.push(Token.new('#', 'HASH')))
     elsif input.match(/\A,/)
       tokenize(input[1..-1], tokens.push(Token.new(',', 'COMMA')))
     elsif input.match(/\A\./)
@@ -63,7 +75,7 @@ class Tokenizer
     elsif input.match(/\Arel\b|\Arel=/)
       tokenize(input[3..-1], tokens.push(Token.new('rel', 'ATTR')))
     elsif input.match(/\A(click|hover)\b/)
-      tokenize(input[5..-1], tokens.push(Token.new('[event_name]', 'EVENT')))
+      tokenize(input[5..-1], tokens.push(Token.new(input.match(/\A(click|hover)\b/).to_s, 'EVENT')))
     elsif input.start_with? "\""
       i = input[1..-1].index("\"")
       if i.nil?

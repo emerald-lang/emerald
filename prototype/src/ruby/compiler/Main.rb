@@ -5,8 +5,8 @@ class Main
   tokens = tokenize(input)
 
   output = ''
-  for i in tokens
-    output += i.value
+  tokens.each do |token|
+    output += token.value
   end
 
   puts output
