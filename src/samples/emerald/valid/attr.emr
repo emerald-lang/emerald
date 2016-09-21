@@ -1,0 +1,12 @@
+html
+  head
+    title Attributes Example
+
+  body
+    h1 Attributes follow  (
+      id    "header"
+      class "main-text"
+    )
+
+  footer
+    p Copyright Emerald Language 2016

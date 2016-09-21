@@ -1,6 +1,14 @@
-button (
-  click ->
-    log 'I was clicked.'
-  hover ->
-    log 'I was hovered.'
-)
+html
+  head
+    title Event Scoping Example
+
+  body
+    button (
+      click ->
+        alert("I was clicked")
+      hover ->
+        alert("I was hovered")
+    )
+
+  footer
+    p Copyright Emerald Language 2016
