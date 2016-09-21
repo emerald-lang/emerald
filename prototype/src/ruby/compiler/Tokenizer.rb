@@ -2,9 +2,12 @@
 # Singleton tokenizer class
 
 require_relative 'Token'
+require 'singleton'
 
 class Tokenizer
-  def self.tokenize(input, tokens = [])
+  include Singleton
+
+  def tokenize(input, tokens = [])
     puts "INPUT:\n#{input}\n"
     return tokens unless !input.empty?
     if input.match(/\Ahtml\b/)
@@ -24,7 +27,7 @@ class Tokenizer
     elsif input.match(/\Ascript\b/)
       tokenize(input[6..-1], tokens.push(Token.new('script', 'KEYWORD')))
     elsif input.match(/\Adiv\b/)
-      tokenize(input[6..-1], tokens.push(Token.new('div', 'TAG')))
+      tokenize(input[3..-1], tokens.push(Token.new('div', 'TAG')))
     elsif input.match(/\Ah1\b/)
       tokenize(input[2..-1], tokens.push(Token.new('h1', 'HEADER')))
     elsif input.match(/\Ah2\b/)
@@ -57,8 +60,8 @@ class Tokenizer
       tokenize(input[3..-1], tokens.push(Token.new('rel', 'ATTR')))
     elsif input.match(/\A(click|hover)\b/)
       tokenize(input[5..-1], tokens.push(Token.new('[event_name]', 'EVENT')))
-    elsif input.start_with? "'"
-      i = input[1..-1].index("'")
+    elsif input.start_with? "\""
+      i = input[1..-1].index("\"")
       if i.nil?
         puts "String error on line: #.\nNo closing quotation."
       else
