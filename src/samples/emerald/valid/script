@@ -1,0 +1,12 @@
+html
+  head
+    title="Simple script example."
+
+  body
+    h1 This is a script.
+
+    script
+      function test () {
+        console.log('test');
+      }
+      test();

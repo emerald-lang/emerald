@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    power_assert (0.3.1)
+    test-unit (3.2.1)
+      power_assert
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  test-unit
+
+BUNDLED WITH
+   1.11.2

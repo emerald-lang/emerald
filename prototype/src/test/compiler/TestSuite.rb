@@ -1,4 +1,5 @@
-require 'test/unit'
+require_relative '../../ruby/compiler/Tokenizer'
+require "test/unit"
 
 class TestSuite < Test::Unit::TestCase
   def test_equality

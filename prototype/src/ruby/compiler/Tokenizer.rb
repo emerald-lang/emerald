@@ -77,16 +77,4 @@ class Tokenizer
       tokenize(input[1..-1], tokens)
     end
   end
-
-  input = File.read('src/samples/emerald/' + ARGV[0])
-  tokens = tokenize(input)
-
-  output = ''
-  for i in tokens
-    output += i.value
-  end
-
-  puts output
 end
-
-#input.match(/\A([^{]|\{[^{])+/)
