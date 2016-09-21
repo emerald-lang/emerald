@@ -2,12 +2,16 @@ require_relative '../../ruby/compiler/Tokenizer'
 require "test/unit"
 
 class TestSuite < Test::Unit::TestCase
-  def test_equality
-    assert_equal(1, 1)
+  def test_simple
+    test_file("src/samples/emerald/valid/html.emr")
   end
 
-  def test_simple
-    input = File.open("src/samples/emerald/valid/html.emr").read
+  def test_attr
+    test_file("src/samples/emerald/valid/attr.emr")
+  end
+
+  def test_file(file)
+    input = File.open(file).read
     tokens = Tokenizer.instance.tokenize(input)
 
     output = ''
