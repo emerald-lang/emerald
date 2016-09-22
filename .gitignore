@@ -3,4 +3,4 @@ target
 project/target
 
 # Bash File for testing
-test
+test.sh

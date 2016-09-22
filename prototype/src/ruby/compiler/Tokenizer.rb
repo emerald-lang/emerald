@@ -40,8 +40,13 @@ class Tokenizer
         input[reg.length..-1],
         tokens.push(Token.new(reg, 'SYMBOL'))
       )
-    elsif input.match(/\Ahref\b|\Ahref=/)
-      tokenize(input[4..-1], tokens.push(Token.new('href', 'ATTR')))
+    elsif input.match(/\A(href|rel)\b/)
+      reg = input.match(/\A(href|rel)\b/).to_s
+
+      tokenize(
+        input[reg.length..-1],
+        tokens.push(Token.new(reg, 'ATTR'))
+      )
     elsif input.match(/\Arel\b|\Arel=/)
       tokenize(input[3..-1], tokens.push(Token.new('rel', 'ATTR')))
     elsif input.match(/\A(click|hover)\b/)
