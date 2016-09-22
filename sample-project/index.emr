@@ -6,8 +6,8 @@ html
       "css/main.min.css"
 
     scripts
-      'vendor/require.min.js'
-      'vendor/jquery.min.js'
+      "vendor/require.min.js"
+      "vendor/jquery.min.js"
       "src/js/main.js"
 
   body

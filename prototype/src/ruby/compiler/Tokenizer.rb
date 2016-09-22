@@ -26,8 +26,8 @@ class Tokenizer
         input[reg.length..-1],
         tokens.push(Token.new(reg, 'TAG'))
       )
-    elsif input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/)/)
-      reg = input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/)/).to_s
+    elsif input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/|\}|\{|;)/)
+      reg = input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/|\}|\{|;)/).to_s
 
       tokenize(
         input[reg.length..-1],
@@ -41,7 +41,7 @@ class Tokenizer
         input[reg.length..-1],
         tokens.push(Token.new(reg, 'ATTR'))
       )
-    elsif input.match(/\A(click|hover)\b/)
+    elsif input.match(/\A(onabort|onclick|onhover|onbeforeprint|onbeforeunload|)\b/)
       # onabort|onafterprint|onbeforeprint|onbeforeunload|
       reg = input.match(/\A(click|hover)\b/).to_s
 
