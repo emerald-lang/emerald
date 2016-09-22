@@ -10,8 +10,8 @@ class Tokenizer
   def tokenize(input, tokens = [])
     #puts "INPUT:\n#{input}\n"
     return tokens unless !input.empty?
-    if input.match(/\A(html|head|body|doc|href|title|metas|scripts|styles)\b/)
-      reg = input.match(/\A(html|head|body|doc|href|title|metas|scripts|styles)\b/).to_s
+    if input.match(/\A(html|head|body|doctype|title|metas|scripts|styles)\b/)
+      reg = input.match(/\A(html|head|body|doctype|title|metas|scripts|styles)\b/).to_s
 
       tokenize(
         input[reg.length..-1],
@@ -19,8 +19,8 @@ class Tokenizer
           Token.new(reg, 'KEYWORD')
         )
       )
-    elsif input.match(/\A(div|section|article|figure|figcaption)\b/)
-      reg = input.match(/\A(div|section|article|figure|figcaption)\b/).to_s
+    elsif input.match(/\A(a|abbr|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|datalist|dd|del|details|dfn|dialog|div|dl|em|embed|fieldset|figcaption|figure|footer|form|head|header|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b/)
+      reg = input.match(/\A(a|abbr|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|datalist|dd|del|details|dfn|dialog|div|dl|em|embed|fieldset|figcaption|figure|footer|form|head|header|hr|html|i|iframe|img|input|ins|kbd|keygen|label|legend|li|link|main|map|mark|menu|menuitem|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strong|style|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\b/).to_s
 
       tokenize(
         input[reg.length..-1],
