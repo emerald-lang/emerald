@@ -1,0 +1,66 @@
+doctype html
+
+html
+  head
+    styles
+      "css/main.min.css"
+
+    scripts
+      'vendor/require.min.js'
+      'vendor/jquery.min.js'
+      "src/js/main.js"
+
+  body
+    nav
+      ul#left
+        a.top (title "Todos")
+
+      ul#right
+        a.chrome (title "Bookmarks")
+          img#bookmarks (src "../images/general/top/agenda.png")
+        a.chrome (title "History")
+          img#history (src "../images/general/top/hourglass.png")
+        a.top (title "Todos")
+          img#todos (src "../images/general/top/list.png")
+        a.top (title "Weather")
+          img#weather (src "../images/general/top/cloud.png")
+        a.top (title "Settings")
+          img#options (src "../images/general/top/settings.png")
+        a.top (title "Info")
+          img#info (src "../images/general/top/info.png")
+
+    header
+      h1 Bloom
+      h2 It's a big world. Explore.
+
+    form (
+      id "search-bar"
+      method "get"
+      action "http://www.google.com/search"
+    )
+      input (
+        type "text"
+        name "q"
+        placeholder "Search Google"
+        autocomplete "off"
+        spellcheck "false"
+        dir "auto"
+      )
+      input (
+        type "submit"
+        name "submit"
+      )
+
+    footer
+      div#left
+        p <span id="title"></span> - <span id="info"></span>
+        p Photo taken by <a href="http://www.petermcburney.com">Peter McBurney</a>
+
+      div#right
+        h1#time
+        h2#location
+
+    import ./imports/info.emr
+    import ./imports/options.emr
+    import ./imports/todos.emr
+    import ./imports/weather.emr
