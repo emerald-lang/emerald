@@ -5,7 +5,7 @@
 
 class Token
   def initialize (value, type)
-    #puts "Token created: #{value} :#{type}"
+    puts "Token created: #{value} :#{type}"
     @value = value
     @type = type
   end

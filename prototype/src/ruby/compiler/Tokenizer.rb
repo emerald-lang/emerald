@@ -7,7 +7,7 @@ require 'singleton'
 class Tokenizer
   include Singleton
 
-  def tokenize(input, tokens = [])
+  def tokenize(input, tokens = Array.new)
     #puts "INPUT:\n#{input}\n"
     return tokens unless !input.empty?
     if input.match(/\A(doctype|metas|scripts|styles)\b/)
@@ -35,7 +35,6 @@ class Tokenizer
         tokens.push(Token.new(reg, 'ATTR'))
       )
     elsif input.match(/\A(onabort|onclick|onhover|onbeforeprint|onbeforeunload)\b/)
-      # onabort|onafterprint|onbeforeprint|onbeforeunload|
       reg = input.match(/\A(onabort|onclick|onhover|onbeforeprint|onbeforeunload)\b/).to_s
 
       tokenize(
