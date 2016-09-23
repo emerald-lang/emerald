@@ -3,18 +3,21 @@ require "test/unit"
 
 class TokenizerSuite < Test::Unit::TestCase
   def test_simple
-    test_file("src/samples/emerald/valid/html.emr")
+    test_file_output("src/samples/emerald/valid/html.emr")
   end
 
   def test_attr
-    test_file("src/samples/emerald/valid/attr.emr")
+    test_file_output("src/samples/emerald/valid/attr.emr")
   end
 
   def test_sample
-    test_file("sample.emr")
+    test_file_output("sample.emr")
   end
 
-  def test_file(file)
+  def test_tokens
+  end
+
+  def test_file_output(file)
     input = File.open(file).read
     tokens = Tokenizer.instance.tokenize(input)
 
@@ -26,6 +29,6 @@ class TokenizerSuite < Test::Unit::TestCase
     assert_equal(input, output)
   end
 
-  def test_directory(path)
+  def test_directory_output(path)
   end
 end
