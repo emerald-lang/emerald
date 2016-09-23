@@ -26,13 +26,6 @@ class Tokenizer
         input[reg.length..-1],
         tokens.push(Token.new(reg, 'TAG'))
       )
-    elsif input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/|\}|\{|;)/)
-      reg = input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/|\}|\{|;)/).to_s
-
-      tokenize(
-        input[reg.length..-1],
-        tokens.push(Token.new(reg, 'SYMBOL'))
-      )
     elsif input.match(/\A(accept|accept-charset|accesskey|action|alt|async|autocomplete|autofocus|autoplay|challenge|charset|checked|cite|class|cols|colspan|content|contenteditable|contextmenu|controls|coords|data|data-(.+?)|datetime|default|defer|dir|dirname|disabled|download|draggable|dropzone|enctype|for|form|formaction|headers|height|hidden|high|href|hreflang|http-equiv|id|ismap|keytype|kind|label|lang|list|loop|low|manifest|max|maxlength|media|method|min|multiple|muted|name|novalidate|open|optimum|pattern|placeholder|poster|preload|readonly|rel|required|reversed|rows|rowspan|sandbox|scope|scoped|selected|shape|size|sizes|span|spellcheck|src|srcdoc|srclang|start|step|style|tabindex|target|title|translate|type|usemap|value|width|wrap)\b/)
     # Have set of valid attributes for each tag when checking for errors
       reg = input.match(/\A(accept|accept-charset|accesskey|action|alt|async|autocomplete|autofocus|autoplay|challenge|charset|checked|cite|class|cols|colspan|content|contenteditable|contextmenu|controls|coords|data|data-(.+?)|datetime|default|defer|dir|dirname|disabled|download|draggable|dropzone|enctype|for|form|formaction|headers|height|hidden|high|href|hreflang|http-equiv|id|ismap|keytype|kind|label|lang|list|loop|low|manifest|max|maxlength|media|method|min|multiple|muted|name|novalidate|open|optimum|pattern|placeholder|poster|preload|readonly|rel|required|reversed|rows|rowspan|sandbox|scope|scoped|selected|shape|size|sizes|span|spellcheck|src|srcdoc|srclang|start|step|style|tabindex|target|title|translate|type|usemap|value|width|wrap)\b/).to_s
@@ -41,21 +34,37 @@ class Tokenizer
         input[reg.length..-1],
         tokens.push(Token.new(reg, 'ATTR'))
       )
-    elsif input.match(/\A(onabort|onclick|onhover|onbeforeprint|onbeforeunload|)\b/)
+    elsif input.match(/\A(onabort|onclick|onhover|onbeforeprint|onbeforeunload)\b/)
       # onabort|onafterprint|onbeforeprint|onbeforeunload|
-      reg = input.match(/\A(click|hover)\b/).to_s
+      reg = input.match(/\A(onabort|onclick|onhover|onbeforeprint|onbeforeunload)\b/).to_s
 
       tokenize(
         input[reg.length..-1],
         tokens.push(Token.new(reg, 'EVENT'))
       )
-    elsif input.start_with? "\n"
-      tokenize(input[1..-1], tokens.push(Token.new("\n", 'NEWLINE')))
+    elsif input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/|\}|\{|;)/)
+      reg = input.match(/\A(\(|\)|"|'|\>|\<|\@|=|!|\?|#|,|\.|\+|-|\$|\/|\}|\{|;)/).to_s
+
+      tokenize(
+        input[reg.length..-1],
+        tokens.push(Token.new(reg, 'SYMBOL'))
+      )
     elsif input.match(/\A(\w+)\b/)
       reg = input.match(/\A(\w+)\b/).to_s
-      tokenize(input[reg.length..-1], tokens.push(Token.new(reg, 'VAR')))
-    elsif input.start_with? ' '
-      tokenize(input[1..-1], tokens.push(Token.new(' ', 'SPACE')))
+
+      tokenize(
+        input[reg.length..-1],
+        tokens.push(Token.new(reg, 'VAR'))
+      )
+    elsif input.match(/\A( |\t)+/)
+      reg = input.match(/\A( |\t)+/).to_s
+
+      tokenize(
+        input[reg.length..-1],
+        tokens.push(Token.new(reg, 'SPACE'))
+      )
+    elsif input.match(/\A\n/)
+      tokenize(input[1..-1], tokens.push(Token.new("\n", 'NEWLINE')))
     else
       puts "ERROR: #{input}"
       tokenize(input[1..-1], tokens)
