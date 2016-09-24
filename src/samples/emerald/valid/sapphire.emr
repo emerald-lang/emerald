@@ -1,0 +1,11 @@
+html
+  head
+    title Simple sapphire example.
+
+  body
+    h1 This is a script.
+
+    sapphire
+      def test :Void
+        log "test"
+      exe
