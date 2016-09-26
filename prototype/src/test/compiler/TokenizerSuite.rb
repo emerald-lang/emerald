@@ -3,11 +3,11 @@ require "test/unit"
 
 class TokenizerSuite < Test::Unit::TestCase
   def test_simple
-    test_file_output("src/samples/emerald/valid/html.emr")
+    test_file_output("../samples/emerald/valid/html.emr")
   end
 
   def test_attr
-    test_file_output("src/samples/emerald/valid/attr.emr")
+    test_file_output("../samples/emerald/valid/attr.emr")
   end
 
   def test_sample
@@ -30,5 +30,8 @@ class TokenizerSuite < Test::Unit::TestCase
   end
 
   def test_directory_output(path)
+    Dir.foreach("../samples/emerald/valid") do |file|
+      next if file == ".." or file == "."
+    end
   end
 end

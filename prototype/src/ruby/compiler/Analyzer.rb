@@ -3,14 +3,22 @@
 
 require 'singleton'
 require_relative 'Node'
+require_relative 'Token'
 
 class Analyzer
   include Singleton
 
-  def make_tree(tokens, nodes, level = 0, parent = nil, flag = false)
+  def initialize
+    @root = Node.new(Token.new(nil, "ROOT"), nil)
+  end
+
+  def make_tree(tokens, nodes = [], level = 0, parent = nil, flag = false)
+    parent ||= @root
+
     i = Node.new(tokens.shift, parent)
 
     return unless !i.nil?
+
     if i.type == "NEWLINE"
       make_tree(
         tokens,
@@ -24,21 +32,27 @@ class Analyzer
 
       if i.value.length < level
         puts "no more children"
+        make_tree(
+          tokens,
+          nodes.push(i),
+          i.value.length,
+          parent
+        )
+      else
+        make_tree(
+          tokens,
+          nodes.push(i),
+          i.value.length,
+          parent
+        )
       end
-
-      make_tree(
-        tokens,
-        nodes.push(i),
-        i.value.length,
-        parent
-      )
     else
       puts "LEVEL: #{level}"
       make_tree(
         tokens,
         nodes.push(i),
         level,
-        parent
+        parent.addChild(i)
       )
     end
   end
