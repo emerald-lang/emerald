@@ -1,6 +1,7 @@
 require 'polyglot'
 require 'treetop'
 
+Treetop.load "grammar/tokens"
 Treetop.load "grammar/emerald"
 
 parser = EmeraldParser.new
