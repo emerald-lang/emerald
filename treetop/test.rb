@@ -1,7 +1,7 @@
 require 'polyglot'
 require 'treetop'
 
-Treetop.load "arithmetic"
+Treetop.load "emerald"
 
-parser = ArithmeticParser.new
-p parser.parse('1+1')
+parser = EmeraldParser.new
+p parser.parse('doctype html')
