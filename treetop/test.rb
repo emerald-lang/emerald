@@ -1,7 +1,7 @@
 require 'polyglot'
 require 'treetop'
 
-Treetop.load "emerald"
+Treetop.load "grammar/emerald"
 
 parser = EmeraldParser.new
-p parser.parse('doctype html')
+p parser.parse('header ( alt )')

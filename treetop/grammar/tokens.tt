@@ -1,10 +1,6 @@
 # Context free grammar for emerald language
 
-grammar Emerald
-  rule language
-    keyword space tag
-  end
-
+grammar Tokens
   rule keyword
     'doctype' / 'metas' / 'scripts' / 'styles'
   end
