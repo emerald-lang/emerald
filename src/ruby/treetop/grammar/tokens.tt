@@ -68,4 +68,8 @@ grammar Tokens
   rule newline
     ([\n])
   end
+
+  rule endline
+    ([\$])
+  end
 end

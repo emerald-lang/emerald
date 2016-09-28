@@ -4,18 +4,26 @@ grammar Emerald
   include Tokens
 
   rule main
-    temp / list / keyword space tag / keyword
+    (nested / list / line / newline)* / newline
   end
 
-  rule temp
-    keyword newline attr
+  rule nested
+    tag newline indent (nested / line)?
+  end
+
+  rule line
+    tag space tag
+  end
+
+  rule indent
+    (space space)+
   end
 
   rule list
-    tag lparen attribute* rparen
+    tag space* lparen newline attribute* rparen
   end
 
   rule attribute
-    attr space* equals space* string
+    space* attr space* equals space* string newline
   end
 end

@@ -11,6 +11,8 @@ parser = EmeraldParser.new
 # that caused it. Else, send the input to scala where the
 # code generation phase will be handled.
 
+file = File.open("../../test/treetop/samples/emerald/valid/temp.emr").read
+nested = File.open("../../test/treetop/samples/emerald/valid/nested.emr").read
 
 tests = [
   "metas\na",
@@ -19,7 +21,8 @@ tests = [
   "metas",
   "a",
   "a(accept = \"test this out\")",
-  "a(accept =   \"test this out\")"
+  file.chomp,
+  nested
 ]
 
 tests.each do |test|
@@ -27,6 +30,7 @@ tests.each do |test|
 
   if parsed.nil?
     puts "Failed: #{test}"
+    puts parser.failure_reason
   else
     puts "Passed #{test}"
   end
