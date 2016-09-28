@@ -1,19 +1,21 @@
+#!/usr/bin/env ruby
+
 grammar Emerald
   include Tokens
 
-  rule includes
-    keyword newline attr / keyword space tag / keyword
+  rule main
+    temp / list / keyword space tag / keyword
+  end
+
+  rule temp
+    keyword newline attr
   end
 
   rule list
-    tag
-  end
-
-  rule test
     tag lparen attribute* rparen
   end
 
   rule attribute
-    attr equals string
+    attr space* equals space* string
   end
 end

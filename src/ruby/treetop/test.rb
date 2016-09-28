@@ -10,8 +10,24 @@ parser = EmeraldParser.new
 # an email to me notifying of the error, and the input
 # that caused it. Else, send the input to scala where the
 # code generation phase will be handled.
-p parser.parse("metas\na") # lookup how to do newlines with treetop
-p parser.parse('metas a')
-p parser.parse('metas strong')
-p parser.parse('metas')
-p parser.parse('a')
+
+
+tests = [
+  "metas\na",
+  "metas a",
+  "metas strong",
+  "metas",
+  "a",
+  "a(accept = \"test this out\")",
+  "a(accept =   \"test this out\")"
+]
+
+tests.each do |test|
+  parsed = parser.parse(test)
+
+  if parsed.nil?
+    puts "Failed: #{test}"
+  else
+    puts "Passed #{test}"
+  end
+end
