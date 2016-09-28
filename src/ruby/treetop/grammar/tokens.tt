@@ -5,6 +5,10 @@ grammar Tokens
     'doctype' / 'metas' / 'scripts' / 'styles'
   end
 
+  rule h_num
+    'h1' / 'h2' / 'h3'
+  end
+
   rule tag
     'a' / 'abbr' / 'address' / 'area' / 'article' / 'aside' / 'audio' / 'b' /
     'base' / 'bdi' / 'bdo' / 'blockquote' / 'body' / 'br' / 'button' /
@@ -67,9 +71,5 @@ grammar Tokens
 
   rule newline
     ([\n])
-  end
-
-  rule endline
-    ([\$])
   end
 end

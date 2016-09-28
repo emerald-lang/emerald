@@ -4,11 +4,15 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / list / line / newline)* / newline
+    (nested / text / list / line / newline)*
   end
 
   rule nested
     tag newline indent (nested / line)?
+  end
+
+  rule text
+    h_num space* (string / (newline indent string)*)
   end
 
   rule line

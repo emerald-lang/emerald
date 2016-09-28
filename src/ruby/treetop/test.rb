@@ -13,16 +13,12 @@ parser = EmeraldParser.new
 
 file = File.open("../../test/treetop/samples/emerald/valid/temp.emr").read
 nested = File.open("../../test/treetop/samples/emerald/valid/nested.emr").read
+text = File.open("../../test/treetop/samples/emerald/valid/text.emr").read
 
 tests = [
-  "metas\na",
-  "metas a",
-  "metas strong",
-  "metas",
-  "a",
-  "a(accept = \"test this out\")",
   file.chomp,
-  nested
+  nested,
+  text.chomp
 ]
 
 tests.each do |test|
