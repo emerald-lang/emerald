@@ -8,17 +8,16 @@ parser = EmeraldParser.new
 
 # If nil, raise exception, stop compilation and send
 # an email to me notifying of the error, and the input
-# that caused it. Else, send the input to scala where the
-# code generation phase will be handled.
+# that caused it. Else, send the output of tt to scala
+# where the code generation phase will be handled.
 
-file = File.open("../../test/treetop/samples/emerald/valid/temp.emr").read
-nested = File.open("../../test/treetop/samples/emerald/valid/nested.emr").read
-text = File.open("../../test/treetop/samples/emerald/valid/text.emr").read
+file = File.open("../../test/treetop/samples/emerald/valid/test/temp.emr").read
+metas = File.open("../../test/treetop/samples/emerald/valid/test/metas.emr").read
+# text = File.open("../../test/treetop/samples/emerald/valid/test/text.emr").read
 
 tests = [
   file.chomp,
-  nested,
-  text.chomp
+  metas.chomp
 ]
 
 tests.each do |test|
@@ -29,5 +28,6 @@ tests.each do |test|
     puts parser.failure_reason
   else
     puts "Passed #{test}"
+    # p parsed
   end
 end

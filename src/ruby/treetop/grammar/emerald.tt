@@ -4,7 +4,7 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / text / list / line / newline)*
+    (nested / text / attr_list / list / line / newline)*
   end
 
   rule nested
@@ -19,11 +19,15 @@ grammar Emerald
     tag space tag
   end
 
+  rule list
+    keyword newline (indent (attr space* string space*)? newline)?
+  end
+
   rule indent
     (space space)+
   end
 
-  rule list
+  rule attr_list
     tag space* lparen newline attribute* rparen
   end
 

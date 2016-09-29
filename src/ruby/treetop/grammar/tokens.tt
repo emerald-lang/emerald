@@ -57,6 +57,10 @@ grammar Tokens
     '='
   end
 
+  rule comma
+    ','
+  end
+
   rule lparen
     '('
   end
