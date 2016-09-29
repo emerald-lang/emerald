@@ -9,7 +9,7 @@ class TreetopSuite < Test::Unit::TestCase
 
   def test_samples
     parser = EmeraldParser.new
-    path = "samples/emerald/valid/test/"
+    path = "samples/emerald/tests/valid/test/"
 
     Dir.foreach(path) do |file|
       next if file == ".." or file == "."
@@ -17,7 +17,7 @@ class TreetopSuite < Test::Unit::TestCase
       assert_not_equal(parser.parse(f), nil)
     end
 
-    invalid = "samples/emerald/invalid/"
+    invalid = "samples/emerald/tests/invalid/"
 
     Dir.foreach(invalid) do |file|
       next if file == ".." or file == "."

@@ -20,7 +20,7 @@ grammar Emerald
   end
 
   rule list
-    keyword newline (indent (attr space* string space*)? newline)?
+    keyword (newline indent (attr space* string space*)+ )*
   end
 
   rule indent
