@@ -1,37 +1,30 @@
 require 'polyglot'
 require 'treetop'
 
-Treetop.load "grammar/tokens"
-Treetop.load "grammar/emerald"
+Treetop.load 'grammar/tokens'
+Treetop.load 'grammar/emerald'
 
-parser = EmeraldParser.new
+class Grammer
+  @@parser = EmeraldParser.new
 
-# If nil, raise exception, stop compilation and send
-# an email to me notifying of the error, and the input
-# that caused it. Else, send the output of tt to scala
-# where the code generation phase will be handled.
+  text = File.open('../../test/treetop/samples/emerald/tests/valid/text/1.emr').read
+  text2 = File.open('../../test/treetop/samples/emerald/tests/valid/text/2.emr').read
+  text3 = File.open('../../test/treetop/samples/emerald/tests/valid/text/3.emr').read
 
-file = File.open("../../test/treetop/samples/emerald/tests/valid/temp.emr").read
-metas = File.open("../../test/treetop/samples/emerald/tests/valid/metas/1.emr").read
-metas2 = File.open("../../test/treetop/samples/emerald/tests/valid/metas/2.emr").read
-metas3 = File.open("../../test/treetop/samples/emerald/tests/valid/metas/3.emr").read
-# text = File.open("../../test/treetop/samples/emerald/tests/valid/text.emr").read
+  tests = [
+    text.chomp,
+    text2.chomp,
+    text3.chomp
+  ]
 
-tests = [
-  file.chomp,
-  metas.chomp,
-  metas2.chomp,
-  metas3.chomp
-]
+  tests.each do |test|
+    parsed = @@parser.parse(test)
 
-tests.each do |test|
-  parsed = parser.parse(test)
-
-  if parsed.nil?
-    puts "Failed: #{test}"
-    puts parser.failure_reason
-  else
-    puts "Passed #{test}"
-    # p parsed
+    if parsed.nil?
+      puts 'Failed: #{test}'
+      puts @@parser.failure_reason
+    else
+      puts 'Passed #{test}'
+    end
   end
 end
