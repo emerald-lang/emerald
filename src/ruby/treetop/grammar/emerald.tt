@@ -1,36 +1,48 @@
 #!/usr/bin/env ruby
 
+##
+# Look up rule for 0 or 1.
+##
+
 grammar Emerald
   include Tokens
 
   rule main
-    (nested / text / attr_list / list / line / newline)*
+    (newline / nested / tag / text / attr_list / list)*
   end
 
   rule nested
-    tag newline indent (nested / line)?
+    tag newline indent (nested / line)*
   end
 
   rule text
     h_num space* (string / (newline indent string)*)
   end
 
-  rule line
-    tag space tag
-  end
-
   rule list
     keyword (newline indent (attr space* string space*)+ )*
+  end
+
+  rule line
+    newline / tag / indent tag
   end
 
   rule indent
     (space space)+
   end
 
-  rule attr_list
-    tag space* lparen newline attribute* rparen
+  # tag space* string (0 or 1), attr_list (0 or 1)
+  rule tag_statement
+    tag space* string attr_list
   end
 
+  # attribute list for
+  # lparen newline (or none), attribute* rparen
+  rule attr_list
+    lparen newline attribute* rparen
+  end
+
+  # if newline option, must indent
   rule attribute
     space* attr space* equals space* string newline
   end
