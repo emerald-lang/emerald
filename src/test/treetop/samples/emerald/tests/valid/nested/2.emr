@@ -1,0 +1,3 @@
+html
+  head
+  h1 "this should pass"

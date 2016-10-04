@@ -8,10 +8,12 @@ Treetop.load 'grammar/emerald'
 class Grammer
   @@parser = EmeraldParser.new
 
-  text = File.open('../../test/treetop/samples/emerald/tests/valid/nested.emr').read
+  text = File.open('../../test/treetop/samples/emerald/tests/valid/nested/1.emr').read
+  text2 = File.open('../../test/treetop/samples/emerald/tests/valid/nested/2.emr').read
 
   tests = [
-    text.chomp
+    text.chomp,
+    text2.chomp
   ]
 
   tests.each do |test|
@@ -22,9 +24,6 @@ class Grammer
       puts @@parser.failure_reason
     else
       puts "Passed #{test}"
-      parsed.each do |t|
-        puts t
-      end
     end
   end
 end

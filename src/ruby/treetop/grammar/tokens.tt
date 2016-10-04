@@ -6,7 +6,7 @@ grammar Tokens
   end
 
   rule h_num
-    'h1' / 'h2' / 'h3' / 'h4' / 'h5' / 'h6'
+    'h1' &space / 'h2' &space / 'h3' &space / 'h4' &space / 'h5' &space / 'h6' &space
   end
 
   rule tag

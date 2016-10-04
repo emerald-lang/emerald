@@ -8,27 +8,31 @@ grammar Emerald
   include Tokens
 
   rule main
-    (newline / nested / tag / text / attr_list / list)*
+    (nested)*
   end
 
+  # A nested statement is a tag followed by a newline
   rule nested
-    tag newline indent (nested / line)*
+    tag newline (indent line / indent nested / newline)*
   end
 
-  rule text
-    h_num space* (string / (newline indent string)*)
+  rule line
+    (text / tag / attr_list / list) newline?
   end
 
+  # Ex.
   rule list
     keyword (newline indent (attr space* string space*)+ )*
   end
 
-  rule line
-    newline / tag / indent tag
+  # Ex. h1 "test this out."
+  rule text
+    h_num space* (string / (newline indent string)*)
   end
 
+  # Indentation rule
   rule indent
-    (space space)+
+    space space
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
