@@ -9,7 +9,7 @@ class Grammer
   @@parser = EmeraldParser.new
 
   text = File.open('../../test/treetop/samples/emerald/tests/valid/nested/1.emr').read
-  text2 = File.open('../../test/treetop/samples/emerald/tests/valid/nested/2.emr').read
+  text2 = File.open('../../test/treetop/samples/emerald/tests/valid/nested/4.emr').read
 
   tests = [
     text.chomp,

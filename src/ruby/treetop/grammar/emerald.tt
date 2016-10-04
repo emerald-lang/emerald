@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+#
+# Context free grammar for the Emerald language.
+# Emerald: a preprocessor for html5.
+#
 grammar Emerald
   include Tokens
 
@@ -7,18 +11,19 @@ grammar Emerald
     (nested)*
   end
 
-  # A nested statement is a tag followed by a newline
+  # A nested statement is a tag statement followed by a newline and an
+  # indentation
   rule nested
     tag_statement newline (indent+ line / indent+ nested / newline)*
   end
 
   rule line
-    text newline?
+    (text / list) newline?
   end
 
   # Ex.
   rule list
-    keyword (newline indent (attr space* string space*)+ )*
+    keyword (newline indent+ (attr space* string comma? space*)+ )*
   end
 
   # Ex. h1 "test this out."
@@ -44,6 +49,6 @@ grammar Emerald
 
   # if newline option, must indent
   rule attribute
-    space* attr space* equals space* string newline
+    space* attr space+ string newline
   end
 end

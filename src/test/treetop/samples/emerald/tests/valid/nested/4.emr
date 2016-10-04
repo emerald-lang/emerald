@@ -1,7 +1,9 @@
 html
   head
     h1 "Emerald programming language"
-    h2 "The future."
+    metas
+      name "keywords", content "HTML, CSS, XML, XHTML"
+      name "description", content "Meta tags example"
 
   body
     a "This is some text." (
@@ -10,6 +12,8 @@ html
     )
       h1 "this is cool."
 
-    section
+    section (
+      accept "all"
+    )
       h2 "this is some sample text"
       h3 "this is some more sample text"
