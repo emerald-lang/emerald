@@ -3,5 +3,7 @@ html
     h1 "Emerald programming language"
     h2 "The future."
 
-  body
+  body "test this" (
+    id = "test this"
+  )
     h1 "this is cool."

@@ -13,7 +13,7 @@ grammar Emerald
   end
 
   rule line
-    (text / tag / attr_list / list) newline?
+    text newline?
   end
 
   # Ex.
@@ -33,13 +33,13 @@ grammar Emerald
 
   # tag space* string (0 or 1), attr_list (0 or 1)
   rule tag_statement
-    tag space* string? attr_list?
+    tag space* string? space* attr_list?
   end
 
   # attribute list for
   # lparen newline (or none), attribute* rparen
   rule attr_list
-    lparen newline attribute* rparen
+    lparen newline attribute* space* rparen
   end
 
   # if newline option, must indent

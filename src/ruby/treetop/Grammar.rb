@@ -20,8 +20,12 @@ class Grammer
     parsed = @@parser.parse(test)
 
     if parsed.nil?
-      puts "Failed: #{test}"
+      puts "Failed:\n"
+      puts "===================================="
+      puts test
+      puts "====================================\n\n"
       puts @@parser.failure_reason
+      puts "\n"
     else
       puts "Passed:\n"
       puts "===================================="
