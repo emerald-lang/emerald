@@ -1,4 +1,7 @@
 html
   head
+    h1 "Emerald programming language"
+    h2 "The future."
 
-  h1 "this should pass"
+  body
+    h1 "this is cool."

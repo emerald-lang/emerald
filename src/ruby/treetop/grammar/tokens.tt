@@ -10,8 +10,8 @@ grammar Tokens
   end
 
   rule tag
-    'a' / 'abbr' / 'address' / 'area' / 'article' / 'aside' / 'audio' / 'b' /
-    'base' / 'bdi' / 'bdo' / 'blockquote' / 'body' / 'br' / 'button' /
+    'a' / 'abbr' / 'address' / 'area' / 'article' / 'aside' / 'audio' / 'body' /
+    'base' / 'bdi' / 'bdo' / 'blockquote' / 'br' / 'b' / 'button' /
     'canvas' / 'caption' / 'cite' / 'code' / 'col' / 'colgroup' / 'datalist' /
     'dd' / 'del' / 'details' / 'dfn' / 'dialog' / 'div' / 'dl' / 'em' /
     'embed' / 'fieldset' / 'figcaption' / 'figure' / 'footer' / 'form' /

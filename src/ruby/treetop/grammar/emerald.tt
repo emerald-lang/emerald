@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-##
-# Look up rule for 0 or 1.
-##
-
 grammar Emerald
   include Tokens
 
@@ -13,7 +9,7 @@ grammar Emerald
 
   # A nested statement is a tag followed by a newline
   rule nested
-    tag newline (indent line / indent nested / newline)*
+    tag_statement newline (indent+ line / indent+ nested / newline)*
   end
 
   rule line
@@ -37,7 +33,7 @@ grammar Emerald
 
   # tag space* string (0 or 1), attr_list (0 or 1)
   rule tag_statement
-    tag space* string attr_list
+    tag space* string? attr_list?
   end
 
   # attribute list for

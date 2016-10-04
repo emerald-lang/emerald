@@ -23,7 +23,10 @@ class Grammer
       puts "Failed: #{test}"
       puts @@parser.failure_reason
     else
-      puts "Passed #{test}"
+      puts "Passed:\n"
+      puts "===================================="
+      puts test
+      puts "====================================\n\n"
     end
   end
 end
