@@ -5,6 +5,10 @@ require 'treetop'
 Treetop.load '../../ruby/treetop/grammar/tokens'
 Treetop.load '../../ruby/treetop/grammar/emerald'
 
+#
+# Unit testing for Treetop parser. Asserts that valid
+# emerald is accepted and invalid emerald is rejected.
+#
 class TreetopSuite < Test::Unit::TestCase
   @@parser = EmeraldParser.new
 
@@ -17,6 +21,7 @@ class TreetopSuite < Test::Unit::TestCase
       elsif File.directory?(new_path)
         walk(new_path, list)
       else
+        puts "#{path}/#{file}"
         f = File.open(path + '/' + file)
         list.push(@@parser.parse(f.read))
       end
@@ -24,14 +29,14 @@ class TreetopSuite < Test::Unit::TestCase
     list
   end
 
-  def test_invalid_samples
+  def test_valid_samples
     output = walk('samples/emerald/tests/valid/')
     output.each do |out|
       assert_not_equal(out, nil)
     end
   end
 
-  def test_valid_samples
+  def test_invalid_samples
     output = walk('samples/emerald/tests/invalid/')
 
     output.each do |out|

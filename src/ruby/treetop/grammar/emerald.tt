@@ -23,8 +23,19 @@ grammar Emerald
     ((text / list) newline?) / comment
   end
 
+  # Rule for keyword list (metas, scripts, styles)
   rule list
     keyword (newline indent+ (attr space* string comma? space*)+ )*
+  end
+
+  # Single line and multiline comments
+  rule comment
+    space* '!' ( !"\n" . )* "\n"? / '<!' ( !"!>" . )* "!>"
+  end
+
+  # TODO: add escape characters
+  rule string
+    '"' ( !'"' . )* '"'
   end
 
   # Ex. h1 "test this out."
