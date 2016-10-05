@@ -53,8 +53,9 @@ grammar Tokens
     'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload'
   end
 
+  # Single line and multiline comments
   rule comment
-    space* '!' ( !"\n" . )* "\n"?
+    space* '!' ( !"\n" . )* "\n"? / '<!' ( !"!>" . )* "!>"
   end
 
   rule string

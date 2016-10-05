@@ -35,6 +35,8 @@ class Grammer
       puts "===================================="
       puts test
       puts "====================================\n\n"
+
+      # p parsed
     end
   end
 end
