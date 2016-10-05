@@ -8,8 +8,8 @@ Treetop.load 'grammar/emerald'
 class Grammer
   @@parser = EmeraldParser.new
 
-  text = File.open('../../test/treetop/samples/emerald/tests/valid/nested/1.emr').read
-  text2 = File.open('../../test/treetop/samples/emerald/tests/valid/nested/4.emr').read
+  text = File.open('../../test/treetop/samples/emerald/tests/valid/general/2.emr').read
+  text2 = File.open('../../test/treetop/samples/emerald/tests/valid/comments/1.emr').read
 
   tests = [
     text.chomp,
@@ -22,7 +22,11 @@ class Grammer
     if parsed.nil?
       puts "Failed:\n"
       puts "===================================="
-      puts test
+
+      test.each_line.with_index do |line, i|
+        puts "#{i + 1} #{line}"
+      end
+
       puts "====================================\n\n"
       puts @@parser.failure_reason
       puts "\n"

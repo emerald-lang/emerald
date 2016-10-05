@@ -1,8 +1,12 @@
 #!/usr/bin/env ruby
 
+#
+# Context free grammar of tokens (terminal
+# nodes) for the Emerald language.
+#
 grammar Tokens
   rule keyword
-    'doctype' / 'metas' / 'scripts' / 'styles'
+    'metas' / 'scripts' / 'styles'
   end
 
   rule h_num
@@ -47,6 +51,10 @@ grammar Tokens
 
   rule event
     'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload'
+  end
+
+  rule comment
+    space* '!' ( !"\n" . )* "\n"?
   end
 
   rule string

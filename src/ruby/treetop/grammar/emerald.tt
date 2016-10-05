@@ -8,7 +8,8 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested)*
+    (nested / line / newline)*
+    #(nested / newline)*
   end
 
   # A nested statement is a tag statement followed by a newline and an
@@ -17,11 +18,11 @@ grammar Emerald
     tag_statement newline (indent+ line / indent+ nested / newline)*
   end
 
+  # Comment has optional newline, so it's not included in the first sequence
   rule line
-    (text / list) newline?
+    ((text / list) newline?) / comment
   end
 
-  # Ex.
   rule list
     keyword (newline indent+ (attr space* string comma? space*)+ )*
   end
