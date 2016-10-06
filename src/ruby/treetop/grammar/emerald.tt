@@ -8,59 +8,59 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / line / newline)*
+    (nested / line / newline)* <Node>
     #(nested / newline)*
   end
 
   # A nested statement is a tag statement followed by a newline and an
   # indentation
   rule nested
-    tag_statement newline (indent+ line / indent+ nested / newline)*
+    tag_statement newline (indent+ line / indent+ nested / newline)* <Node>
   end
 
   # Comment has optional newline, so it's not included in the first sequence
   rule line
-    ((text / list) newline?) / comment
+    ((text / list / comment) newline?) <Node>
   end
 
   # Rule for keyword list (metas, scripts, styles)
   rule list
-    keyword (newline indent+ (attr space* string comma? space*)+ )*
+    keyword (newline indent+ (attr space* string comma? space*)+ )* <Node>
   end
 
   # Single line and multiline comments
   rule comment
-    space* '!' ( !"\n" . )* "\n"? / '<!' ( !"!>" . )* "!>"
+    space* '!' ( !"\n" . )* "\n"? <Node> / '<!' ( !"!>" . )* "!>" <Node>
   end
 
   # TODO: add escape characters
   rule string
-    '"' ( !'"' . )* '"'
+    '"' ( !'"' . )* '"' <Node>
   end
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* (string / (newline indent string)*)
+    h_num space* (string / (newline indent string)*) <Node>
   end
 
   # Indentation rule
   rule indent
-    space space
+    space space <Node>
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
   rule tag_statement
-    tag space* string? space* attr_list?
+    tag space* string? space* attr_list? <Node>
   end
 
   # attribute list for
   # lparen newline (or none), attribute* rparen
   rule attr_list
-    lparen newline attribute* space* rparen
+    lparen newline attribute* space* rparen <Node>
   end
 
   # if newline option, must indent
   rule attribute
-    space* attr space+ string newline
+    space* attr space+ string newline <Node>
   end
 end

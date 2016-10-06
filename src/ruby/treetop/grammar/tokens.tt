@@ -6,11 +6,11 @@
 #
 grammar Tokens
   rule keyword
-    'metas' / 'scripts' / 'styles'
+    'metas' / 'scripts' / 'styles' <Node>
   end
 
   rule h_num
-    'h1' &space / 'h2' &space / 'h3' &space / 'h4' &space / 'h5' &space / 'h6' &space
+    'h1' &space / 'h2' &space / 'h3' &space / 'h4' &space / 'h5' &space / 'h6' &space <Node>
   end
 
   rule tag
@@ -27,7 +27,7 @@ grammar Tokens
     'script' / 'select' / 'small' / 'source' / 'span' / 's' / 'strong' /
     'style' / 'sub' / 'summary' / 'sup' / 'table' / 'tbody' / 'td' /
     'textarea' / 'tfoot' / 'th' / 'thead' / 'time' / 'title' / 'tr' / 'track' /
-    'u' / 'ul' / 'var' / 'video' / 'wbr'
+    'u' / 'ul' / 'var' / 'video' / 'wbr' <Node>
   end
 
   rule attr
@@ -46,34 +46,34 @@ grammar Tokens
     'sandbox' / 'scope' / 'scoped' / 'selected' / 'shape' / 'size' / 'sizes' /
     'span' / 'spellcheck' / 'src' / 'srcdoc' / 'srclang' / 'start' / 'step' /
     'style' / 'tabindex' / 'target' / 'title' / 'translate' / 'type' /
-    'usemap' / 'value' / 'width' / 'wrap'
+    'usemap' / 'value' / 'width' / 'wrap' <Node>
   end
 
   rule event
-    'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload'
+    'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload' <Node>
   end
 
   rule equals
-    '='
+    '=' <Node>
   end
 
   rule comma
-    ','
+    ',' <Node>
   end
 
   rule lparen
-    '('
+    '(' <Node>
   end
 
   rule rparen
-    ')'
+    ')' <Node>
   end
 
   rule space
-    ' '
+    ' ' <Node>
   end
 
   rule newline
-    ([\n])
+    ([\n]) <Node>
   end
 end
