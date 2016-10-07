@@ -1,7 +1,11 @@
 require 'treetop'
 
 class Node < Treetop::Runtime::SyntaxNode
+  def prin
+  end
+
   def to_html
+    puts "default to_html"
   end
 
   def to_html_non_terminal(type)

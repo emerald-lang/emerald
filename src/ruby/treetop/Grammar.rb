@@ -32,7 +32,7 @@ class Grammer
     else
       puts "Passed:\n"
       puts "===================================="
-      # puts test
+      puts test
       parsed.to_html()
       puts "====================================\n\n"
     end

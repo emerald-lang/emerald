@@ -11,7 +11,12 @@ grammar Emerald
     (nested / line / newline)* <Node> {
       def to_html
         puts "ROOT"
-        elements[0].to_html()
+        puts elements.length
+        elements.each do |e|
+          e.to_html()
+        end
+        # elements[0].to_html()
+        # elements[1].to_html()
       end
     }
   end
@@ -19,17 +24,12 @@ grammar Emerald
   # A nested statement is a tag statement followed by a newline and an
   # indentation
   rule nested
-    (tag_statement newline (indent_line / indent_nested / newline)*) <Node> {
+    (tag_statement newline (indent_line / indent_nested)+) <Node> {
       def to_html
         puts "NESTED"
         elements.each do |e|
-          if e.kind_of? Node
+          if e.is_a?(Node)
             e.to_html()
-          else
-            if e.empty?
-            else
-              puts "nested: " + e.text_value + "."
-            end
           end
         end
       end
@@ -58,13 +58,8 @@ grammar Emerald
       def to_html
         puts "LINE"
         elements.each do |e|
-          if e.kind_of? Node
+          if e.is_a?(Node)
             e.to_html()
-          else
-            if e.empty?
-            else
-              puts "line: " + e.text_value + "."
-            end
           end
         end
       end
@@ -95,7 +90,7 @@ grammar Emerald
   rule indent
     (space space) <Node> {
       def to_html
-        puts "indent"
+        puts "INDENT"
       end
     }
   end
@@ -106,13 +101,8 @@ grammar Emerald
       def to_html()
         puts "TAG STATEMENT"
         elements.each do |e|
-          if e.kind_of? Node
+          if e.is_a?(Node)
             e.to_html()
-          else
-            if e.empty?
-            else
-              puts "tag_statement: " + e.text_value + "."
-            end
           end
         end
       end
