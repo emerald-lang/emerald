@@ -6,11 +6,11 @@
 #
 grammar Tokens
   rule keyword
-    'metas' / 'scripts' / 'styles' <Node>
+    'metas' / 'scripts' / 'styles'
   end
 
   rule h_num
-    'h1' &space / 'h2' &space / 'h3' &space / 'h4' &space / 'h5' &space / 'h6' &space <Node>
+    'h1' &space / 'h2' &space / 'h3' &space / 'h4' &space / 'h5' &space / 'h6' &space
   end
 
   rule tag
@@ -19,7 +19,18 @@ grammar Tokens
     'canvas' / 'caption' / 'cite' / 'code' / 'col' / 'colgroup' / 'datalist' /
     'dd' / 'del' / 'details' / 'dfn' / 'dialog' / 'div' / 'dl' / 'em' /
     'embed' / 'fieldset' / 'figcaption' / 'figure' / 'footer' / 'form' /
-    'head' / 'header' / 'hr' / 'html' / 'i' / 'iframe' / 'img' / 'input' /
+    'head' <Node> {
+      def to_html
+        puts "<head></head>"
+      end
+      }
+    / 'header' / 'hr' / 'html' <Node> {
+      def to_html
+        puts "<html>"
+        puts "</html>"
+      end
+    }
+    / 'i' / 'iframe' / 'img' / 'input' /
     'ins' / 'kbd' / 'keygen' / 'label' / 'legend' / 'li' / 'link' / 'main' /
     'map' / 'mark' / 'menu' / 'menuitem' / 'meta' / 'meter' / 'nav' /
     'noscript' / 'object' / 'ol' / 'optgroup' / 'option' / 'output' / 'p' /
@@ -27,7 +38,7 @@ grammar Tokens
     'script' / 'select' / 'small' / 'source' / 'span' / 's' / 'strong' /
     'style' / 'sub' / 'summary' / 'sup' / 'table' / 'tbody' / 'td' /
     'textarea' / 'tfoot' / 'th' / 'thead' / 'time' / 'title' / 'tr' / 'track' /
-    'u' / 'ul' / 'var' / 'video' / 'wbr' <Node>
+    'u' / 'ul' / 'var' / 'video' / 'wbr'
   end
 
   rule attr
@@ -70,10 +81,18 @@ grammar Tokens
   end
 
   rule space
-    ' ' <Node>
+    ' ' <Node> {
+      def to_html
+        puts "space"
+      end
+    }
   end
 
   rule newline
-    ([\n]) <Node>
+    ([\n]) <Node> {
+      def to_html
+        puts "NEWLINE"
+      end
+    }
   end
 end

@@ -8,19 +8,67 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / line / newline)* <Node>
-    #(nested / newline)*
+    (nested / line / newline)* <Node> {
+      def to_html
+        puts "ROOT"
+        elements[0].to_html()
+      end
+    }
   end
 
   # A nested statement is a tag statement followed by a newline and an
   # indentation
   rule nested
-    tag_statement newline (indent+ line / indent+ nested / newline)* <Node>
+    (tag_statement newline (indent_line / indent_nested / newline)*) <Node> {
+      def to_html
+        puts "NESTED"
+        elements.each do |e|
+          if e.kind_of? Node
+            e.to_html()
+          else
+            if e.empty?
+            else
+              puts "nested: " + e.text_value + "."
+            end
+          end
+        end
+      end
+    }
+  end
+
+  rule indent_line
+    indent+ line <Node> {
+      def to_html
+        puts "INDENT LINE"
+      end
+    }
+  end
+
+  rule indent_nested
+    indent+ nested <Node> {
+      def to_html
+        puts "INDENT NESTED"
+      end
+    }
   end
 
   # Comment has optional newline, so it's not included in the first sequence
   rule line
-    ((text / list / comment) newline?) <Node>
+    ((text / list / tag_statement / comment) newline?) <Node> {
+      def to_html
+        puts "LINE"
+        elements.each do |e|
+          if e.kind_of? Node
+            e.to_html()
+          else
+            if e.empty?
+            else
+              puts "line: " + e.text_value + "."
+            end
+          end
+        end
+      end
+    }
   end
 
   # Rule for keyword list (metas, scripts, styles)
@@ -40,17 +88,35 @@ grammar Emerald
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* (string / (newline indent string)*) <Node>
+    h_num space* (string / (newline indent string)*)
   end
 
   # Indentation rule
   rule indent
-    space space <Node>
+    (space space) <Node> {
+      def to_html
+        puts "indent"
+      end
+    }
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
   rule tag_statement
-    tag space* string? space* attr_list? <Node>
+    tag space* string? space* attr_list? <Node> {
+      def to_html()
+        puts "TAG STATEMENT"
+        elements.each do |e|
+          if e.kind_of? Node
+            e.to_html()
+          else
+            if e.empty?
+            else
+              puts "tag_statement: " + e.text_value + "."
+            end
+          end
+        end
+      end
+    }
   end
 
   # attribute list for

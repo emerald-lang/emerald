@@ -2,12 +2,6 @@ require 'treetop'
 
 class Node < Treetop::Runtime::SyntaxNode
   def to_html
-    puts "Terminal: #{terminal?}"
-    puts "Non-terminal: #{nonterminal?}"
-    puts "Input #{input}"
-    puts "Empty #{empty?}"
-    puts "Elements: #{elements.length}"
-    puts "Inspect #{inspect}"
   end
 
   def to_html_non_terminal(type)
