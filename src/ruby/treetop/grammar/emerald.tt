@@ -35,6 +35,15 @@ grammar Emerald
             if e.empty?
             else
               puts "." + e.text_value + "."
+              puts e.elements
+              # MAKE THIS RECURSIVE!!!
+              e.elements.each do |j|
+                if j.is_a?(Node)
+                  j.to_html()
+                else
+                  puts j.text_value
+                end
+              end
             end
           end
         end
@@ -46,6 +55,7 @@ grammar Emerald
     indent+ line <Node> {
       def to_html
         puts "INDENT LINE"
+
       end
     }
   end
