@@ -9,7 +9,7 @@ Treetop.load 'grammar/emerald'
 class Grammer
   @@parser = EmeraldParser.new
 
-  text = File.open('../../test/treetop/samples/emerald/tests/valid/html.emr').read
+  text = File.open('../../test/treetop/samples/emerald/tests/valid/html/3.emr').read
 
   tests = [
     text.chomp

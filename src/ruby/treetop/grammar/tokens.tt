@@ -89,7 +89,7 @@ grammar Tokens
   end
 
   rule newline
-    ([\n]) <Node> {
+    [\n] <Node> {
       def to_html
         puts "NEWLINE"
       end
