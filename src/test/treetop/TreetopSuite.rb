@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'polyglot'
 require 'treetop'
+require_relative '../../ruby/treetop/nodes/Node'
 
 Treetop.load '../../ruby/treetop/grammar/tokens'
 Treetop.load '../../ruby/treetop/grammar/emerald'
@@ -21,9 +22,8 @@ class TreetopSuite < Test::Unit::TestCase
       elsif File.directory?(new_path)
         walk(new_path, list)
       else
-        puts "#{path}/#{file}"
         f = File.open(path + '/' + file)
-        list.push(@@parser.parse(f.read))
+        list.push([@@parser.parse(f.read), path + '/' + file])
       end
     end
     list
@@ -31,8 +31,10 @@ class TreetopSuite < Test::Unit::TestCase
 
   def test_valid_samples
     output = walk('samples/emerald/tests/valid/')
+    
     output.each do |out|
-      assert_not_equal(out, nil)
+      puts out[1] if out[0].nil?
+      assert_not_equal(out[0], nil)
     end
   end
 
@@ -40,7 +42,7 @@ class TreetopSuite < Test::Unit::TestCase
     output = walk('samples/emerald/tests/invalid/')
 
     output.each do |out|
-      assert_equal(out, nil)
+      assert_equal(out[0], nil)
     end
   end
 end

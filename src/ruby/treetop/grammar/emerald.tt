@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# IDEA: make default Treetop syntax nodes terminal? or maybe not - might fuck up
+# the nesting recursion. idk
+
 #
 # Context free grammar for the Emerald language.
 # Emerald: a preprocessor for html5.
@@ -25,7 +28,7 @@ grammar Emerald
   # A nested statement is a tag statement followed by a newline and an
   # indentation
   rule nested
-    tag_statement newline (indent_line / indent_nested)+ <Node> {
+    tag_statement newline (indent_line / indent_nested / newline)+ <Node> {
       def to_html
         puts "NESTED"
         elements.each do |e|
@@ -55,7 +58,11 @@ grammar Emerald
     indent+ line <Node> {
       def to_html
         puts "INDENT LINE"
-
+        elements.each do |e|
+          if e.is_a?(Node)
+            e.to_html()
+          end
+        end
       end
     }
   end

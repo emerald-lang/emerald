@@ -21,12 +21,17 @@ grammar Tokens
     'embed' / 'fieldset' / 'figcaption' / 'figure' / 'footer' / 'form' /
     'head' <Node> {
       def to_html
-        puts "<head></head>"
+        puts "<head>"
+      end
+      def end_html
+        puts "</head>"
       end
       }
     / 'header' / 'hr' / 'html' <Node> {
       def to_html
         puts "<html>"
+      end
+      def end_html
         puts "</html>"
       end
     }

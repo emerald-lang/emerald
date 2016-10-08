@@ -9,10 +9,17 @@ Treetop.load 'grammar/emerald'
 class Grammer
   @@parser = EmeraldParser.new
 
-  text = File.open('../../test/treetop/samples/emerald/tests/valid/html/3.emr').read
+  text = File.open('../../test/treetop/samples/emerald/tests/valid/general/2.emr').read
+  text2 = File.open('../../test/treetop/samples/emerald/tests/valid/text/2.emr').read
+  text3 = File.open('../../test/treetop/samples/emerald/tests/valid/html/2.emr').read
+  text4 = File.open('../../test/treetop/samples/emerald/tests/valid/html/2.emr').read
+  text5 = File.open('../../test/treetop/samples/emerald/tests/valid/html/2.emr').read
+  text6 = File.open('../../test/treetop/samples/emerald/tests/valid/html/1.emr').read
 
   tests = [
-    text.chomp
+    text.chomp,
+    text2.chomp,
+    text6.chomp
   ]
 
   tests.each do |test|
