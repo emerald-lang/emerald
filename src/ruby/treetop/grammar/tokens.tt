@@ -14,7 +14,14 @@ grammar Tokens
   end
 
   rule tag
-    'a' / 'abbr' / 'address' / 'area' / 'article' / 'aside' / 'audio' / 'body' /
+    'a' / 'abbr' / 'address' / 'area' / 'article' / 'aside' / 'audio' / 'body' <Node> {
+      def to_html
+        puts "<body>"
+      end
+      def end_html
+        puts "</body>"
+      end
+      } /
     'base' / 'bdi' / 'bdo' / 'blockquote' / 'br' / 'b' / 'button' /
     'canvas' / 'caption' / 'cite' / 'code' / 'col' / 'colgroup' / 'datalist' /
     'dd' / 'del' / 'details' / 'dfn' / 'dialog' / 'div' / 'dl' / 'em' /

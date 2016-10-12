@@ -1,8 +1,5 @@
 #!/usr/bin/env ruby
 
-# IDEA: make default Treetop syntax nodes terminal? or maybe not - might fuck up
-# the nesting recursion. idk
-
 #
 # Context free grammar for the Emerald language.
 # Emerald: a preprocessor for html5.
@@ -11,135 +8,66 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / line / newline)* <Node> {
-      def to_html
-        puts "ROOT"
-        elements.each do |e|
-          if e.is_a?(Node)
-            e.to_html()
-          else
-            puts e.text_value
-          end
-        end
-      end
-    }
+    (nested / line / newline)* <Root>
   end
 
   # A nested statement is a tag statement followed by a newline and an
-  # indentation
+  # indentation.
   rule nested
-    tag_statement newline (indent_line / indent_nested / newline)+ <Node> {
-      def to_html
-        puts "NESTED"
-        elements.each do |e|
-          if e.is_a?(Node)
-            e.to_html()
-          else
-            if e.empty?
-            else
-              puts "." + e.text_value + "."
-              puts e.elements
-              # MAKE THIS RECURSIVE!!!
-              e.elements.each do |j|
-                if j.is_a?(Node)
-                  j.to_html()
-                else
-                  puts j.text_value
-                end
-              end
-            end
-          end
-        end
-      end
-    }
+    tag_statement newline (indent_line / indent_nested / newline)+ <Nested>
   end
 
   rule indent_line
-    indent+ line <Node> {
-      def to_html
-        puts "INDENT LINE"
-        elements.each do |e|
-          if e.is_a?(Node)
-            e.to_html()
-          end
-        end
-      end
-    }
+    indent+ line <IndentLine>
   end
 
   rule indent_nested
-    indent+ nested <Node> {
-      def to_html
-        puts "INDENT NESTED"
-      end
-    }
+    indent+ nested <IndentNested>
   end
 
   # Comment has optional newline, so it's not included in the first sequence
   rule line
-    (text / list / tag_statement / comment) newline? <Node> {
-      def to_html
-        puts "LINE"
-        elements.each do |e|
-          if e.is_a?(Node)
-            e.to_html()
-          end
-        end
-      end
-    }
+    (text / list / tag_statement / comment) newline? <Line>
   end
 
   # Rule for keyword list (metas, scripts, styles)
   rule list
-    keyword (newline indent+ (attr space* string comma? space*)+ )* <Node>
+    keyword (newline indent+ (attr space* string comma? space*)+ )* <List>
   end
 
   # Single line and multiline comments
   rule comment
-    space* '!' ( !"\n" . )* "\n"? <Node> / '<!' ( !"!>" . )* "!>" <Node>
+    space* '!' ( !"\n" . )* "\n"? <Node> / '<!' ( !"!>" . )* "!>" <Comment>
   end
 
   # TODO: add escape characters
   rule string
-    '"' ( !'"' . )* '"' <Node>
+    '"' ( !'"' . )* '"' <StringNode>
   end
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* (string / (newline indent string)*)
+    h_num space* (string / (newline indent string)*) <Text>
   end
 
   # Indentation rule
   rule indent
-    space space <Node> {
-      def to_html
-        puts "INDENT"
-      end
-    }
+    space space
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
   rule tag_statement
-    tag space* string? space* attr_list? <Node> {
-      def to_html
-        puts "TAG STATEMENT"
-        elements.each do |e|
-          if e.is_a?(Node)
-            e.to_html()
-          end
-        end
-      end
-    }
+    tag space* string? space* attr_list? <TagStatement>
   end
 
   # attribute list for
   # lparen newline (or none), attribute* rparen
   rule attr_list
-    lparen newline attribute* space* rparen <Node>
+    lparen newline attribute* space* rparen <AttributeList>
   end
 
   # if newline option, must indent
   rule attribute
-    space* attr space+ string newline <Node>
+    space* attr space+ string newline <Attribute>
   end
 end
