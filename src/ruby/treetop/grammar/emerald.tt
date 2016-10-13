@@ -14,7 +14,7 @@ grammar Emerald
   # A nested statement is a tag statement followed by a newline and an
   # indentation.
   rule nested
-    tag_statement newline (indent_line / indent_nested / newline)+ <Nested>
+    tag_statement newline (indent_nested / indent_line / newline)+ <Nested>
   end
 
   rule indent_line

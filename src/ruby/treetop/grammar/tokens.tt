@@ -14,35 +14,12 @@ grammar Tokens
   end
 
   rule tag
-    'a' / 'abbr' / 'address' / 'area' / 'article' / 'aside' / 'audio' / 'body' <Node> {
-      def to_html
-        puts "<body>"
-      end
-      def end_html
-        puts "</body>"
-      end
-      } /
+    'a' / 'abbr' / 'address' / 'area' / 'article' / 'aside' / 'audio' / 'body' /
     'base' / 'bdi' / 'bdo' / 'blockquote' / 'br' / 'b' / 'button' /
     'canvas' / 'caption' / 'cite' / 'code' / 'col' / 'colgroup' / 'datalist' /
     'dd' / 'del' / 'details' / 'dfn' / 'dialog' / 'div' / 'dl' / 'em' /
     'embed' / 'fieldset' / 'figcaption' / 'figure' / 'footer' / 'form' /
-    'head' <Node> {
-      def to_html
-        puts "<head>"
-      end
-      def end_html
-        puts "</head>"
-      end
-      }
-    / 'header' / 'hr' / 'html' <Node> {
-      def to_html
-        puts "<html>"
-      end
-      def end_html
-        puts "</html>"
-      end
-    }
-    / 'i' / 'iframe' / 'img' / 'input' /
+    'head' / 'header' / 'hr' / 'html' / 'i' / 'iframe' / 'img' / 'input' /
     'ins' / 'kbd' / 'keygen' / 'label' / 'legend' / 'li' / 'link' / 'main' /
     'map' / 'mark' / 'menu' / 'menuitem' / 'meta' / 'meter' / 'nav' /
     'noscript' / 'object' / 'ol' / 'optgroup' / 'option' / 'output' / 'p' /
@@ -69,41 +46,37 @@ grammar Tokens
     'sandbox' / 'scope' / 'scoped' / 'selected' / 'shape' / 'size' / 'sizes' /
     'span' / 'spellcheck' / 'src' / 'srcdoc' / 'srclang' / 'start' / 'step' /
     'style' / 'tabindex' / 'target' / 'title' / 'translate' / 'type' /
-    'usemap' / 'value' / 'width' / 'wrap' <Node>
+    'usemap' / 'value' / 'width' / 'wrap'
   end
 
   rule event
-    'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload' <Node>
+    'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload'
   end
 
   rule equals
-    '=' <Node>
+    '='
   end
 
   rule comma
-    ',' <Node>
+    ','
   end
 
   rule lparen
-    '(' <Node>
+    '('
   end
 
   rule rparen
-    ')' <Node>
+    ')'
   end
 
   rule space
-    ' ' <Node> {
-      def to_html
-        puts "space"
-      end
-    }
+    ' '
   end
 
   rule newline
     [\n] <Node> {
       def to_html
-        puts "NEWLINE"
+        log("NEWLINE")
       end
     }
   end

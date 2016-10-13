@@ -1,17 +1,7 @@
 require 'polyglot'
 require 'treetop'
-require_relative 'nodes/Attribute'
-require_relative 'nodes/AttributeList'
-require_relative 'nodes/Comment'
-require_relative 'nodes/IndentLine'
-require_relative 'nodes/IndentNested'
-require_relative 'nodes/Line'
-require_relative 'nodes/List'
-require_relative 'nodes/Nested'
-require_relative 'nodes/Node'
-require_relative 'nodes/Root'
-require_relative 'nodes/StringNode'
-require_relative 'nodes/TagStatement'
+
+Dir[File.dirname(__FILE__) + '/nodes/*.rb'].each {|f| require f}
 
 Treetop.load 'grammar/tokens'
 Treetop.load 'grammar/emerald'

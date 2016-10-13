@@ -6,7 +6,7 @@ class Root < Node
     puts "ROOT"
     elements.each do |e|
       if e.is_a?(Node)
-        e.to_html()
+        e.to_html(nil, 0)
       end
     end
   end
