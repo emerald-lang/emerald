@@ -11,9 +11,13 @@ class Nested < Node
 
     elem.each do |e|
       if e.is_a?(TagStatement)
-        puts "<#{e.elements[0].text_value}>" # do more elaborate to_html for TagStatement
-        to_html(elem[1..-1], indent)
-        puts "</#{e.elements[0].text_value}>" # close off with this statement
+        puts "#{e.to_html()}"
+        x = to_html(elem[1..-1], indent)
+        puts "</#{e.elements[0].text_value}>"
+
+        puts x
+        # to_html(elem[1..-1], indent) if br
+
         break
       elsif e.is_a?(TagStatement)
         puts "<#{e.elements[0].text_value}>"
@@ -21,7 +25,8 @@ class Nested < Node
         puts "</#{e.elements[0].text_value}>"
       elsif e.is_a?(IndentNested)
         if @@isTrue.(e.elements[0], indent)
-          break
+          indent = e.elements[0].elements.length * 2
+          return true
           # call to_html on remaining stuff.
         else
           indent = e.elements[0].elements.length * 2
@@ -29,7 +34,8 @@ class Nested < Node
         end
       elsif e.is_a?(IndentLine)
         if @@isTrue.(e.elements[0], indent)
-          break
+          indent = e.elements[0].elements.length * 2
+          return true
           # call to_html on remaining stuff.
         else
           indent = e.elements[0].elements.length * 2
