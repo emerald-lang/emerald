@@ -23,12 +23,8 @@ class Nested < Node
           nodes = x.flatten.compact.grep(Node)
         end
 
-        if inner == indent
-          to_html(nodes, indent) unless nodes.nil?
-          break
-        else
-          break inner, nodes
-        end
+        to_html(nodes, indent) unless nodes.nil? if inner == indent
+        break inner, nodes
       elsif e.is_a?(IndentNested)
         if @@isTrue.(e.elements[0], indent)
           indent = e.elements[0].elements.length * 2
