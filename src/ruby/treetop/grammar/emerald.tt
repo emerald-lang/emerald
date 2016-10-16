@@ -57,7 +57,7 @@ grammar Emerald
 
   # tag space* string (0 or 1), attr_list (0 or 1)
   rule tag_statement
-    tag space* string? space* attr_list? <TagStatement>
+    tag space* (( !"\n" . )*)? space* attr_list? <TagStatement>
   end
 
   # attribute list for

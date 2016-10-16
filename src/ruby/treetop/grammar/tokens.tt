@@ -76,7 +76,7 @@ grammar Tokens
   rule newline
     [\n] <Node> {
       def to_html
-        log("NEWLINE")
+        #log("NEWLINE")
       end
     }
   end

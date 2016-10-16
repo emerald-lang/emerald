@@ -3,6 +3,6 @@ require_relative 'Node'
 
 class List < Node
   def to_html
-    log("LIST")
+    #log("LIST")
   end
 end

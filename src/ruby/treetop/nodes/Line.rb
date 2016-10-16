@@ -3,7 +3,7 @@ require_relative 'Node'
 
 class Line < Node
   def to_html
-    log("LINE")
+    #log("LINE")
     e = elements[0]
     
     if e.is_a?(TagStatement)

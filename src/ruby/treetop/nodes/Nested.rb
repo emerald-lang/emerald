@@ -5,28 +5,26 @@ class Nested < Node
   @@isTrue = lambda {|e, i| e.elements.length * 2 < i ? true : false}
 
   def to_html(elem=nil, indent=nil)
-    log("NESTED")
+    #log("NESTED")
     indent = 0 if indent.nil?
     elem = elements if elem.nil?
 
-    elem.each do |e|
+    elem.map do |e|
       if e.is_a?(TagStatement)
         puts "#{e.to_html()}"
         x = to_html(elem[1..-1], indent)
         puts "</#{e.elements[0].text_value}>"
 
-        puts x
-        # to_html(elem[1..-1], indent) if br
+        if x.flatten.compact.any?
+          puts 'fuck'
+          to_html(elem[1..-1])
+        end
 
         break
-      elsif e.is_a?(TagStatement)
-        puts "<#{e.elements[0].text_value}>"
-        to_html(elem[1..-1], indent)
-        puts "</#{e.elements[0].text_value}>"
       elsif e.is_a?(IndentNested)
         if @@isTrue.(e.elements[0], indent)
           indent = e.elements[0].elements.length * 2
-          return true
+          return elem
           # call to_html on remaining stuff.
         else
           indent = e.elements[0].elements.length * 2
@@ -35,7 +33,7 @@ class Nested < Node
       elsif e.is_a?(IndentLine)
         if @@isTrue.(e.elements[0], indent)
           indent = e.elements[0].elements.length * 2
-          return true
+          return elem
           # call to_html on remaining stuff.
         else
           indent = e.elements[0].elements.length * 2

@@ -7,7 +7,7 @@ require_relative 'Node'
 # converted to html in the code generation phase.
 class IndentLine < Node
   def to_html
-    log("INDENT LINE")
+    #log("INDENT LINE")
     elements[1].to_html()
   end
 end
