@@ -14,23 +14,25 @@ class Nested < Node
       if e.is_a?(TagStatement)
         inner = 0
 
-        puts "#{e.to_html()} [#{indent}]"
+        puts "#{e.to_html()}"
         x = to_html(elem[1..-1], indent)
-        puts "</#{e.elements[0].text_value}> [#{indent}]"
+        puts "</#{e.elements[0].text_value}>"
 
-        inner = x.flatten.compact.first if x.flatten.compact.any?
-        p inner
+        if x.flatten.compact.any?
+          inner = x.flatten.compact.first
+          nodes = x.flatten.compact.grep(Node)
+        end
 
         if inner == indent
-          p elem
-          to_html(elem[1..-1], indent)
+          to_html(nodes, indent) unless nodes.nil?
+          break
         else
-          break inner
+          break inner, nodes
         end
       elsif e.is_a?(IndentNested)
         if @@isTrue.(e.elements[0], indent)
           indent = e.elements[0].elements.length * 2
-          return indent
+          return indent, elem
         else
           indent = e.elements[0].elements.length * 2
           e.elements[1].to_html(nil, indent)
@@ -38,7 +40,7 @@ class Nested < Node
       elsif e.is_a?(IndentLine)
         if @@isTrue.(e.elements[0], indent)
           indent = e.elements[0].elements.length * 2
-          return indent
+          return indent, elem
         else
           indent = e.elements[0].elements.length * 2
           e.to_html()
