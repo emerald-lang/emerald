@@ -1,6 +1,5 @@
 html
   head
-    body
 
-  section
-    body
+  body
+    section

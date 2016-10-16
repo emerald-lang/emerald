@@ -1,7 +1,8 @@
 require 'test/unit'
 require 'polyglot'
 require 'treetop'
-require_relative '../../ruby/treetop/nodes/Node'
+
+Dir[File.dirname(__FILE__) + '/../../ruby/treetop/nodes/*.rb'].each {|f| require f}
 
 Treetop.load '../../ruby/treetop/grammar/tokens'
 Treetop.load '../../ruby/treetop/grammar/emerald'
@@ -31,7 +32,7 @@ class TreetopSuite < Test::Unit::TestCase
 
   def test_valid_samples
     output = walk('samples/emerald/tests/valid/')
-    
+
     output.each do |out|
       puts out[1] if out[0].nil?
       assert_not_equal(out[0], nil)
