@@ -5,7 +5,7 @@ require 'treetop'
 Dir[File.dirname(__FILE__) + '/../../ruby/treetop/nodes/*.rb'].each {|f| require f}
 
 Treetop.load '../../ruby/treetop/grammar/tokens'
-Treetop.load '../../ruby/treetop/grammar/emerald'
+Treetop.load '../../ruby/treetop/grammar/emerald_spacing'
 
 #
 # Unit testing for Treetop parser. Asserts that valid
@@ -30,20 +30,39 @@ class TreetopSuite < Test::Unit::TestCase
     list
   end
 
-  def test_valid_samples
-    output = walk('samples/emerald/tests/valid/')
+  #def test_valid_samples
+    #output = walk('samples/emerald/tests/valid/')
 
-    output.each do |out|
-      puts out[1] if out[0].nil?
-      assert_not_equal(out[0], nil)
-    end
-  end
+    #output.each do |out|
+      #puts out[1] if out[0].nil?
+      #assert_not_equal(out[0], nil)
+    #end
+  #end
 
-  def test_invalid_samples
-    output = walk('samples/emerald/tests/invalid/')
+  #def test_invalid_samples
+    #output = walk('samples/emerald/tests/invalid/')
 
-    output.each do |out|
-      assert_equal(out[0], nil)
+    #output.each do |out|
+      #assert_equal(out[0], nil)
+    #end
+  #end
+
+  def test_indents
+    test = <<END
+html
+  head
+
+  body
+    section
+  div
+END
+    tree = @@parser.parse(test)
+    puts tree.inspect
+    if tree
+        puts "succesful"
+    else
+        puts "unsuccesful at #{@@parser.index}"
+        puts @@parser.failure_reason
     end
   end
 end
