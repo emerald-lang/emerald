@@ -69,6 +69,14 @@ grammar Tokens
     ')'
   end
 
+  rule lbrace
+    '{'
+  end
+
+  rule rbrace
+    '}'
+  end
+
   rule space
     ' '
   end

@@ -2,7 +2,8 @@
 
 #
 # Preprocess the emerald code and add notion of indentation so it may be parsed
-# by a context free grammar.
+# by a context free grammar. Removes all whitespace and adds braces to denote
+# indentation.
 #
 class PreProcessor
   input = File.open("sample.emr", "r").read
@@ -10,7 +11,7 @@ class PreProcessor
   current_indent = 0; new_indent = 0; b_count = 0
 
   input.each_line do |line|
-    # remove any newlines for intermediate form
+    # remove any blank lines for intermediate form
     next if line.lstrip.length == 0
 
     new_indent = line.length - line.lstrip.length
@@ -22,7 +23,7 @@ class PreProcessor
       puts "}"; b_count -= 1
     end
 
-    puts line
+    puts line.lstrip
   end
 
   # Print out remaining braces.

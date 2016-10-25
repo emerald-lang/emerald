@@ -8,31 +8,23 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / line / newline)* <Root>
+    (nested / line)* <Root>
   end
 
   # A nested statement is a tag statement followed by a newline and an
-  # indentation.
+  # a block scoped by braces.
   rule nested
-    tag_statement newline (indent_nested / indent_line / newline)+ <Nested>
-  end
-
-  rule indent_line
-    indent+ line <IndentLine>
-  end
-
-  rule indent_nested
-    indent+ nested <IndentNested>
+    tag_statement newline lbrace newline (nested / line)+ rbrace newline <Nested>
   end
 
   # Comment has optional newline, so it's not included in the first sequence
   rule line
-    (text / list / tag_statement / comment) newline? <Line>
+    (text / list / tag_statement / comment) newline <Line>
   end
 
   # Rule for keyword list (metas, scripts, styles)
   rule list
-    keyword (newline indent+ (attr space* string comma? space*)+ )* <List>
+    keyword (newline (attr space* string comma? space*)+ )* <List>
   end
 
   # Single line and multiline comments
@@ -47,12 +39,7 @@ grammar Emerald
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* (string / (newline indent string)*) <Text>
-  end
-
-  # Indentation rule
-  rule indent
-    space space
+    h_num space* string <Text>
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
