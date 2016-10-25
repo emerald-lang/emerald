@@ -14,12 +14,17 @@ grammar Emerald
   # A nested statement is a tag statement followed by a newline and an
   # a block scoped by braces.
   rule nested
-    tag_statement newline lbrace newline (nested / line)+ rbrace newline <Nested>
+    tag_statement newline lbrace newline test rbrace newline <Nested>
+  end
+
+  # Rename this to something better.
+  rule test
+    (nested / line)+ <Test>
   end
 
   # Comment has optional newline, so it's not included in the first sequence
   rule line
-    (text / list / tag_statement / comment) newline <Line>
+    (tag_statement / text / list / comment) newline <Line>
   end
 
   # Rule for keyword list (metas, scripts, styles)
