@@ -1,5 +1,10 @@
+! doctype 5
+
+<! emerald sample !>
+
 html
   head
+    title Title of an article
 
   body
     section This is some sample text

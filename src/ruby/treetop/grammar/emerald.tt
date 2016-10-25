@@ -8,7 +8,7 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / line)* <Root>
+    (nested / line / comment)* <Root>
   end
 
   # A nested statement is a tag statement followed by a newline and an
@@ -34,7 +34,7 @@ grammar Emerald
 
   # Single line and multiline comments
   rule comment
-    space* '!' ( !"\n" . )* "\n"? <Node> / '<!' ( !"!>" . )* "!>" <Comment>
+    space* '!' ( !"\n" . )* "\n" <Comment> / space* '<!' ( !"!>" . )* "!>\n" <Comment>
   end
 
   # TODO: add escape characters
