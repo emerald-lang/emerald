@@ -2,4 +2,4 @@ html
   head
 
   body
-    h1 This is some sample text.
+    section This is some sample text

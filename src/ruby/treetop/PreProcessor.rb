@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative 'Grammar'
+
 #
 # Preprocess the emerald code and add notion of indentation so it may be parsed
 # by a context free grammar. Removes all whitespace and adds braces to denote
@@ -8,7 +10,7 @@
 class PreProcessor
   input = File.open("sample.emr", "r").read
 
-  current_indent = 0; new_indent = 0; b_count = 0
+  current_indent = 0; new_indent = 0; b_count = 0; output = ''
 
   input.each_line do |line|
     # remove any blank lines for intermediate form
@@ -17,17 +19,19 @@ class PreProcessor
     new_indent = line.length - line.lstrip.length
 
     if new_indent > current_indent
-      puts "{"; b_count += 1
+      output += "{\n"; b_count += 1
       current_indent = new_indent
     elsif new_indent < current_indent && new_indent != 0
-      puts "}"; b_count -= 1
+      output += "}\n"; b_count -= 1
     end
 
-    puts line.lstrip
+    output += line.lstrip
   end
 
   # Print out remaining braces.
   for i in 1..b_count do
-    puts "}"
+    output += "}\n"
   end
+
+  Grammer.parse_grammar(output)
 end
