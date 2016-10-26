@@ -5,16 +5,14 @@ require 'polyglot'
 require 'treetop'
 
 # Require all treetop nodes for grammar
-Dir[File.dirname(__FILE__) + '/../../ruby/treetop/nodes/*.rb'].each do |f|
-  require f
-end
+Dir[File.dirname(__FILE__) + '/../../ruby/nodes/*.rb'].each do { require f }
 
-Treetop.load '../../ruby/treetop/grammar/tokens'
-Treetop.load '../../ruby/treetop/grammar/emerald_spacing'
+Treetop.load '../../ruby/grammar/tokens'
+Treetop.load '../../ruby/grammar/emerald_spacing'
 
 #
-# Unit testing for Treetop parser. Asserts that valid
-# emerald is accepted and invalid emerald is rejected.
+# Unit testing for Treetop parser. Asserts that valid preprocessed emerald is
+# accepted and invalid preprocessed emerald is rejected.
 #
 class TreetopSuite < Test::Unit::TestCase
   def walk(path, list = [])

@@ -1,0 +1,16 @@
+! doctype 5
+
+<! emerald sample !>
+
+html
+  head
+    title Title of an article
+
+  body
+    header
+      section
+        h1 This is some sample text.
+
+    footer
+      section
+        div

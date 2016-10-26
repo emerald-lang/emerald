@@ -3,6 +3,7 @@
 require 'polyglot'
 require 'treetop'
 
+# Require all treetop nodes for grammar
 Dir[File.dirname(__FILE__) + '/nodes/*.rb'].each {|f| require f}
 
 Treetop.load 'grammar/tokens'
