@@ -23,15 +23,16 @@ class TreetopSuite < Test::Unit::TestCase
     Dir.foreach(path) do |file|
       new_path = File.join(path, file)
 
-      if file == '..' || file == '.'
-        next
-      elsif File.directory?(new_path)
+      next if file == '..' || file == '.'
+
+      if File.directory?(new_path)
         walk(new_path, list)
       else
         f = File.open(path + '/' + file)
         list.push([parser.parse(f.read), path + '/' + file])
       end
     end
+
     list
   end
 
