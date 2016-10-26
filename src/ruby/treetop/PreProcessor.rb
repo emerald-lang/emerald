@@ -19,8 +19,6 @@ module PreProcessor
       next if line.lstrip.length == 0
 
       new_indent = line.length - line.lstrip.length
-      puts line
-      puts "#{current_indent} | #{new_indent}"
 
       if new_indent > current_indent
         output += "{\n"; b_count += 1
