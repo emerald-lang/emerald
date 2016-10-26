@@ -6,13 +6,4 @@ class Test < Node
       e.to_html()
     end
   end
-
-  def end_html
-    puts "default end_html"
-  end
-
-  # Printing method
-  def log(type)
-    puts "Type: #{type}"
-  end
 end
