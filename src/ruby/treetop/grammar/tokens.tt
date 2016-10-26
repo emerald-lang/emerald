@@ -82,10 +82,6 @@ grammar Tokens
   end
 
   rule newline
-    [\n] <Node> {
-      def to_html
-        # log("NEWLINE")
-      end
-    }
+    [\n] <Node>
   end
 end

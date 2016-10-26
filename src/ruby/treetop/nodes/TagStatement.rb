@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'treetop'
 require_relative 'Node'
 
@@ -6,7 +8,6 @@ require_relative 'Node'
 # elements[4] is the attribute list
 class TagStatement < Node
   def to_html
-    #log("TagStatement")
     if elements[4].is_a?(AttributeList)
       "<#{elements[0].text_value}#{elements[4].to_html()}>#{elements[2].text_value}"
     else
