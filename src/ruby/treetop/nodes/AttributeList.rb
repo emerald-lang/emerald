@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'treetop'
 require_relative 'Node'
 
@@ -5,7 +7,6 @@ require_relative 'Node'
 # call to_html() on them.
 class AttributeList < Node
   def to_html
-    #log("ATTR_LIST")
     elements[2].to_html()
   end
 end

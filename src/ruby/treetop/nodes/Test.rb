@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'treetop'
 
 class Test < Node

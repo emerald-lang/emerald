@@ -44,7 +44,7 @@ grammar Emerald
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* string <Text>
+    h_num space* (( !"\n" . )*)? <Text>
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
