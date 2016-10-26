@@ -13,17 +13,23 @@ module PreProcessor
 
     current_indent = 0; new_indent = 0; b_count = 0; output = ''
 
+    # TODO: fix when you add your braces.
     input.each_line do |line|
       # remove any blank lines for intermediate form
       next if line.lstrip.length == 0
 
       new_indent = line.length - line.lstrip.length
+      puts line
+      puts "#{current_indent} | #{new_indent}"
 
       if new_indent > current_indent
         output += "{\n"; b_count += 1
         current_indent = new_indent
       elsif new_indent < current_indent && new_indent != 0
-        output += "}\n"; b_count -= 1
+        for i in 1..((current_indent - new_indent) / 2) do
+          output += "}\n"; b_count -= 1
+        end
+        current_indent = new_indent
       end
 
       output += line.lstrip
