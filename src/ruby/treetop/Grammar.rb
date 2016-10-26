@@ -8,8 +8,6 @@ Dir[File.dirname(__FILE__) + '/nodes/*.rb'].each {|f| require f}
 Treetop.load 'grammar/tokens'
 Treetop.load 'grammar/emerald'
 
-# Parses a context free grammar and generates html associated with corresponding
-# abstract syntax tree.
 module Grammer
   def self.parse_grammar(text)
     parser = EmeraldParser.new
@@ -26,9 +24,9 @@ module Grammer
       puts "Passed:\n"
       puts "===================================="
       puts text
-      # p parsed
-      parsed.to_html()
       puts "====================================\n\n"
     end
+
+    parsed
   end
 end
