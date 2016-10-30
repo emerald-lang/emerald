@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 #
 # Context free grammar for the Emerald language.
 # Emerald: a preprocessor for html5.
@@ -8,33 +6,29 @@ grammar Emerald
   include Tokens
 
   rule main
-    (nested / line / comment)* <Root>
+    (list / nested / line / comment)+ <Root>
   end
 
   # A nested statement is a tag statement followed by a newline and an
   # a block scoped by braces.
   rule nested
-    tag_statement newline lbrace newline test rbrace newline <Nested>
-  end
-
-  # Rename this to something better.
-  rule test
-    (nested / line)+ <Test>
+    tag_statement newline lbrace newline main rbrace newline <Nested>
   end
 
   # Comment has optional newline, so it's not included in the first sequence
   rule line
-    (tag_statement / text / list / comment) newline <Line>
+    (tag_statement / text / comment) newline <Line>
   end
 
   # Rule for keyword list (metas, scripts, styles)
   rule list
-    keyword (newline (attr space* string comma? space*)+ )* <List>
+    keyword newline lbrace newline (string newline)+ rbrace newline <List>
   end
 
   # Single line and multiline comments
   rule comment
-    space* '!' ( !"\n" . )* "\n" <Comment> / space* '<!' ( !"!>" . )* "!>\n" <Comment>
+    space* '!' ( !"\n" . )* "\n" <Comment> /
+    space* '<!' ( !"!>" . )* "!>\n" <Comment>
   end
 
   # TODO: add escape characters
