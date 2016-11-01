@@ -7,6 +7,5 @@ require_relative 'Node'
 # call to_html() on them.
 class AttributeList < Node
   def to_html
-    elements[2].to_html()
   end
 end
