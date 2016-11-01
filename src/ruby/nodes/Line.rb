@@ -10,6 +10,5 @@ class Line < Node
     if e.is_a?(TagStatement) || e.is_a?(Text)
       output += "<#{e.elements[0].text_value}>#{e.elements[2].text_value}</#{e.elements[0].text_value}>"
     end
-    output
   end
 end
