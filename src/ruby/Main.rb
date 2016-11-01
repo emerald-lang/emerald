@@ -8,5 +8,9 @@ require_relative 'PreProcessor'
 class Main
   preprocessed_emerald = PreProcessor.process_emerald()
   abstract_syntax_tree = Grammer.parse_grammar(preprocessed_emerald)
-  puts abstract_syntax_tree.to_html("")
+  out = abstract_syntax_tree.to_html("")
+  puts out
+  File.open("sample.html", "w") do |file|
+    file.write(out)
+  end
 end
