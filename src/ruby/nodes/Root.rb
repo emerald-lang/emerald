@@ -4,9 +4,10 @@ require 'treetop'
 require_relative 'Node'
 
 class Root < Node
-  def to_html
+  def to_html(output)
     elements.each do |e|
-      e.to_html()
+      output += e.to_html("")
     end
+    output
   end
 end

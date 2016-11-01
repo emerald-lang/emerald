@@ -8,5 +8,5 @@ require_relative 'PreProcessor'
 class Main
   preprocessed_emerald = PreProcessor.process_emerald()
   abstract_syntax_tree = Grammer.parse_grammar(preprocessed_emerald)
-  abstract_syntax_tree.to_html()
+  puts abstract_syntax_tree.to_html("")
 end
