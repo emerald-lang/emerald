@@ -9,9 +9,9 @@ require_relative 'Node'
 class TagStatement < Node
   def to_html
     if elements[4].is_a?(AttributeList)
-      puts "<#{elements[0].text_value}#{elements[4].to_html()}>#{elements[2].text_value}"
+      puts "<#{elements[0].text_value}#{elements[4].to_html()}>#{elements[2].text_value.delete! '(),'}"
     else
-      puts "<#{elements[0].text_value}>#{elements[2].text_value}"
+      puts "<#{elements[0].text_value} #{elements[2].to_html("") unless elements[2].empty?}>"
     end
   end
 end

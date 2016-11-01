@@ -42,8 +42,10 @@ grammar Emerald
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
+  # fix this.
   rule tag_statement
-    tag space* (( !"\n" . )*)? space* attr_list? <TagStatement>
+    tag lparen attributes rparen <TagStatement> /
+    tag space? (( !"\n" . )*)? space* attr_list? <TagStatement>
   end
 
   # attribute list for
@@ -52,8 +54,12 @@ grammar Emerald
     lparen newline attribute* space* rparen <AttributeList>
   end
 
+  rule attributes
+    attribute* <Attributes>
+  end
+
   # if newline option, must indent
   rule attribute
-    space* attr space+ string newline <Attribute>
+    attr space* equals space* string space? <Attribute>
   end
 end
