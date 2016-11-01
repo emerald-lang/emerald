@@ -3,6 +3,11 @@
 require_relative 'Grammar'
 require_relative 'PreProcessor'
 
+
+# TODO: add command line arguments.
+# - b --beautify (format the html - minified by default)
+# - p --source_path (source destination to write file to)
+
 # Parses a context free grammar from the preprocessed emerald and generates
 # html associated with corresponding abstract syntax tree.
 class Main
