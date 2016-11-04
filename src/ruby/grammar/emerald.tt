@@ -38,7 +38,23 @@ grammar Emerald
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* (( !"\n" . )*)? <Text>
+    h_num space* text_content? <Text>
+  end
+
+  rule text_content
+    multiline_literal / inline_literal
+  end
+
+  rule multiline_literal
+    "->" space* newline multiline_literal_body "$" <MultilineLiteral>
+  end
+
+  rule multiline_literal_body
+    ('\$' / !'$' .)*
+  end
+
+  rule inline_literal
+    ( !"\n" . )*
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
