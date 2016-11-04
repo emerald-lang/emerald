@@ -21,6 +21,13 @@ html
         h3 About
         p Emerald is a templating engine designed for use in multiple languages.
         p Emerald may be used as a templating engine for node, python, ruby, or go web applications.
+        h1 ->
+          this is some literal text, not an actual tag
+            with an indent
+          and multiple lines
+          and an e$cape character
+          p and a tag
+        p this is an actual tag now
 
       footer
         p Copyright Emerald Language 2016

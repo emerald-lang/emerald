@@ -11,6 +11,7 @@ module PreProcessor
   def self.process_emerald
     input = File.open("index.emr", "r").read
 
+    in_literal = false;
     current_indent = 0; new_indent = 0; b_count = 0; output = ''
 
     input.each_line do |line|
@@ -20,16 +21,40 @@ module PreProcessor
       new_indent = line.length - line.lstrip.length
 
       if new_indent > current_indent
-        output += "{\n"; b_count += 1
-        current_indent = new_indent
+        unless in_literal
+          output += "{\n"; b_count += 1
+          current_indent = new_indent
+        end
       elsif new_indent < current_indent && new_indent != 0
-        for i in 1..((current_indent - new_indent) / 2) do
-          output += "}\n"; b_count -= 1
+        if in_literal
+          output += "$\n"
+          in_literal = false
+          for i in 2..((current_indent - new_indent) / 2) do
+            output += "}\n"; b_count -= 1
+          end
+        else
+          for i in 1..((current_indent - new_indent) / 2) do
+            output += "}\n"; b_count -= 1
+          end
         end
         current_indent = new_indent
       end
 
-      output += line.lstrip
+      if in_literal
+        # Crop off only Emerald indent whitespace
+        # to preserve whitespace in the literal
+        output += (line[current_indent..-1] || "")
+          .gsub('$', '\$') 
+        # $ is our end character, so 
+        # we need to escape it in the literal
+      else
+        output += line.lstrip
+      end
+
+      if line.rstrip.end_with?("->")
+        in_literal = true
+        current_indent += 2
+      end
     end
 
     # Print out remaining braces.
