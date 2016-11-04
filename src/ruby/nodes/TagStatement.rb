@@ -6,7 +6,6 @@ require_relative 'Node'
 class TagStatement < Node
   def to_html(output)
     if elements[4].is_a?(AttributeList)
-      # fix this one
       output += ("<#{elements[0].text_value}#{elements[4].to_html()}>" +
                  "#{elements[2].text_value.delete! '(),'}")
     elsif !elements[2].empty?
