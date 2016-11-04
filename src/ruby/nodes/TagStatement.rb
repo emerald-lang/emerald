@@ -6,6 +6,7 @@ require_relative 'Node'
 class TagStatement < Node
   def to_html
 
+    # this now closes off nested tag statements prematurely - need to fix
     return "<#{elements[0].text_value}>#{elements[2].text_value}</#{elements[0].text_value}>"
 
     # todo: make this work

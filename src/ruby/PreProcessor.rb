@@ -8,8 +8,8 @@ require_relative 'Grammar'
 # indentation.
 #
 module PreProcessor
-  def self.process_emerald
-    input = File.open("index.emr", "r").read
+  def self.process_emerald(file_name)
+    input = File.open(file_name, "r").read
 
     in_literal = false;
     current_indent = 0; new_indent = 0; b_count = 0; output = ''
