@@ -5,10 +5,10 @@ require 'polyglot'
 require 'treetop'
 
 # Require all treetop nodes for grammar
-Dir[File.dirname(__FILE__) + '/../../ruby/nodes/*.rb'].each do { require f }
+Dir[File.dirname(__FILE__) + '/../ruby/nodes/*.rb'].each {|f| require f}
 
-Treetop.load '../../ruby/grammar/tokens'
-Treetop.load '../../ruby/grammar/emerald_spacing'
+Treetop.load '../ruby/grammar/tokens'
+Treetop.load '../ruby/grammar/emerald'
 
 #
 # Unit testing for Treetop parser. Asserts that valid preprocessed emerald is
