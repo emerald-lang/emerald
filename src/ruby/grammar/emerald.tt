@@ -60,6 +60,6 @@ grammar Emerald
 
   # if newline option, must indent
   rule attribute
-    attr space* equals space* string space? <Attribute>
+    space* attr space* equals space* string comma? <Attribute>
   end
 end

@@ -12,7 +12,7 @@ class List < Node
       end
     elsif elements[0].text_value == "scripts"
       elements[4].elements.each do |e|
-        output += "<srcipt type='text/javascript' src=#{e.text_value.strip} />"
+        output += "<script type='text/javascript' src=#{e.text_value.strip}></script>"
       end
     elsif elements[0].text_value == "metas"
       elements[4].elements.each do |e|

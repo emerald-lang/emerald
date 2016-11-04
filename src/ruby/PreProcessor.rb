@@ -9,7 +9,7 @@ require_relative 'Grammar'
 #
 module PreProcessor
   def self.process_emerald
-    input = File.open("sample.emr", "r").read
+    input = File.open("index.emr", "r").read
 
     current_indent = 0; new_indent = 0; b_count = 0; output = ''
 
