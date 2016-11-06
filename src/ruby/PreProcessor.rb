@@ -41,12 +41,11 @@ module PreProcessor
       end
 
       if in_literal
-        # Crop off only Emerald indent whitespace
-        # to preserve whitespace in the literal
-        output += (line[current_indent..-1] || "")
-          .gsub('$', '\$') 
-        # $ is our end character, so 
-        # we need to escape it in the literal
+        # Crop off only Emerald indent whitespace to preserve
+        # whitespace in the literal
+        output += (line[current_indent..-1] || "").gsub('$', '\$')
+        # $ is our end character, so we need to escape it in
+        # the literal
       else
         output += line.lstrip
       end
