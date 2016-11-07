@@ -8,6 +8,7 @@ require_relative 'Grammar'
 # indentation.
 #
 module PreProcessor
+  # Instance variables
   @in_literal = false
   @current_indent = 0
   @new_indent = 0
@@ -23,13 +24,15 @@ module PreProcessor
 
       check_new_indent(new_indent)
       parse_literal_whitespace(line)
-      check_if_in_literal(line)
+      check_if_suffix_arrow(line)
     end
     print_remaining_braces
 
     @output
   end
 
+  # Compares the value of the new_indent with the old indentation.
+  # Invoked by: process_emerald
   def self.check_new_indent(new_indent)
     if new_indent > @current_indent
       new_indent_greater(new_indent)
@@ -38,6 +41,7 @@ module PreProcessor
     end
   end
 
+  # Invoked by: check_new_indent
   def self.new_indent_greater(new_indent)
     unless @in_literal
       @output += "{\n"
@@ -46,21 +50,31 @@ module PreProcessor
     end
   end
 
+  # Invoked by: check_new_indent
   def self.new_indent_lesser(new_indent)
     if @in_literal
-      @output += "$\n"
-      @in_literal = false
-      for i in 2..((@current_indent - new_indent) / 2) do
-        @output += "}\n"
-        @b_count -= 1
-      end
+      append_closing_braces(new_indent)
     else
-      for i in 1..((@current_indent - new_indent) / 2) do
-        @output += "}\n"
-        @b_count -= 1
-      end
+      append_opening_braces(new_indent)
     end
     @current_indent = new_indent
+  end
+
+  def self.append_closing_braces(new_indent)
+    @output += "$\n"
+    @in_literal = false
+
+    for i in 2..((@current_indent - new_indent) / 2) do
+      @output += "}\n"
+      @b_count -= 1
+    end
+  end
+
+  def self.append_opening_braces(new_indent)
+    for i in 1..((@current_indent - new_indent) / 2) do
+      @output += "}\n"
+      @b_count -= 1
+    end
   end
 
   def self.parse_literal_whitespace(line)
@@ -75,7 +89,7 @@ module PreProcessor
     end
   end
 
-  def self.check_if_in_literal(line)
+  def self.check_if_suffix_arrow(line)
     if line.rstrip.end_with?('->')
       @in_literal = true
       @current_indent += 2
