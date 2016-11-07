@@ -5,7 +5,7 @@ require 'polyglot'
 require 'treetop'
 
 # Require all treetop nodes for grammar
-Dir[File.dirname(__FILE__) + '/../ruby/nodes/*.rb'].each {|f| require f}
+Dir[File.dirname(__FILE__) + '/../ruby/nodes/*.rb'].each { |f| require f }
 
 Treetop.load '../ruby/grammar/tokens'
 Treetop.load '../ruby/grammar/emerald'
@@ -22,15 +22,19 @@ class TreetopSuite < Test::Unit::TestCase
       new_path = File.join(path, file)
 
       next if file == '..' || file == '.'
-
-      if File.directory?(new_path)
-        walk(new_path, list)
-      else
-        f = File.open(path + '/' + file)
-        list.push([parser.parse(f.read), path + '/' + file])
-      end
+      list = walk_helper(list, path, file, new_path, parser)
     end
 
+    list
+  end
+
+  def walk_helper(list, path, file, new_path, parser)
+    if File.directory?(new_path)
+      walk(new_path, list)
+    else
+      f = File.open(path + '/' + file)
+      list.push([parser.parse(f.read), path + '/' + file])
+    end
     list
   end
 

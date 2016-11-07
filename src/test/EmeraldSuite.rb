@@ -2,7 +2,7 @@
 
 require 'test/unit'
 
-require_relative '../ruby/Main'
+require_relative '../ruby/Main.rb'
 
 #
 # Unit testing for Emerald Language. Asserts that emerald passed in is
