@@ -18,55 +18,73 @@ module PreProcessor
     input = File.open(file_name, 'r').read
 
     input.each_line do |line|
-      # remove any blank lines for intermediate form
       next if line.lstrip.empty?
-
       new_indent = line.length - line.lstrip.length
 
-      if new_indent > @current_indent
-        unless @in_literal
-          @output += "{\n"
-          @b_count += 1
-          @current_indent = new_indent
-        end
-      elsif new_indent < @current_indent && new_indent.nonzero?
-        if @in_literal
-          @output += "$\n"
-          @in_literal = false
-          for i in 2..((@current_indent - new_indent) / 2) do
-            @output += "}\n"
-            @b_count -= 1
-          end
-        else
-          for i in 1..((@current_indent - new_indent) / 2) do
-            @output += "}\n"
-            @b_count -= 1
-          end
-        end
-        @current_indent = new_indent
-      end
+      check_new_indent(new_indent)
+      parse_literal_whitespace(line)
+      check_if_in_literal(line)
+    end
+    print_remaining_braces
 
-      if @in_literal
-        # Crop off only Emerald indent whitespace to preserve
-        # whitespace in the literal
-        @output += (line[@current_indent..-1] || '').gsub('$', '\$')
-        # $ is our end character, so we need to escape it in
-        # the literal
-      else
-        @output += line.lstrip
-      end
+    @output
+  end
 
-      if line.rstrip.end_with?('->')
-        @in_literal = true
-        @current_indent += 2
+  def self.check_new_indent(new_indent)
+    if new_indent > @current_indent
+      new_indent_greater(new_indent)
+    elsif new_indent < @current_indent && new_indent.nonzero?
+      new_indent_lesser(new_indent)
+    end
+  end
+
+  def self.new_indent_greater(new_indent)
+    unless @in_literal
+      @output += "{\n"
+      @b_count += 1
+      @current_indent = new_indent
+    end
+  end
+
+  def self.new_indent_lesser(new_indent)
+    if @in_literal
+      @output += "$\n"
+      @in_literal = false
+      for i in 2..((@current_indent - new_indent) / 2) do
+        @output += "}\n"
+        @b_count -= 1
+      end
+    else
+      for i in 1..((@current_indent - new_indent) / 2) do
+        @output += "}\n"
+        @b_count -= 1
       end
     end
+    @current_indent = new_indent
+  end
 
-    # Print out remaining braces.
+  def self.parse_literal_whitespace(line)
+    if @in_literal
+      # Crop off only Emerald indent whitespace to preserve
+      # whitespace in the literal
+      @output += (line[@current_indent..-1] || '').gsub('$', '\$')
+    # $ is our end character, so we need to escape it in
+    # the literal
+    else
+      @output += line.lstrip
+    end
+  end
+
+  def self.check_if_in_literal(line)
+    if line.rstrip.end_with?('->')
+      @in_literal = true
+      @current_indent += 2
+    end
+  end
+
+  def self.print_remaining_braces
     for i in 1..@b_count do
       @output += "}\n"
     end
-
-    @output
   end
 end
