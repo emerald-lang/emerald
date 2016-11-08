@@ -8,7 +8,6 @@ require_relative 'Grammar'
 # indentation.
 #
 module PreProcessor
-  # Instance variables
   @in_literal = false
   @current_indent = 0
   @new_indent = 0
@@ -64,29 +63,29 @@ module PreProcessor
     @output += "$\n"
     @in_literal = false
 
-    for i in 2..((@current_indent - new_indent) / 2) do
+    (2..((@current_indent - new_indent) / 2)).each do
       @output += "}\n"
       @b_count -= 1
     end
   end
 
   def self.append_opening_braces(new_indent)
-    for i in 1..((@current_indent - new_indent) / 2) do
+    (1..((@current_indent - new_indent) / 2)).each do
       @output += "}\n"
       @b_count -= 1
     end
   end
 
   def self.parse_literal_whitespace(line)
-    if @in_literal
-      # Crop off only Emerald indent whitespace to preserve
-      # whitespace in the literal
-      @output += (line[@current_indent..-1] || '').gsub('$', '\$')
+    # Crop off only Emerald indent whitespace to preserve
+    # whitespace in the literal.
     # $ is our end character, so we need to escape it in
-    # the literal
-    else
-      @output += line.lstrip
-    end
+    # the literal.
+    @output += if @in_literal
+                 (line[@current_indent..-1] || '').gsub('$', '\$')
+               else
+                 line.lstrip
+               end
   end
 
   def self.check_if_suffix_arrow(line)
@@ -97,7 +96,7 @@ module PreProcessor
   end
 
   def self.print_remaining_braces
-    for i in 1..@b_count do
+    (1..@b_count).each do
       @output += "}\n"
     end
   end
