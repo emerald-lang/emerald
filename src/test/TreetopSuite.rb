@@ -40,7 +40,7 @@ class TreetopSuite < Test::Unit::TestCase
   end
 
   def test_valid_samples
-    output = walk('samples/emerald/tests/valid/')
+    output = walk('samples/interm/')
 
     output.each do |out|
       puts out[1] if out[0].nil?
@@ -48,11 +48,11 @@ class TreetopSuite < Test::Unit::TestCase
     end
   end
 
-  def test_invalid_samples
-    output = walk('samples/emerald/tests/invalid/')
+  # def test_invalid_samples
+  #   output = walk('samples/emerald/tests/invalid/')
 
-    output.each do |out|
-      assert_equal(out[0], nil)
-    end
-  end
+  #   output.each do |out|
+  #     assert_equal(out[0], nil)
+  #   end
+  # end
 end
