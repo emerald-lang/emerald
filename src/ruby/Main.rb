@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'htmlbeautifier'
+
 require_relative 'Grammar'
 require_relative 'PreProcessor'
 
@@ -22,6 +24,9 @@ class Main
 
   puts out
   File.open(file_name + '.html', 'w') do |file|
+    # html beautifier doesn't support html5.
+    # need to make pr to gem to update its support
+    out = HtmlBeautifier.beautify(out) if true
     file.write(out)
   end
 end
