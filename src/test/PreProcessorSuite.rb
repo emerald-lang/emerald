@@ -22,18 +22,20 @@ class PreProcessorSuite < Test::Unit::TestCase
       new_path = File.join(path, file)
 
       next if file == '..' || file == '.'
-      list = get_new_list(list, path, file, new_path, parser)
+      list = get_new_list(list, path, file, new_path)
     end
 
     list
   end
 
-  def get_new_list(list, path, file, new_path, parser)
+  # Preprocesses emerald and returns it in the new list. Walks the new path if
+  # new path is a directory
+  def get_new_list(list, path, file, new_path)
     if File.directory?(new_path)
       walk(new_path, list)
     else
-      f = File.open(path + '/' + file)
-      list.push([parser.parse(f.read), path + '/' + file])
+      list.push([PreProcessor.process_emerald(path + '/' + file),
+                 path + '/' + file])
     end
 
     list
@@ -43,6 +45,7 @@ class PreProcessorSuite < Test::Unit::TestCase
   # also be preprocessed regardless of their semantics. Error checking happens
   # in the parsing and code generation phase.
   def test_valid_output
-    walk('samples/emerald/tests/valid')
+    output = walk('samples/emerald/tests/valid') # get preprocessed output
+    # get output it should yield (thread these two operations)
   end
 end
