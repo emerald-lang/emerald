@@ -14,6 +14,8 @@ module PreProcessor
   @b_count = 0
   @output = ''
 
+  # Process the emerald to remove indentation and replace with brace convention
+  # for an easier time parsing with context free grammar
   def self.process_emerald(file_name)
     input = File.open(file_name, 'r').read
 
@@ -59,6 +61,7 @@ module PreProcessor
     @current_indent = new_indent
   end
 
+  # Append closing braces if in literal and new indent is less than old one
   def self.append_closing_braces(new_indent)
     @output += "$\n"
     @in_literal = false
@@ -69,6 +72,7 @@ module PreProcessor
     end
   end
 
+  # Append opening braces if not in literal and new indent is less than old one
   def self.append_opening_braces(new_indent)
     (1..((@current_indent - new_indent) / 2)).each do
       @output += "}\n"
@@ -76,11 +80,9 @@ module PreProcessor
     end
   end
 
+  # Crop off only Emerald indent whitespace to preserve whitespace in the
+  # literal. Since $ is the end character, we need to escape it in the literal.
   def self.parse_literal_whitespace(line)
-    # Crop off only Emerald indent whitespace to preserve
-    # whitespace in the literal.
-    # $ is our end character, so we need to escape it in
-    # the literal.
     @output += if @in_literal
                  (line[@current_indent..-1] || '').gsub('$', '\$')
                else
@@ -88,6 +90,7 @@ module PreProcessor
                end
   end
 
+  # Check if the suffic of the line is the 'arrow rule'
   def self.check_if_suffix_arrow(line)
     if line.rstrip.end_with?('->')
       @in_literal = true
@@ -95,6 +98,7 @@ module PreProcessor
     end
   end
 
+  # Iterate through the brace count and print the remaining braces.
   def self.print_remaining_braces
     (1..@b_count).each do
       @output += "}\n"

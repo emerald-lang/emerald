@@ -4,6 +4,8 @@ require 'test/unit'
 require 'polyglot'
 require 'treetop'
 
+require_relative '../ruby/PreProcessor'
+
 # Require all treetop nodes for grammar
 Dir[File.dirname(__FILE__) + '/../ruby/nodes/*.rb'].each { |f| require f }
 
@@ -47,12 +49,4 @@ class TreetopSuite < Test::Unit::TestCase
       assert_not_equal(out[0], nil)
     end
   end
-
-  # def test_invalid_samples
-  #   output = walk('samples/emerald/tests/invalid/')
-
-  #   output.each do |out|
-  #     assert_equal(out[0], nil)
-  #   end
-  # end
 end
