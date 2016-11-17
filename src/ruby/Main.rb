@@ -20,22 +20,23 @@ module Emerald
       preprocessed_emerald = PreProcessor.process_emerald(file_name)
       abstract_syntax_tree = Grammer.parse_grammar(preprocessed_emerald)
       out = abstract_syntax_tree.to_html
-      write_html(out, file_name)
+      Emerald.write_html(out, file_name, options["beautify"])
     end
 
-    # write html to file and beautify it if the beautify global option is set to
-    # true.
-    def write_html(out, file_name)
-      File.open(file_name + '.html', 'w') do |file|
-        # html beautifier doesn't support html5.
-        # need to make pr to gem to update its support
-        out = HtmlBeautifier.beautify(out) if true
-        file.write(out)
-      end
-    end
-
+    # Prints help and usage for app.
     def help
       puts "Emerald, the language agnostic templating engine."
+    end
+  end
+
+  # write html to file and beautify it if the beautify global option is set to
+  # true.
+  def self.write_html(html_output, file_name, beautify)
+    File.open(file_name + '.html', 'w') do |emerald_file|
+      # html beautifier doesn't support html5.
+      # need to make pr to gem to update its support
+      html_output = HtmlBeautifier.beautify(html_output) if beautify
+      emerald_file.write(html_output)
     end
   end
 
