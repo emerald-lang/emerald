@@ -28,14 +28,13 @@ module Emerald
       Emerald.write_html(abstract_syntax_tree.to_html, file_name,
                          options["beautify"])
     end
-    # puts "Emerald, the language agnostic templating engine.\n"
   end
 
   # Write html to file and beautify it if the beautify global option is set to
   # true.
   def self.write_html(html_output, file_name, beautify)
     File.open(file_name + '.html', 'w') do |emerald_file|
-      html_output = HtmlBeautifier.beautify(html_output) if beautify 
+      html_output = HtmlBeautifier.beautify(html_output) if beautify
       emerald_file.write(html_output)
     end
   end

@@ -45,7 +45,7 @@ class PreProcessorSuite < Test::Unit::TestCase
   # also be preprocessed regardless of their semantics. Error checking happens
   # in the parsing and code generation phase.
   def test_valid_output
-    output = walk('samples/emerald/tests/valid') # get preprocessed output
+    output = walk(__dir__ + '/samples/emerald/tests/valid') # get preprocessed output
     # get output it should yield (thread these two operations)
   end
 end

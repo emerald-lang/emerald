@@ -4,13 +4,13 @@ require 'test/unit'
 require 'polyglot'
 require 'treetop'
 
-require_relative '../ruby/PreProcessor'
+require_relative __dir__ + '/../ruby/PreProcessor'
 
 # Require all treetop nodes for grammar
-Dir[File.dirname(__FILE__) + '/../ruby/nodes/*.rb'].each { |f| require f }
+Dir[File.dirname(__FILE__) + '../ruby/nodes/*.rb'].each { |f| require f }
 
-Treetop.load '../ruby/grammar/tokens'
-Treetop.load '../ruby/grammar/emerald'
+Treetop.load __dir__ + '/../ruby/grammar/tokens'
+Treetop.load __dir__ + '/../ruby/grammar/emerald'
 
 #
 # Unit testing for Treetop parser. Asserts that valid preprocessed emerald is
