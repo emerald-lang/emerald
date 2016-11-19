@@ -1,0 +1,13 @@
+machine:
+  ruby:
+    version:
+      2.2.1
+
+dependencies:
+  override:
+    - bundle install:
+        timeout: 240
+  
+test:
+  override:
+    - ruby src/test/PreProcessorSuite.rb
