@@ -51,10 +51,8 @@ class TreetopSuite < Test::Unit::TestCase
 
     output.each do |out|
       # Temporary, will un-comment these after I fix the CFG.
-      next if out[1] == '/home/andrewmcburney/andrew/emerald/src/test/treetop/'\
-                        '../preprocessor/intermediate/general/metas.txt'
-      next if out[1] == '/home/andrewmcburney/andrew/emerald/src/test/treetop/'\
-                        '../preprocessor/intermediate/general/attr.txt'
+      next if out[1].end_with? 'preprocessor/intermediate/general/metas.txt'
+      next if out[1].end_with? '../preprocessor/intermediate/general/attr.txt'
 
       puts out[1] if out[0].nil?
       assert_not_equal(out[0], nil)
