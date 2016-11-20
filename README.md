@@ -1,5 +1,5 @@
-# Emerald Language
-## An language agnostic templating engine designed with event driven applications in mind.
+<img src='emerald-logo.png' alt='Drawing' width='600px' />
+- A language agnostic templating engine designed with event driven applications in mind.
 
 # Todo:
 ### General
