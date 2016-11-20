@@ -14,6 +14,7 @@ module PreProcessor
   @b_count = 0
   @output = ''
 
+  # Reset class variables, used for testing
   def self.reset
     @in_literal = false
     @current_indent = 0
@@ -25,7 +26,7 @@ module PreProcessor
   # Process the emerald to remove indentation and replace with brace convention
   # for an easier time parsing with context free grammar
   def self.process_emerald(file_name)
-    input = File.open(file_name, 'r').read
+    input = File.open(file_name, 'r').read.gsub('{', '\{')
 
     input.each_line do |line|
       next if line.lstrip.empty?
@@ -52,11 +53,10 @@ module PreProcessor
 
   # Invoked by: check_new_indent
   def self.new_indent_greater(new_indent)
-    unless @in_literal
-      @output += "{\n"
-      @b_count += 1
-      @current_indent = new_indent
-    end
+    return if @in_literal
+    @output += "{\n"
+    @b_count += 1
+    @current_indent = new_indent
   end
 
   # Invoked by: check_new_indent
@@ -100,10 +100,9 @@ module PreProcessor
 
   # Check if the suffic of the line is the 'arrow rule'
   def self.check_if_suffix_arrow(line)
-    if line.rstrip.end_with?('->')
-      @in_literal = true
-      @current_indent += 2
-    end
+    return unless line.rstrip.end_with?('->')
+    @in_literal = true
+    @current_indent += 2
   end
 
   # Iterate through the brace count and print the remaining braces.
