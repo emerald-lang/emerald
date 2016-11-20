@@ -14,6 +14,14 @@ module PreProcessor
   @b_count = 0
   @output = ''
 
+  def self.reset
+    @in_literal = false
+    @current_indent = 0
+    @new_indent = 0
+    @b_count = 0
+    @output = ''
+  end
+
   # Process the emerald to remove indentation and replace with brace convention
   # for an easier time parsing with context free grammar
   def self.process_emerald(file_name)

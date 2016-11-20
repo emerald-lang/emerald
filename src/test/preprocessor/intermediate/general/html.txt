@@ -1,0 +1,22 @@
+html
+{
+head
+{
+title Sample 1
+scripts
+{
+"js/script.js"
+}
+}
+body
+{
+div
+{
+h1 Test this out
+}
+div
+{
+h2 Another one
+}
+}
+}

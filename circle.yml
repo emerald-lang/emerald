@@ -10,4 +10,4 @@ dependencies:
   
 test:
   override:
-    - ruby src/test/PreProcessorSuite.rb
+    - ruby src/test/preprocessor/PreProcessorSuite.rb

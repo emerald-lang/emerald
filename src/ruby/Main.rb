@@ -24,6 +24,7 @@ module Emerald
     # option :name - TODO remember how to do method specific options.
     def process(file_name)
       preprocessed_emerald = PreProcessor.process_emerald(file_name)
+      puts preprocessed_emerald
       abstract_syntax_tree = Grammer.parse_grammar(preprocessed_emerald)
       Emerald.write_html(abstract_syntax_tree.to_html, file_name,
                          options["beautify"])
