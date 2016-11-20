@@ -1,6 +1,18 @@
 <img src='emerald-logo.png' alt='Drawing' width='600px' />
 - A language agnostic templating engine designed with event driven applications in mind.
 
+# Setup
+```
+bundle install
+bundle exec rake setup
+```
+
+# Running tests
+```
+bundle exec rake test
+```
+
+
 # Todo:
 ### General
 - [x] Design final logo

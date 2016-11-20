@@ -10,5 +10,4 @@ dependencies:
   
 test:
   override:
-    - ruby src/test/preprocessor/PreProcessorSuite.rb
-    - ruby src/test/treetop/TreetopSuite.rb
+    - bundle exec rake test
