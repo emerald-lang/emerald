@@ -26,7 +26,7 @@ module PreProcessor
   # Process the emerald to remove indentation and replace with brace convention
   # for an easier time parsing with context free grammar
   def self.process_emerald(file_name)
-    input = File.open(file_name, 'r').read.gsub('{', '\{')
+    input = File.open(file_name, 'r').read
 
     input.each_line do |line|
       next if line.lstrip.empty?
