@@ -1,5 +1,5 @@
 Metrics/LineLength:
-  Max: 120
+  Max: 80
 
 Style/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space

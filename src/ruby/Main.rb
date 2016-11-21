@@ -17,13 +17,12 @@ require_relative 'PreProcessor'
 module Emerald
   # The Emerald CLI
   class Main < Thor
-    class_option :beautify # specify if you wante the code formatted
-    class_option :language # specify what templating engine you want to transpile to
+    class_option :beautify, aliases: 'b'
 
-    # main emerald option, processes the emerald file, generates an abstract
+    # Main emerald option, processes the emerald file, generates an abstract
     # syntax tree based on the output from the preprocessing.
-    desc 'process', 'Process a file or folder (recursively) and convert it to emerald.'
-    # option :name - TODO remember how to do method specific options.
+    desc 'process', 'Process a file or folder (recursively) and converts it to'\
+                    'emerald.'
     def process(file_name, context_file_name)
       context =
         if context_file_name

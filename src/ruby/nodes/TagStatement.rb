@@ -7,7 +7,8 @@ require_relative 'Node'
 # A tag
 class TagStatement < Node
   def to_html(_context)
-    "<#{elements[0].text_value}>#{elements[2].text_value}</#{elements[0].text_value}>"
+    "<#{elements[0].text_value}>#{elements[2].text_value}"\
+    "</#{elements[0].text_value}>"
   end
 
   def to_html_tag(context)
