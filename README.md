@@ -20,6 +20,7 @@ bundle exec rake test
 ### Emerald
 #### Design
 - [x] Add 'thor' gem for making a command line interface.
+- [ ] Add component like feature, which lets user define their own component keywords, and the data they expect to pass in. Have an option to specify default parameters for components.
 
 #### Github
 - [x] Add continuous integration which runs unit tests to ensure nothing breaks when a new pull request is made.
