@@ -1,0 +1,5 @@
+---
+:checks_add:
+- :rubocop
+:checks_remove:
+- :rails

@@ -5,9 +5,12 @@ GEM
     htmlbeautifier (1.1.1)
     parser (2.3.2.0)
       ast (~> 2.2)
+    pluginator (1.3.0)
     polyglot (0.3.5)
     power_assert (0.3.1)
     powerpack (0.1.1)
+    pre-commit (0.30.0)
+      pluginator (~> 1.1)
     rainbow (2.1.0)
     rake (10.4.2)
     rubocop (0.45.0)
@@ -26,9 +29,11 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   htmlbeautifier (~> 1.1, >= 1.1.1)
+  pre-commit
   rake
   rubocop
   test-unit
@@ -36,4 +41,4 @@ DEPENDENCIES
   treetop
 
 BUNDLED WITH
-   1.11.2
+   1.13.6

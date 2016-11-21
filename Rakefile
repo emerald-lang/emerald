@@ -1,8 +1,10 @@
+require 'pre-commit'
+
 task default: ["test"]
 
 task :setup do
-  sh "ln -s $PWD/bin/pre-commit .git/hooks/pre-commit"
-  sh "chmod +x .git/hooks/pre-commit"
+  sh 'pre-commit install'
+  sh 'git config pre-commit.checks "[rubocop]"'
 end
 
 task :test do
