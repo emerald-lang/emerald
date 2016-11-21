@@ -2,10 +2,11 @@
 # frozen_string_literal: true
 
 require 'treetop'
+require_relative 'Node'
 require_relative 'Variable.rb'
 
 # Element text content immediately following a tag name
-class InlineLiteral < Treetop::Runtime::SyntaxNode
+class InlineLiteral < Node
   def to_html(context)
     elements
       .map do |element|

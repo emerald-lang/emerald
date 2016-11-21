@@ -3,8 +3,7 @@
 
 require 'treetop'
 
-# TODO: what is this
-# tbh I'm not sure
+# Base class for all Emerald syntax nodes
 class Node < Treetop::Runtime::SyntaxNode
   def to_html(_context)
     raise 'not implemented :('

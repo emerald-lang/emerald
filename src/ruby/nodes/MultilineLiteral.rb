@@ -2,9 +2,10 @@
 # frozen_string_literal: true
 
 require 'treetop'
+require_relative 'Node'
 
 # A long block of text literal, without variable templating
-class MultilineLiteral < Treetop::Runtime::SyntaxNode
+class MultilineLiteral < Node
   def to_html(_context)
     multiline_literal_body
       .text_value
