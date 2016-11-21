@@ -33,7 +33,7 @@ grammar Emerald
 
   # TODO: add escape characters
   rule string
-    '"' ( !'"' . )* '"' <StringNode>
+    '"' ( !'"' (variable / .) )* '"' <StringNode>
   end
 
   # Ex. h1 "test this out."
@@ -54,7 +54,15 @@ grammar Emerald
   end
 
   rule inline_literal
-    ( !"\n" . )*
+    ( variable / !"\n" . )* <InlineLiteral>
+  end
+
+  rule variable
+    '|' variable_name '|' <Variable>
+  end
+
+  rule variable_name
+    (!'|' !'.' .)+ ('.' variable_name)*
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)

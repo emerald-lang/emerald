@@ -8,4 +8,5 @@ end
 task :test do
   ruby "src/test/preprocessor/PreProcessorSuite.rb"
   ruby "src/test/treetop/TreetopSuite.rb"
+  ruby "src/test/EmeraldSuite.rb"
 end

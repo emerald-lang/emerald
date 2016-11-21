@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'polyglot'
 require 'treetop'
@@ -14,7 +15,7 @@ Treetop.load __dir__ + '/grammar/emerald'
 # preprocessed Emerald and prints out success if the parser was successful and
 # failure if there was an error when parsing. Returns an abstract syntax tree.
 #
-module Grammer
+module Grammar
   @parser = EmeraldParser.new
 
   # Parse the preprocessed emerald text and print failure if it fails the

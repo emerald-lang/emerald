@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'test/unit'
 
@@ -10,8 +11,6 @@ require_relative '../../ruby/PreProcessor'
 # representation.
 #
 class PreProcessorSuite < Test::Unit::TestCase
-  include PreProcessor
-
   # Recursively walk directory and get all test case files for the test suite.
   # Performs preprocessing operation on each file and stores the results in a
   # hash dictionary, with file name as key.
@@ -36,8 +35,7 @@ class PreProcessorSuite < Test::Unit::TestCase
     if File.directory?(new_path)
       walk(new_path, true, hash)
     else
-      PreProcessor.reset
-      hash[file[/[^\.]+/]] = PreProcessor.process_emerald(new_path)
+      hash[file[/[^\.]+/]] = PreProcessor.new.process_emerald(IO.read(new_path))
     end
 
     hash

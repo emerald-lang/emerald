@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 #
 # Emerald, the language agnostic templating engine.
@@ -14,6 +15,7 @@ require_relative 'PreProcessor'
 # Parses a context free grammar from the preprocessed emerald and generates
 # html associated with corresponding abstract syntax tree.
 module Emerald
+  # The Emerald CLI
   class Main < Thor
     class_option :beautify # specify if you wante the code formatted
     class_option :language # specify what templating engine you want to transpile to
@@ -22,13 +24,29 @@ module Emerald
     # syntax tree based on the output from the preprocessing.
     desc 'process', 'Process a file or folder (recursively) and convert it to emerald.'
     # option :name - TODO remember how to do method specific options.
-    def process(file_name)
-      preprocessed_emerald = PreProcessor.process_emerald(file_name)
-      puts preprocessed_emerald
-      abstract_syntax_tree = Grammer.parse_grammar(preprocessed_emerald)
-      Emerald.write_html(abstract_syntax_tree.to_html, file_name,
-                         options["beautify"])
+    def process(file_name, context_file_name)
+      context =
+        if context_file_name
+          JSON.parse(IO.read(context_file_name))
+        else
+          {}
+        end
+
+      input = IO.read(file_name)
+
+      Emerald.write_html(
+        Emerald.convert(input, context),
+        file_name,
+        options['beautify']
+      )
     end
+  end
+
+  def self.convert(input, context = {})
+    preprocessed_emerald = PreProcessor.new.process_emerald(input)
+    abstract_syntax_tree = Grammar.parse_grammar(preprocessed_emerald)
+
+    abstract_syntax_tree.to_html(context)
   end
 
   # Write html to file and beautify it if the beautify global option is set to
