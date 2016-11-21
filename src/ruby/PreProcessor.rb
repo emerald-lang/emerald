@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative 'Grammar'
 
@@ -7,15 +8,17 @@ require_relative 'Grammar'
 # by a context free grammar. Removes all whitespace and adds braces to denote
 # indentation.
 #
-module PreProcessor
-  @in_literal = false
-  @current_indent = 0
-  @new_indent = 0
-  @b_count = 0
-  @output = ''
+class PreProcessor
+  def initialize
+    @in_literal = false
+    @current_indent = 0
+    @new_indent = 0
+    @b_count = 0
+    @output = ''
+  end
 
   # Reset class variables, used for testing
-  def self.reset
+  def reset
     @in_literal = false
     @current_indent = 0
     @new_indent = 0
@@ -25,9 +28,7 @@ module PreProcessor
 
   # Process the emerald to remove indentation and replace with brace convention
   # for an easier time parsing with context free grammar
-  def self.process_emerald(file_name)
-    input = File.open(file_name, 'r').read
-
+  def process_emerald(input)
     input.each_line do |line|
       next if line.lstrip.empty?
       new_indent = line.length - line.lstrip.length
@@ -43,7 +44,7 @@ module PreProcessor
 
   # Compares the value of the new_indent with the old indentation.
   # Invoked by: process_emerald
-  def self.check_new_indent(new_indent)
+  def check_new_indent(new_indent)
     if new_indent > @current_indent
       new_indent_greater(new_indent)
     elsif new_indent < @current_indent && new_indent.nonzero?
@@ -52,7 +53,7 @@ module PreProcessor
   end
 
   # Invoked by: check_new_indent
-  def self.new_indent_greater(new_indent)
+  def new_indent_greater(new_indent)
     return if @in_literal
     @output += "{\n"
     @b_count += 1
@@ -60,7 +61,7 @@ module PreProcessor
   end
 
   # Invoked by: check_new_indent
-  def self.new_indent_lesser(new_indent)
+  def new_indent_lesser(new_indent)
     if @in_literal
       append_closing_braces(new_indent)
     else
@@ -70,7 +71,7 @@ module PreProcessor
   end
 
   # Append closing braces if in literal and new indent is less than old one
-  def self.append_closing_braces(new_indent)
+  def append_closing_braces(new_indent)
     @output += "$\n"
     @in_literal = false
 
@@ -81,7 +82,7 @@ module PreProcessor
   end
 
   # Append opening braces if not in literal and new indent is less than old one
-  def self.append_opening_braces(new_indent)
+  def append_opening_braces(new_indent)
     (1..((@current_indent - new_indent) / 2)).each do
       @output += "}\n"
       @b_count -= 1
@@ -90,7 +91,7 @@ module PreProcessor
 
   # Crop off only Emerald indent whitespace to preserve whitespace in the
   # literal. Since $ is the end character, we need to escape it in the literal.
-  def self.parse_literal_whitespace(line)
+  def parse_literal_whitespace(line)
     @output += if @in_literal
                  (line[@current_indent..-1] || '').gsub('$', '\$')
                else
@@ -99,14 +100,14 @@ module PreProcessor
   end
 
   # Check if the suffic of the line is the 'arrow rule'
-  def self.check_if_suffix_arrow(line)
+  def check_if_suffix_arrow(line)
     return unless line.rstrip.end_with?('->')
     @in_literal = true
     @current_indent += 2
   end
 
   # Iterate through the brace count and print the remaining braces.
-  def self.print_remaining_braces
+  def print_remaining_braces
     (1..@b_count).each do
       @output += "}\n"
     end

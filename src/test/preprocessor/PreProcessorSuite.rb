@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'test/unit'
 
@@ -36,8 +37,7 @@ class PreProcessorSuite < Test::Unit::TestCase
     if File.directory?(new_path)
       walk(new_path, true, hash)
     else
-      PreProcessor.reset
-      hash[file[/[^\.]+/]] = PreProcessor.process_emerald(new_path)
+      hash[file[/[^\.]+/]] = PreProcessor.new.process_emerald(IO.read(new_path))
     end
 
     hash
