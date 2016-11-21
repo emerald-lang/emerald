@@ -11,8 +11,6 @@ require_relative '../../ruby/PreProcessor'
 # representation.
 #
 class PreProcessorSuite < Test::Unit::TestCase
-  include PreProcessor
-
   # Recursively walk directory and get all test case files for the test suite.
   # Performs preprocessing operation on each file and stores the results in a
   # hash dictionary, with file name as key.
