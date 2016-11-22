@@ -4,7 +4,7 @@
 require 'treetop'
 require_relative 'BaseScopeFn'
 
-# Base class for scope functions
+# Function to map over elements in the context
 class Each < BaseScopeFn
   def to_html(body, context)
     vars = collection.content(context)

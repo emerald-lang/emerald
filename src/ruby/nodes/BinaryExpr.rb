@@ -4,7 +4,7 @@
 require 'treetop'
 require_relative 'BooleanExpr'
 
-# Variable interpolation in a template
+# A boolean expression with two children and an operator
 class BinaryExpr < BooleanExpr
   def truthy?(context)
     case op.text_value

@@ -4,7 +4,7 @@
 require 'treetop'
 require_relative 'BooleanExpr'
 
-# Variable interpolation in a template
+# A boolean expression with one child
 class UnaryExpr < BooleanExpr
   def truthy?(context)
     if negated.text_value.length.positive?

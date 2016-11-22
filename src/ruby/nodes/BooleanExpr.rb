@@ -3,7 +3,7 @@
 
 require 'treetop'
 
-# Variable interpolation in a template
+# The boolean condition for a logic statement
 class BooleanExpr < Treetop::Runtime::SyntaxNode
   def truthy?(context)
     elements.first.truthy?(context)

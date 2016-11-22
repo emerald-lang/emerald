@@ -4,7 +4,7 @@
 require 'treetop'
 require_relative 'BaseScopeFn'
 
-# Base class for scope functions
+# Renders if a condition is met
 class Given < BaseScopeFn
   def to_html(body, context)
     if boolean_expr.truthy?(context)

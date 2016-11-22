@@ -4,7 +4,7 @@
 require 'treetop'
 require_relative 'BaseScopeFn'
 
-# Base class for scope functions
+# Isolates the scope to a subset of the context
 class With < BaseScopeFn
   def to_html(body, context)
     var = elements[2].content(context)
