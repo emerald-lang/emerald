@@ -8,10 +8,7 @@ require_relative 'Node'
 class Variable < Node
   def to_html(context)
     variable_name
-      .text_value
-      .split('.')
-      .reduce(context) do |ctx, name|
-        ctx[name] || ctx[name.to_sym] || nil
-      end
+      .content(context)
+      .to_s
   end
 end

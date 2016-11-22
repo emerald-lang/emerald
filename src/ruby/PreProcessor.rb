@@ -47,7 +47,7 @@ class PreProcessor
   def check_new_indent(new_indent)
     if new_indent > @current_indent
       new_indent_greater(new_indent)
-    elsif new_indent < @current_indent && new_indent.nonzero?
+    elsif new_indent < @current_indent
       new_indent_lesser(new_indent)
     end
   end

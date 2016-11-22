@@ -4,11 +4,9 @@
 require 'treetop'
 require_relative 'Node'
 
-# A base piece of an Emerald file
-class Root < Node
+# Block that modifies the context
+class Scope < Node
   def to_html(context)
-    elements
-      .map { |e| e.to_html(context) }
-      .join("\n")
+    fn.to_html(body, context)
   end
 end

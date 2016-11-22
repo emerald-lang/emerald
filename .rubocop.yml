@@ -9,3 +9,9 @@ Metrics/AbcSize:
 
 Metrics/MethodLength:
   Max: 30
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false

@@ -8,6 +8,8 @@ require 'treetop'
 Dir[File.dirname(__FILE__) + '/nodes/*.rb'].each { |f| require f }
 
 Treetop.load __dir__ + '/grammar/tokens'
+Treetop.load __dir__ + '/grammar/variables'
+Treetop.load __dir__ + '/grammar/scopes'
 Treetop.load __dir__ + '/grammar/emerald'
 
 #
@@ -38,7 +40,7 @@ module Grammar
     puts '===================================='
     text.each_line.with_index { |line, i| puts "#{i + 1} #{line}" }
     puts "====================================\n\n"
-    puts parser.failure_reason
+    puts @parser.failure_reason
     puts "\n"
   end
 
