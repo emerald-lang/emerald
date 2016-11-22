@@ -21,8 +21,7 @@ module Emerald
 
     # Main emerald option, processes the emerald file, generates an abstract
     # syntax tree based on the output from the preprocessing.
-    desc 'process', 'Process a file or folder (recursively) and converts it to'\
-                    'emerald.'
+    desc 'process', 'Process a file or folder (recursively) and converts it to emerald.'
     def process(file_name, context_file_name)
       context =
         if context_file_name
