@@ -1,6 +1,1 @@
 .DS_Store
-target
-project/target
-
-# Bash File for testing
-test.sh
