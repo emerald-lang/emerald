@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'test/unit'
 require 'polyglot'
@@ -8,6 +9,8 @@ require 'treetop'
 Dir[__dir__ + '/../../ruby/nodes/*.rb'].each { |f| require_relative f }
 
 Treetop.load __dir__ + '/../../ruby/grammar/tokens'
+Treetop.load __dir__ + '/../../ruby/grammar/variables'
+Treetop.load __dir__ + '/../../ruby/grammar/scopes'
 Treetop.load __dir__ + '/../../ruby/grammar/emerald'
 
 #

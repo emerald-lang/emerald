@@ -1,0 +1,48 @@
+#
+# Context free grammar of tokens (terminal
+# nodes) for the Emerald language.
+#
+grammar Scopes
+  include Variables
+
+  rule scope_fn
+    (given / unless / each / with) "\n"
+    <ScopeFn>
+  end
+
+  rule given
+    "given" space* boolean_expr <Given>
+  end
+
+  rule unless
+    "unless" space* boolean_expr <Unless>
+  end
+
+  rule with
+    "with" space* variable_name <With>
+  end
+
+  rule each
+    "each" space* collection:variable_name
+    space* "as" space* val_name:variable_name
+    indexed:(',' space* key_name:variable_name)?
+    <Each>
+  end
+
+  rule boolean_expr
+    binary_expr / unary_expr
+  end
+
+  rule binary_expr
+    lhs:unary_expr
+    space+ op:("and" / "or") space*
+    rhs:boolean_expr
+    <BinaryExpr>
+  end
+
+  rule unary_expr
+    negated:("not" space+)?
+    (val:variable_name / '(' space* val:boolean_expr space* ')')
+    <UnaryExpr>
+  end
+end

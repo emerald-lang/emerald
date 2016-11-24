@@ -1,0 +1,10 @@
+# Variable support in Emerald
+grammar Variables
+  rule variable
+    '|' variable_name '|' <Variable>
+  end
+
+  rule variable_name
+    [a-zA-Z0-9_]+ ('.' variable_name)* <VariableName>
+  end
+end

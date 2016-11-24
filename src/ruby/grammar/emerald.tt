@@ -4,15 +4,21 @@
 #
 grammar Emerald
   include Tokens
+  include Scopes
+  include Variables
 
   rule main
-    (list / nested / line / comment)+ <Root>
+    (scope / list / nested / line / comment)+ <Root>
   end
 
   # A nested statement is a tag statement followed by a newline and an
   # a block scoped by braces.
   rule nested
     tag_statement newline lbrace newline main rbrace newline <Nested>
+  end
+
+  rule scope
+    fn:scope_fn lbrace newline body:main rbrace newline <Scope>
   end
 
   # Comment has optional newline, so it's not included in the first sequence
@@ -55,14 +61,6 @@ grammar Emerald
 
   rule inline_literal
     ( variable / !"\n" . )* <InlineLiteral>
-  end
-
-  rule variable
-    '|' variable_name '|' <Variable>
-  end
-
-  rule variable_name
-    (!'|' !'.' .)+ ('.' variable_name)*
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
