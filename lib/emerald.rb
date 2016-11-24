@@ -5,12 +5,13 @@
 # Emerald, the language agnostic templating engine.
 # Copyright 2016, Emerald Language (MIT)
 #
+require 'emerald/version'
 
 require 'thor'
 require 'htmlbeautifier'
 
-require_relative 'Grammar'
-require_relative 'PreProcessor'
+require_relative 'emerald/Grammar'
+require_relative 'emerald/PreProcessor'
 
 # Parses a context free grammar from the preprocessed emerald and generates
 # html associated with corresponding abstract syntax tree.
@@ -22,7 +23,7 @@ module Emerald
     # Main emerald option, processes the emerald file, generates an abstract
     # syntax tree based on the output from the preprocessing.
     desc 'process', 'Process a file or folder (recursively) and converts it to emerald.'
-    def process(file_name, context_file_name)
+    def process(file_name, context_file_name = nil)
       context =
         if context_file_name
           JSON.parse(IO.read(context_file_name))
@@ -54,5 +55,6 @@ module Emerald
       html_output = HtmlBeautifier.beautify(html_output) if beautify
       emerald_file.write(html_output)
     end
+    puts "Wrote #{file_name + '.html'}"
   end
 end
