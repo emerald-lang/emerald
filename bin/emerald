@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative '../src/ruby/Main'
+
+Emerald::CLI.start(ARGV)

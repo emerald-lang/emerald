@@ -16,7 +16,7 @@ require_relative 'PreProcessor'
 # html associated with corresponding abstract syntax tree.
 module Emerald
   # The Emerald CLI
-  class Main < Thor
+  class CLI < Thor
     class_option :beautify, aliases: 'b'
 
     # Main emerald option, processes the emerald file, generates an abstract
@@ -55,6 +55,4 @@ module Emerald
       emerald_file.write(html_output)
     end
   end
-
-  Main.start(ARGV)
 end
