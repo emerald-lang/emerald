@@ -1,4 +1,7 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
-pre-commit install
-git config pre-commit.checks "[rubocop]"
+bundle install
+
+# Do any other automated setup that you need to do here

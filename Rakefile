@@ -1,14 +1,12 @@
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
 require 'pre-commit'
 
-task default: ["test"]
+RSpec::Core::RakeTask.new(:test)
 
 task :setup do
   sh 'pre-commit install'
   sh 'git config pre-commit.checks "[rubocop]"'
 end
 
-task :test do
-  ruby "src/test/preprocessor/PreProcessorSuite.rb"
-  ruby "src/test/treetop/TreetopSuite.rb"
-  ruby "src/test/EmeraldSuite.rb"
-end
+task :default => :test
