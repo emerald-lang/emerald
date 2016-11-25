@@ -22,13 +22,13 @@ module Grammar
 
   # Parse the preprocessed emerald text and print failure if it fails the
   # parsing stage
-  def self.parse_grammar(text, show_output: false)
+  def self.parse_grammar(text, debug: false, verbose: false)
     parsed = @parser.parse(text)
 
-    if show_output
+    if debug
       if parsed.nil?
         print_failure(text)
-      else
+      elsif verbose
         print_passed(text)
       end
     end

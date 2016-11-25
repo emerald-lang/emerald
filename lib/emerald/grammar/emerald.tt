@@ -44,19 +44,23 @@ grammar Emerald
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* text_content? <Text>
+    h_num space* body:text_content? <Text>
   end
 
   rule text_content
-    multiline_literal / inline_literal
+    multiline_literal / multiline_templateless_literal / inline_literal
   end
 
   rule multiline_literal
-    "->" space* newline multiline_literal_body "$" <MultilineLiteral>
+    "->" space* newline
+    body:(variable / '\$' / !'$' .)*
+    "$" <MultilineLiteral>
   end
 
-  rule multiline_literal_body
-    ('\$' / !'$' .)*
+  rule multiline_templateless_literal
+    "=>" space* newline
+    body:('\$' / !'$' .)*
+    "$" <MultilineTemplatelessLiteral>
   end
 
   rule inline_literal

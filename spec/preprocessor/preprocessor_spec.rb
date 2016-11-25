@@ -54,4 +54,32 @@ describe Emerald::PreProcessor do
       expect(value).to eq(expected[key])
     end
   end
+
+  context 'multiline literals' do
+    it 'preprocesses multiline literals' do
+      input = <<~EMR
+        h1 =>
+          This is a multiline literal
+      EMR
+      output = whitespace_agnostic <<~PREPROCESSED
+        h1 =>
+        This is a multiline literal
+        $
+      PREPROCESSED
+      expect(preprocess(input)).to eq(output)
+    end
+
+    it 'escapes dollar signs' do
+      input = <<~EMR
+        h1 =>
+          Thi$ i$ a multiline literal
+      EMR
+      output = whitespace_agnostic <<~PREPROCESSED
+        h1 =>
+        Thi\\$ i\\$ a multiline literal
+        $
+      PREPROCESSED
+      expect(preprocess(input)).to eq(output)
+    end
+  end
 end

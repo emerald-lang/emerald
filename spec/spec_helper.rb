@@ -7,5 +7,9 @@ def whitespace_agnostic(str)
 end
 
 def convert(context:, input:)
-  whitespace_agnostic Emerald.convert(input, context)
+  whitespace_agnostic Emerald.convert(input, context, debug: true)
+end
+
+def preprocess(input)
+  whitespace_agnostic Emerald::PreProcessor.new.process_emerald(input)
 end

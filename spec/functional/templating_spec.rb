@@ -30,4 +30,32 @@ describe Emerald do
       EMR
     )).to eq('<h1>Hello, Dave</h1>')
   end
+
+  it 'works in multiline literals' do
+    expect(convert(
+      context: {name: 'Dave'},
+      input: <<~EMR,
+        h1 ->
+          Hello, world,
+          my name is |name|
+      EMR
+    )).to eq(whitespace_agnostic(<<~HTML))
+      <h1>Hello, world,
+      my name is Dave</h1>
+    HTML
+  end
+
+  it 'does not template in multiline templateless literals' do
+    expect(convert(
+      context: {name: 'Dave'},
+      input: <<~EMR,
+        h1 =>
+          Hello, world,
+          my name is |name|
+      EMR
+    )).to eq(whitespace_agnostic(<<~HTML))
+      <h1>Hello, world,
+      my name is |name|</h1>
+    HTML
+  end
 end

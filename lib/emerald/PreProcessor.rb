@@ -35,10 +35,11 @@ module Emerald
         new_indent = line.length - line.lstrip.length
 
         check_new_indent(new_indent)
-        parse_literal_whitespace(line)
-        check_if_suffix_arrow(line)
+        @output += remove_indent_whitespace(line)
+        enter_literal if ends_with_arrow(line)
       end
-      print_remaining_braces
+
+      close_tags(0)
 
       @output
     end
@@ -47,32 +48,30 @@ module Emerald
     # Invoked by: process_emerald
     def check_new_indent(new_indent)
       if new_indent > @current_indent
-        new_indent_greater(new_indent)
+        open_tags(new_indent)
       elsif new_indent < @current_indent
-        new_indent_lesser(new_indent)
+        close_tags(new_indent)
       end
     end
 
-    # Invoked by: check_new_indent
-    def new_indent_greater(new_indent)
+    def open_tags(new_indent)
       return if @in_literal
       @output += "{\n"
       @b_count += 1
       @current_indent = new_indent
     end
 
-    # Invoked by: check_new_indent
-    def new_indent_lesser(new_indent)
+    def close_tags(new_indent)
       if @in_literal
-        append_closing_braces(new_indent)
+        close_literal(new_indent)
       else
-        append_opening_braces(new_indent)
+        close_entered_tags(new_indent)
       end
       @current_indent = new_indent
     end
 
     # Append closing braces if in literal and new indent is less than old one
-    def append_closing_braces(new_indent)
+    def close_literal(new_indent)
       @output += "$\n"
       @in_literal = false
 
@@ -82,8 +81,8 @@ module Emerald
       end
     end
 
-    # Append opening braces if not in literal and new indent is less than old one
-    def append_opening_braces(new_indent)
+    # Append closing braces if not in literal and new indent is less than old one
+    def close_entered_tags(new_indent)
       (1..((@current_indent - new_indent) / 2)).each do
         @output += "}\n"
         @b_count -= 1
@@ -92,26 +91,25 @@ module Emerald
 
     # Crop off only Emerald indent whitespace to preserve whitespace in the
     # literal. Since $ is the end character, we need to escape it in the literal.
-    def parse_literal_whitespace(line)
-      @output += if @in_literal
-                   (line[@current_indent..-1] || '').gsub('$', '\$')
-                 else
-                   line.lstrip
-                 end
+    def remove_indent_whitespace(line)
+      if @in_literal
+        # Ignore indent whitespace, only count post-indent as the literal,
+        # but keep any extra whitespace that might exist for literals
+        (line[@current_indent..-1] || '')
+          .gsub('$', '\$') # Escape $ since we use it as a terminator for literals
+      else
+        line.lstrip
+      end
     end
 
     # Check if the suffic of the line is the 'arrow rule'
-    def check_if_suffix_arrow(line)
-      return unless line.rstrip.end_with?('->')
-      @in_literal = true
-      @current_indent += 2
+    def ends_with_arrow(line)
+      line.rstrip.end_with?('->') || line.rstrip.end_with?('=>')
     end
 
-    # Iterate through the brace count and print the remaining braces.
-    def print_remaining_braces
-      (1..@b_count).each do
-        @output += "}\n"
-      end
+    def enter_literal
+      @in_literal = true
+      @current_indent += 2
     end
   end
 end
