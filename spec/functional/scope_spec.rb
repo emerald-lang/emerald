@@ -3,19 +3,11 @@
 
 require 'spec_helper'
 
-SCOPE_TESTS = [
-  
- 
-  
-].freeze
-
 #
 # Unit testing for Emerald Language. Asserts that emerald passed in is
 # compiled to valid html, which is equivalent in semantic value.
 #
 describe Emerald do
-  
-
   context 'given/unless' do
     it 'can determine truthiness' do
       expect(convert(

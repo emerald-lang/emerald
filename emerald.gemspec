@@ -6,8 +6,8 @@ require 'emerald/version'
 Gem::Specification.new do |spec|
   spec.name          = 'emerald'
   spec.version       = Emerald::VERSION
-  spec.authors       = ['Andrew McBurney']
-  spec.email         = ['andrewrobertmcburney@gmail.com']
+  spec.authors       = ['Andrew McBurney', 'Dave Pagurek', 'Yu Chen Hu']
+  spec.email         = ['andrewrobertmcburney@gmail.com', 'davepagurek@gmail.com', 'me@yuchenhou.com']
 
   spec.summary       = 'A language agnostic templating engine designed with event driven applications in mind.'
   spec.description   = 'A language agnostic templating engine designed with event driven applications in mind.' # TODO: make better description
