@@ -97,5 +97,21 @@ describe Emerald do
         EMR
       )).to eq('<h1>hey look a brace }</h1>')
     end
+
+    it 'does not alter templateless literals' do
+      expect(convert(
+        context: {},
+        input: <<~EMR,
+          h1 =>
+            if (a || b) {
+              console.log("truthy\\n");
+            }
+        EMR
+      )).to eq(whitespace_agnostic(<<~HTML))
+        <h1>if (a || b) {
+          console.log("truthy\\n");
+        }</h1>
+      HTML
+    end
   end
 end

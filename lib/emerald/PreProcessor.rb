@@ -11,16 +11,13 @@ module Emerald
   #
   class PreProcessor
     def initialize
-      @in_literal = false
-      @current_indent = 0
-      @new_indent = 0
-      @b_count = 0
-      @output = ''
+      reset
     end
 
     # Reset class variables, used for testing
     def reset
       @in_literal = false
+      @raw_literal = false
       @current_indent = 0
       @new_indent = 0
       @b_count = 0
@@ -36,7 +33,7 @@ module Emerald
 
         check_new_indent(new_indent)
         @output += remove_indent_whitespace(line)
-        enter_literal if ends_with_arrow(line)
+        check_and_enter_literal(line)
       end
 
       close_tags(0)
@@ -95,21 +92,28 @@ module Emerald
       if @in_literal
         # Ignore indent whitespace, only count post-indent as the literal,
         # but keep any extra whitespace that might exist for literals
-        (line[@current_indent..-1] || '')
-          .gsub('$', '\$') # Escape $ since we use it as a terminator for literals
+        cropped = line[@current_indent..-1] || ''
+        if @raw_literal
+          # this is a fun one https://www.ruby-forum.com/topic/143645
+          cropped = cropped.gsub("\\"){ "\\\\" }
+        end
+
+        cropped.gsub('$', "\\$") # Escape $ since we use it as a terminator for literals
       else
         line.lstrip
       end
     end
 
-    # Check if the suffic of the line is the 'arrow rule'
-    def ends_with_arrow(line)
-      line.rstrip.end_with?('->') || line.rstrip.end_with?('=>')
-    end
-
-    def enter_literal
-      @in_literal = true
-      @current_indent += 2
+    def check_and_enter_literal(line)
+      if line.rstrip.end_with?('->')
+        @in_literal = true
+        @current_indent += 2
+        @raw_literal = false
+      elsif line.rstrip.end_with?('=>')
+        @in_literal = true
+        @current_indent += 2
+        @raw_literal = true
+      end
     end
   end
 end
