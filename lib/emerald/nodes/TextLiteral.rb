@@ -3,19 +3,24 @@
 
 require 'treetop'
 require_relative 'Node'
-require_relative 'Variable.rb'
 
-# Element text content immediately following a tag name
-class InlineLiteral < Node
+# A long block of text literal, with variable templating
+class TextLiteral < Node
   def to_html(context)
-    elements
+    body
+      .elements
       .map do |element|
         if element.is_a?(Variable)
           element.to_html(context)
         else
-          element.text_value
+          unescape element.text_value
         end
       end
       .join('')
+      .rstrip
+  end
+
+  def unescape(text)
+    text.gsub(/\\(.)/, '\1')
   end
 end

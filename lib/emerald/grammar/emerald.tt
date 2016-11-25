@@ -53,18 +53,22 @@ grammar Emerald
 
   rule multiline_literal
     "->" space* newline
-    body:(variable / '\$' / !'$' .)*
-    "$" <MultilineLiteral>
+    body:(variable / escaped / !'$' .)*
+    "$" <TextLiteral>
   end
 
   rule multiline_templateless_literal
     "=>" space* newline
-    body:('\$' / !'$' .)*
-    "$" <MultilineTemplatelessLiteral>
+    body:(escaped / !'$' .)*
+    "$" <TextLiteral>
   end
 
   rule inline_literal
-    ( variable / !"\n" . )* <InlineLiteral>
+    body:( variable / escaped / !"\n" . )* <TextLiteral>
+  end
+
+  rule escaped
+    "\\" .
   end
 
   # tag space* string (0 or 1), attr_list (0 or 1)
