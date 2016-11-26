@@ -3,7 +3,7 @@ html
     title Attributes Example
 
   body
-    h1 Attributes follow parentheses. (
+    section Attributes follow parentheses. (
       id    "header"
       class "main-text"
     )

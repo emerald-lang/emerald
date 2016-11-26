@@ -71,25 +71,19 @@ grammar Emerald
     "\\" .
   end
 
-  # tag space* string (0 or 1), attr_list (0 or 1)
-  # fix this.
   rule tag_statement
-    tag lparen attributes rparen <TagStatement> /
-    tag space? (( !"\n" . )*)? space* attr_list? <TagStatement>
+    tag space? (( !lparen !newline . )*)? attr_list? <TagStatement>
   end
 
-  # attribute list for
-  # lparen newline (or none), attribute* rparen
   rule attr_list
-    lparen newline attribute* space* rparen <AttributeList>
+    lparen newline lbrace newline attributes rbrace newline rparen <AttributeList>
   end
 
   rule attributes
     attribute* <Attributes>
   end
 
-  # if newline option, must indent
   rule attribute
-    space* attr space* equals space* string comma? <Attribute>
+    attr space* string newline
   end
 end
