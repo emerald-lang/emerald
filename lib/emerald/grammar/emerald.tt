@@ -23,7 +23,7 @@ grammar Emerald
 
   # Comment has optional newline, so it's not included in the first sequence
   rule line
-    (tag_statement / text / comment) newline <Line>
+    (tag_statement / comment) newline <Line>
   end
 
   # Rule for keyword list (metas, scripts, styles)
@@ -34,11 +34,6 @@ grammar Emerald
   # Single line and multiline comments
   rule comment
     space* '*' space* text_content <Comment>
-  end
-
-  # Ex. h1 "test this out."
-  rule text
-    h_num space* body:text_content? attr_list? <Text>
   end
 
   rule text_content
@@ -70,7 +65,7 @@ grammar Emerald
   end
 
   rule tag_statement
-    tag space? body:text_content? attr_list? <TagStatement>
+    (tag / h_num) space* body:text_content? attr_list? <TagStatement>
   end
 
   rule attr_list
