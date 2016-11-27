@@ -33,9 +33,7 @@ grammar Emerald
 
   # Single line and multiline comments
   rule comment
-    space* '!' ( !"\n" . )* "\n" <Comment> /
-    space* '<!' ( !"!>" . )* "!>\n" <Comment> /
-    space* '*' text_content newline <Comment>
+    space* '*' space* text_content <Comment>
   end
 
   # Ex. h1 "test this out."

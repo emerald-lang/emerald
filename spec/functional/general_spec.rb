@@ -49,4 +49,29 @@ describe Emerald do
       )
     ).to eq('<section class="something">here\'s some text (and some stuff in brackets)</section>')
   end
+
+  it 'supports single line comments' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          * test
+          h1 test
+        EMR
+      )
+    ).to eq('<!-- test --> <h1>test</h1>')
+  end
+
+  it 'supports multiline comments' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          * ->
+            test
+          h1 test
+        EMR
+      )
+    ).to eq('<!-- test --> <h1>test</h1>')
+  end
 end

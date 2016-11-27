@@ -6,7 +6,7 @@ require_relative 'Node'
 
 # Prints out the value of the comment's text
 class Comment < Node
-  def to_html(_context)
-    "<!-- #{elements[2].text_value} -->\n"
+  def to_html(context)
+    "<!-- #{text_content.to_html(context)} -->\n"
   end
 end
