@@ -67,6 +67,10 @@ grammar Emerald
     body:( variable / escaped / !lparen !newline . )* <TextLiteral>
   end
 
+  rule inline_literal_string
+    body:( variable / escaped / !'"' . )* <TextLiteral>
+  end
+
   rule escaped
     "\\" .
   end
@@ -84,6 +88,6 @@ grammar Emerald
   end
 
   rule attribute
-    attr space* string newline
+    attr space* '"' inline_literal_string '"' newline
   end
 end

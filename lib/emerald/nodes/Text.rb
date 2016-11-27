@@ -8,8 +8,7 @@ class Text < Node
   def to_html(context)
     "<#{h_num.text_value}" +
       (
-        case elements[3].empty?
-        when false
+        if !elements[3].empty?
           elements[3].to_html(context)
         else
           ''
