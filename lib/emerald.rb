@@ -41,9 +41,9 @@ module Emerald
     end
   end
 
-  def self.convert(input, context = {})
+  def self.convert(input, context = {}, debug: false)
     preprocessed_emerald = PreProcessor.new.process_emerald(input)
-    abstract_syntax_tree = Grammar.parse_grammar(preprocessed_emerald)
+    abstract_syntax_tree = Grammar.parse_grammar(preprocessed_emerald, debug: debug)
 
     abstract_syntax_tree.to_html(context)
   end
