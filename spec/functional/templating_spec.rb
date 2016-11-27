@@ -29,7 +29,7 @@ describe Emerald do
         EMR
       )
     ).to eq('<section id="header" class="class-prefix-text" height="50px" width="200px">'\
-            'Attributes follow parentheses. </section>')
+            'Attributes follow parentheses.</section>')
   end
 
   it 'works with simple templating' do

@@ -8,7 +8,7 @@ require_relative 'Node'
 class TagStatement < Node
   def to_html(context)
     if !elements[3].empty?
-      "<#{elements[0].text_value}" + elements[3].to_html(context) + ">#{elements[2].text_value}"\
+      "<#{elements[0].text_value}" + elements[3].to_html(context) + ">#{elements[2].to_html(context)}"\
         "</#{elements[0].text_value}>"
     else
       "<#{elements[0].text_value}>#{elements[2].text_value}</#{elements[0].text_value}>"

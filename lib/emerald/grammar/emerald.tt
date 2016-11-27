@@ -28,18 +28,13 @@ grammar Emerald
 
   # Rule for keyword list (metas, scripts, styles)
   rule list
-    keyword newline lbrace newline (string newline)+ rbrace newline <List>
+    keyword newline lbrace newline (inline_literal_string newline)+ rbrace newline <List>
   end
 
   # Single line and multiline comments
   rule comment
     space* '!' ( !"\n" . )* "\n" <Comment> /
     space* '<!' ( !"!>" . )* "!>\n" <Comment>
-  end
-
-  # TODO: add escape characters
-  rule string
-    '"' ( !'"' (variable / .) )* '"' <StringNode>
   end
 
   # Ex. h1 "test this out."
@@ -68,7 +63,7 @@ grammar Emerald
   end
 
   rule inline_literal_string
-    body:( variable / escaped / !'"' . )* <TextLiteral>
+    '"' body:( variable / escaped / !'"' . )* '"' <TextLiteral>
   end
 
   rule escaped
@@ -88,6 +83,6 @@ grammar Emerald
   end
 
   rule attribute
-    attr space* '"' inline_literal_string '"' newline
+    attr space* inline_literal_string newline
   end
 end
