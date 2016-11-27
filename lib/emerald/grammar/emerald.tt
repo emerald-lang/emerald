@@ -44,7 +44,7 @@ grammar Emerald
 
   # Ex. h1 "test this out."
   rule text
-    h_num space* body:text_content? <Text>
+    h_num space* body:text_content? attr_list? <Text>
   end
 
   rule text_content
@@ -64,7 +64,7 @@ grammar Emerald
   end
 
   rule inline_literal
-    body:( variable / escaped / !"\n" . )* <TextLiteral>
+    body:( variable / escaped / !lparen !newline . )* <TextLiteral>
   end
 
   rule escaped
@@ -72,7 +72,7 @@ grammar Emerald
   end
 
   rule tag_statement
-    tag space? (( !lparen !newline . )*)? attr_list? <TagStatement>
+    tag space? body:text_content? attr_list? <TagStatement>
   end
 
   rule attr_list

@@ -4,7 +4,23 @@
 require 'spec_helper'
 
 describe Emerald do
-  it 'works with attributes' do
+  it 'text rule works with attributes' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          h1 Attributes follow parentheses. (
+            id     "header"
+            class  "main-text"
+            height "50px"
+            width  "200px"
+          )
+        EMR
+      )
+    ).to eq('<h1 id="header" class="main-text" height="50px" width="200px">Attributes follow parentheses.</h1>')
+  end
+
+  it 'tag statement rule works with attributes' do
     expect(
       convert(
         context: {},
