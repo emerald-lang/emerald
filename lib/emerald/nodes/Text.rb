@@ -4,9 +4,16 @@
 require 'treetop'
 
 # A heading tag
-class Text < Treetop::Runtime::SyntaxNode
+class Text < Node
   def to_html(context)
-    "<#{h_num.text_value}>" +
+    "<#{h_num.text_value}" +
+      (
+        if !elements[3].empty?
+          elements[3].to_html(context)
+        else
+          ''
+        end
+      ) + '>' +
       (
         if body.text_value.length.nonzero?
           body.to_html(context)

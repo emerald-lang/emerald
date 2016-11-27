@@ -28,7 +28,7 @@ grammar Emerald
 
   # Rule for keyword list (metas, scripts, styles)
   rule list
-    keyword newline lbrace newline (string newline)+ rbrace newline <List>
+    keyword newline lbrace newline (inline_literal_string newline)+ rbrace newline <List>
   end
 
   # Single line and multiline comments
@@ -37,14 +37,9 @@ grammar Emerald
     space* '<!' ( !"!>" . )* "!>\n" <Comment>
   end
 
-  # TODO: add escape characters
-  rule string
-    '"' ( !'"' (variable / .) )* '"' <StringNode>
-  end
-
   # Ex. h1 "test this out."
   rule text
-    h_num space* body:text_content? <Text>
+    h_num space* body:text_content? attr_list? <Text>
   end
 
   rule text_content
@@ -64,32 +59,30 @@ grammar Emerald
   end
 
   rule inline_literal
-    body:( variable / escaped / !"\n" . )* <TextLiteral>
+    body:( variable / escaped / !lparen !newline . )* <TextLiteral>
+  end
+
+  rule inline_literal_string
+    '"' body:( variable / escaped / !'"' . )* '"' <TextLiteral>
   end
 
   rule escaped
     "\\" .
   end
 
-  # tag space* string (0 or 1), attr_list (0 or 1)
-  # fix this.
   rule tag_statement
-    tag lparen attributes rparen <TagStatement> /
-    tag space? (( !"\n" . )*)? space* attr_list? <TagStatement>
+    tag space? body:text_content? attr_list? <TagStatement>
   end
 
-  # attribute list for
-  # lparen newline (or none), attribute* rparen
   rule attr_list
-    lparen newline attribute* space* rparen <AttributeList>
+    lparen newline lbrace newline attributes rbrace newline rparen <AttributeList>
   end
 
   rule attributes
     attribute* <Attributes>
   end
 
-  # if newline option, must indent
   rule attribute
-    space* attr space* equals space* string comma? <Attribute>
+    attr space* inline_literal_string newline
   end
 end
