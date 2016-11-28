@@ -133,7 +133,7 @@ describe Emerald do
       ).to eq('<h1>hey look a brace }</h1>')
     end
 
-    it 'does not alter templateless literals' do
+    it 'does not template templateless literals' do
       expect(
         convert(
           context: {},
@@ -146,7 +146,7 @@ describe Emerald do
         )
       ).to eq(whitespace_agnostic(<<~HTML))
         <h1>if (a || b) {
-          console.log("truthy\\n");
+          console.log(&quot;truthy\\n&quot;);
         }</h1>
       HTML
     end

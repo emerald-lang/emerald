@@ -4,9 +4,9 @@ html
 
   body
     button (
-      click ->
+      click ~>
         alert("I was clicked")
-      hover ->
+      hover ~>
         alert("I was hovered")
     )
 

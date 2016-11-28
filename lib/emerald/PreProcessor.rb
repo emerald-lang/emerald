@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'htmlentities'
 require_relative 'Grammar'
 
 module Emerald
@@ -17,10 +18,11 @@ module Emerald
     # Reset class variables, used for testing
     def reset
       @in_literal = false
-      @raw_literal = false
+      @templateless_literal = false
       @current_indent = 0
       @b_count = 0
       @output = ''
+      @encoder = HTMLEntities.new
     end
 
     # Process the emerald to remove indentation and replace with brace convention
@@ -101,12 +103,17 @@ module Emerald
         # Ignore indent whitespace, only count post-indent as the literal,
         # but keep any extra whitespace that might exist for literals
         cropped = line[@current_indent..-1] || ''
-        if @raw_literal
+        if @templateless_literal
           # this is a fun one https://www.ruby-forum.com/topic/143645
           cropped = cropped.gsub("\\"){ "\\\\" }
         end
 
-        cropped.gsub('$', "\\$") # Escape $ since we use it as a terminator for literals
+        unless @preserve_html_literal
+          cropped = @encoder.encode cropped
+        end
+
+        # Escape $ since we use it as a terminator for literals, and encode HTML
+        cropped.gsub('$', "\\$")
       else
         line.lstrip
       end
@@ -116,11 +123,18 @@ module Emerald
       if line.rstrip.end_with?('->')
         @in_literal = true
         @current_indent += 2
-        @raw_literal = false
+        @templateless_literal = false
+        @preserve_html_literal = false
       elsif line.rstrip.end_with?('=>')
         @in_literal = true
         @current_indent += 2
-        @raw_literal = true
+        @templateless_literal = true
+        @preserve_html_literal = false
+      elsif line.rstrip.end_with?('~>')
+        @in_literal = true
+        @current_indent += 2
+        @templateless_literal = true
+        @preserve_html_literal = true
       end
     end
   end
