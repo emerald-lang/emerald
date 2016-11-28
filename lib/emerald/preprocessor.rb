@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'htmlentities'
-require_relative 'Grammar'
+require_relative 'grammar'
 
 module Emerald
   #

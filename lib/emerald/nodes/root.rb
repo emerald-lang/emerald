@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'treetop'
-require_relative 'Node'
+require_relative 'node'
 
 # A base piece of an Emerald file
 class Root < Node

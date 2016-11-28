@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'treetop'
-require_relative 'Node'
+require_relative 'node'
 
 # Prints out the value of the comment's text
 class Comment < Node

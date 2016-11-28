@@ -10,8 +10,8 @@ require 'emerald/version'
 require 'thor'
 require 'htmlbeautifier'
 
-require_relative 'emerald/Grammar'
-require_relative 'emerald/PreProcessor'
+require_relative 'emerald/grammar'
+require_relative 'emerald/preprocessor'
 
 # Parses a context free grammar from the preprocessed emerald and generates
 # html associated with corresponding abstract syntax tree.

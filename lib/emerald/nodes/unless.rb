@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'treetop'
-require_relative 'BaseScopeFn'
+require_relative 'base_scope_fn'
 
 # Renders unless a condition is met
 class Unless < BaseScopeFn
