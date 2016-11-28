@@ -31,9 +31,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'test-unit'
-  spec.add_development_dependency 'thor'
-  spec.add_development_dependency 'treetop'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'pre-commit'
-  spec.add_development_dependency 'htmlbeautifier', '~> 1.1', '>= 1.1.1'
+
+  spec.add_runtime_dependency 'htmlentities'
+  spec.add_runtime_dependency 'treetop'
+  spec.add_runtime_dependency 'thor'
+  spec.add_runtime_dependency 'htmlbeautifier', '~> 1.1', '>= 1.1.1'
 end

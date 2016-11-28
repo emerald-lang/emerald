@@ -69,6 +69,32 @@ describe Emerald::PreProcessor do
       expect(preprocess(input)).to eq(output)
     end
 
+    it 'encodes html entities' do
+      input = <<~EMR
+        h1 =>
+          <div>
+      EMR
+      output = whitespace_agnostic <<~PREPROCESSED
+        h1 =>
+        &lt;div&gt;
+        $
+      PREPROCESSED
+      expect(preprocess(input)).to eq(output)
+    end
+
+    it 'does not encode html entities for ~> literals' do
+      input = <<~EMR
+        h1 ~>
+          <div>
+      EMR
+      output = whitespace_agnostic <<~PREPROCESSED
+        h1 ~>
+        <div>
+        $
+      PREPROCESSED
+      expect(preprocess(input)).to eq(output)
+    end
+
     it 'escapes dollar signs' do
       input = <<~EMR
         h1 =>

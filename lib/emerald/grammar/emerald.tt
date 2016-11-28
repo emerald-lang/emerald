@@ -47,7 +47,7 @@ grammar Emerald
   end
 
   rule multiline_templateless_literal
-    "=>" space* newline
+    ("=>" / "~>") space* newline
     body:(escaped / !'$' .)*
     "$" <TextLiteral>
   end
