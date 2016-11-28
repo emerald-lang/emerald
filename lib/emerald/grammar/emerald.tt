@@ -65,7 +65,7 @@ grammar Emerald
   end
 
   rule tag_statement
-    (tag / h_num) space* body:text_content? attr_list? <TagStatement>
+    tag space* body:text_content? attr_list? <TagStatement>
   end
 
   rule attr_list
