@@ -4,6 +4,20 @@
 require 'spec_helper'
 
 describe Emerald do
+  it 'supports nested tags with attributes' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          section (
+            class "something"
+          )
+            h1 Test
+        EMR
+      )
+    ).to eq('<section class="something"><h1>Test</h1></section>')
+  end
+
   it 'text rule works with attributes' do
     expect(
       convert(

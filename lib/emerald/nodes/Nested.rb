@@ -10,8 +10,8 @@ require_relative 'Node'
 #
 class Nested < Node
   def to_html(context)
-    elements[0].to_html_tag(context) +
+    elements[0].opening_tag(context) +
       elements[4].to_html(context) +
-      "</#{elements[0].elements[0].text_value}>"
+      elements[0].closing_tag(context)
   end
 end

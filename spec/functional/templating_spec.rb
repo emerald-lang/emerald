@@ -59,14 +59,14 @@ describe Emerald do
       convert(
         context: {name: 'Dave'},
         input: <<~EMR,
-          h1 ->
+          pre ->
             Hello, world,
             my name is |name|
         EMR
       )
     ).to eq(whitespace_agnostic(<<~HTML))
-      <h1>Hello, world,
-      my name is Dave</h1>
+      <pre>Hello, world,
+      my name is Dave</pre>
     HTML
   end
 

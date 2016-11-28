@@ -7,14 +7,7 @@ require_relative 'Node'
 # A tag
 class TagStatement < Node
   def to_html(context)
-    "<#{elements[0].text_value}" +
-      (
-        if !elements[3].empty?
-          elements[3].to_html(context)
-        else
-          ''
-        end
-      ) + '>' +
+    opening_tag(context) +
       (
         if !body.empty?
           body.to_html(context)
@@ -22,10 +15,21 @@ class TagStatement < Node
           ''
         end
       ) +
-      "</#{elements[0].text_value}>"
+      closing_tag(context)
   end
 
-  def to_html_tag(_context)
-    "<#{elements[0].text_value}>"
+  def opening_tag(context)
+    "<#{elements[0].text_value}" +
+      (
+        if !elements[3].empty?
+          elements[3].to_html(context)
+        else
+          ''
+        end
+      ) + '>'
+  end
+
+  def closing_tag(_context)
+    "</#{elements[0].text_value}>"
   end
 end
