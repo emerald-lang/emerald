@@ -81,5 +81,22 @@ describe Emerald::PreProcessor do
       PREPROCESSED
       expect(preprocess(input)).to eq(output)
     end
+
+    it 'preserves empty lines' do
+      input = <<~EMR
+        pre ->
+          line
+
+          line
+      EMR
+      output = <<~PREPROCESSED
+        pre ->
+        line
+        
+        line
+        $
+      PREPROCESSED
+      expect(preprocess(input, preserve_whitespace: true)).to eq(output)
+    end
   end
 end

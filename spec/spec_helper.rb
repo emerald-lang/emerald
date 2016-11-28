@@ -6,10 +6,20 @@ def whitespace_agnostic(str)
   str.gsub(/\s+/, ' ').strip
 end
 
-def convert(context:, input:)
-  whitespace_agnostic Emerald.convert(input, context, debug: true)
+def convert(context:, input:, preserve_whitespace: false)
+  output = Emerald.convert(input, context, debug: true)
+  unless preserve_whitespace
+    whitespace_agnostic output
+  else
+    output
+  end
 end
 
-def preprocess(input)
-  whitespace_agnostic Emerald::PreProcessor.new.process_emerald(input)
+def preprocess(input, preserve_whitespace: false)
+  output = Emerald::PreProcessor.new.process_emerald(input)
+  unless preserve_whitespace
+    whitespace_agnostic output
+  else
+    output
+  end
 end
