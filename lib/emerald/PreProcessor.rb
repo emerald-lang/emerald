@@ -19,7 +19,6 @@ module Emerald
       @in_literal = false
       @raw_literal = false
       @current_indent = 0
-      @new_indent = 0
       @b_count = 0
       @output = ''
     end
@@ -28,8 +27,17 @@ module Emerald
     # for an easier time parsing with context free grammar
     def process_emerald(input)
       input.each_line do |line|
-        next if line.lstrip.empty?
-        new_indent = line.length - line.lstrip.length
+        if @in_literal
+          if line[0...-1].empty?
+            new_indent = @current_indent
+            line = " "*@current_indent + "\n"
+          else
+            new_indent = line.length - line.lstrip.length
+          end
+        else 
+          next if line.lstrip.empty?
+          new_indent = line.length - line.lstrip.length
+        end
 
         check_new_indent(new_indent)
         @output += remove_indent_whitespace(line)
