@@ -18,12 +18,15 @@ require_relative 'emerald/PreProcessor'
 module Emerald
   # The Emerald CLI
   class CLI < Thor
-    class_option :beautify, aliases: 'b'
+    class_option :beautify, :type => :boolean, :aliases => 'b'
 
     # Main emerald option, processes the emerald file, generates an abstract
     # syntax tree based on the output from the preprocessing.
     desc 'process', 'Process a file or folder (recursively) and converts it to emerald.'
+    option :output, aliases: 'o'
+    option :verbose, :type => :boolean, :aliases => 'v'
     def process(file_name, context_file_name = nil)
+      output_name = options[:output] || file_name
       context =
         if context_file_name
           JSON.parse(IO.read(context_file_name))
@@ -34,14 +37,14 @@ module Emerald
       input = IO.read(file_name)
 
       Emerald.write_html(
-        Emerald.convert(input, context),
-        file_name,
+        Emerald.convert(input, context, options[:verbose]),
+        output_name,
         options['beautify']
       )
     end
   end
 
-  def self.convert(input, context = {}, debug: false)
+  def self.convert(input, context = {}, debug = false)
     preprocessed_emerald = PreProcessor.new.process_emerald(input)
     abstract_syntax_tree = Grammar.parse_grammar(preprocessed_emerald, debug: debug)
 
