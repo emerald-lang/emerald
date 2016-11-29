@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'treetop'
-require_relative 'Node'
+require_relative 'node'
 
 # TODO: Refactor this and update doc comment
 # Multiple head elements I think

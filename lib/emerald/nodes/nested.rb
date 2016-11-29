@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'treetop'
-require_relative 'Node'
+require_relative 'node'
 
 #
 # Appends compiled html for nested rule to the output.

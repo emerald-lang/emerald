@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'treetop'
-require_relative 'Node'
+require_relative 'node'
 
 # Variable interpolation in a template
 class Variable < Node

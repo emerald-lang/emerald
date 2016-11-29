@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'treetop'
-require_relative 'BooleanExpr'
+require_relative 'boolean_expr'
 
 # A boolean expression with one child
 class UnaryExpr < BooleanExpr
