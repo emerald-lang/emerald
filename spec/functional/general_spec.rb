@@ -117,10 +117,10 @@ describe Emerald do
         convert(
           context: {},
           input: <<~EMR,
-            h1#something test
+            h1#some-id_ test
           EMR
         )
-      ).to eq('<h1 id="something">test</h1>')
+      ).to eq('<h1 id="some-id_">test</h1>')
     end
 
     it 'supports classes and ids' do

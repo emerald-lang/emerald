@@ -69,11 +69,11 @@ grammar Emerald
   end
 
   rule id_name
-    '#' name:([a-zA-Z]+)
+    '#' name:([a-zA-Z_\-]+)
   end
 
   rule class_name
-    '.' name:([a-zA-Z]+)
+    '.' name:([a-zA-Z_\-]+)
   end
 
   rule attr_list
