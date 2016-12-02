@@ -18,11 +18,34 @@ class TagStatement < Node
       closing_tag(context)
   end
 
+  def class_attribute
+    unless classes.empty?
+      class_names = classes
+        .elements
+        .map{ |c| c.name.text_value }
+        .join(' ')
+
+      " class=\"#{class_names}\""
+    else
+      ''
+    end
+  end
+
+  def id_attribute
+    unless identifier.empty?
+      " id=\"#{identifier.name.text_value}\""
+    else
+      ''
+    end
+  end
+
   def opening_tag(context)
-    "<#{elements[0].text_value}" +
+    "<#{tag.text_value}" +
+      id_attribute +
+      class_attribute +
       (
-        if !elements[3].empty?
-          elements[3].to_html(context)
+        if !attributes.empty?
+          ' ' + attributes.to_html(context)
         else
           ''
         end
@@ -30,6 +53,6 @@ class TagStatement < Node
   end
 
   def closing_tag(_context)
-    "</#{elements[0].text_value}>"
+    "</#{tag.text_value}>"
   end
 end
