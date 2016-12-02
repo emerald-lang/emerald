@@ -134,4 +134,15 @@ describe Emerald do
       ).to eq('<h1 id="a" class="b c">test</h1>')
     end
   end
+
+  it 'self-closes void tags' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          img
+        EMR
+      )
+    ).to eq('<img />')
+  end
 end
