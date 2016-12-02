@@ -88,4 +88,61 @@ describe Emerald do
       )
     ).to eq('<!-- test --> <h1>test</h1>')
   end
+
+  context 'inline identifiers' do
+    it 'converts classes' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            h1.something test
+          EMR
+        )
+      ).to eq('<h1 class="something">test</h1>')
+    end
+
+    it 'converts multiple classes' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            h1.a.b test
+          EMR
+        )
+      ).to eq('<h1 class="a b">test</h1>')
+    end
+
+    it 'supports ids' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            h1#something test
+          EMR
+        )
+      ).to eq('<h1 id="something">test</h1>')
+    end
+
+    it 'supports classes and ids' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            h1#a.b.c test
+          EMR
+        )
+      ).to eq('<h1 id="a" class="b c">test</h1>')
+    end
+  end
+
+  it 'self-closes void tags' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          img
+        EMR
+      )
+    ).to eq('<img />')
+  end
 end

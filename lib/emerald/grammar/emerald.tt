@@ -65,7 +65,15 @@ grammar Emerald
   end
 
   rule tag_statement
-    tag space* body:text_content? attr_list? <TagStatement>
+    tag identifier:id_name? classes:class_name* space* body:text_content? attributes:attr_list? <TagStatement>
+  end
+
+  rule id_name
+    '#' name:([a-zA-Z]+)
+  end
+
+  rule class_name
+    '.' name:([a-zA-Z]+)
   end
 
   rule attr_list
