@@ -10,6 +10,7 @@ class VariableName < BooleanExpr
     text_value
       .split('.')
       .reduce(context) do |ctx, name|
+        next nil if ctx.nil?
         ctx[name] || ctx[name.to_sym] || nil
       end
   end

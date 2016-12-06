@@ -31,6 +31,8 @@ class Each < BaseScopeFn
           body.to_html(new_ctx)
         end
         .join("\n")
+    elsif vars.nil?
+      ''
     else
       raise 'bad variable type :('
     end
