@@ -21,6 +21,7 @@ bundle exec rake test
 # Todo:
 ### General
 - [x] Design final logo
+- [ ] Fix final newline compile error bug.
 
 ### Emerald
 #### Design

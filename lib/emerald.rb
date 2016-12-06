@@ -7,6 +7,7 @@
 #
 require 'emerald/version'
 
+require 'json'
 require 'thor'
 require 'htmlbeautifier'
 
