@@ -145,4 +145,55 @@ describe Emerald do
       )
     ).to eq('<img />')
   end
+
+  it 'supports styles base rule' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          styles
+            "css/main.css"
+            "css/footer.css"
+        EMR
+      )
+    ).to eq("<link rel='stylesheet' href=\"css/main.css\" /> <link rel='stylesheet' href=\"css/footer.css\" />")
+  end
+
+  it 'supports styles attribute list rule' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          styles
+            href "css/main.css" type "text/css"
+            href "css/footer.css" type "text/css"
+        EMR
+      )
+    ).to eq("<link href='css/main.css' type='text/css' /><link href='css/footer.css' type='text/css' />")
+  end
+
+  it 'supports attribute style list declaration for one meta tag' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          metas
+            name "test-name" content "test-content"
+        EMR
+      )
+    ).to eq("<meta name='test-name' content='test-content' />")
+  end
+
+  it 'supports attribute style list for multiple meta tags' do
+    expect(
+      convert(
+        context: {},
+        input: <<~EMR,
+          metas
+            name "test-name" content "test-content"
+            name "test-name-2" content "test-content-2"
+        EMR
+      )
+    ).to eq("<meta name='test-name' content='test-content' /><meta name='test-name-2' content='test-content-2' />")
+  end
 end

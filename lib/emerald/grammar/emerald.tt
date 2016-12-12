@@ -28,7 +28,9 @@ grammar Emerald
 
   # Rule for keyword list (metas, scripts, styles)
   rule list
-    keyword newline lbrace newline (inline_literal_string newline)+ rbrace newline <List>
+    keyword newline lbrace newline
+    (inline_literal_string newline / (attr space+ inline_literal_string space*)+ newline)+
+    rbrace newline <List>
   end
 
   # Single line and multiline comments
