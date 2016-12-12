@@ -33,9 +33,9 @@ class List < Node
       end
 
       case keyword
-      when 'metas' then output += "<meta #{temp} />"
+      when 'metas' then output += "<meta #{temp} >"
       when 'styles' then output += "<link #{temp} />"
-      when 'script' then output += "<script #{temp} />"
+      when 'script' then output += "<script #{temp} ></script>"
       end
     end
     output

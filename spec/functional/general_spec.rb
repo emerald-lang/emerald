@@ -181,7 +181,7 @@ describe Emerald do
             name "test-name" content "test-content"
         EMR
       )
-    ).to eq("<meta name='test-name' content='test-content' />")
+    ).to eq("<meta name='test-name' content='test-content' >")
   end
 
   it 'supports attribute style list for multiple meta tags' do
@@ -194,6 +194,6 @@ describe Emerald do
             name "test-name-2" content "test-content-2"
         EMR
       )
-    ).to eq("<meta name='test-name' content='test-content' /><meta name='test-name-2' content='test-content-2' />")
+    ).to eq("<meta name='test-name' content='test-content' ><meta name='test-name-2' content='test-content-2' >")
   end
 end
