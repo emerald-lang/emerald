@@ -174,7 +174,7 @@ describe Emerald do
               src "images/nav/contact.png"
           EMR
         )
-      ).to eq("<img src='images/nav/home.png'/><img src='images/nav/about.png'/><img src='images/nav/blog.png'/><img src='images/nav/contact.png'/>")
+      ).to eq("<img src='images/nav/home.png'/> <img src='images/nav/about.png'/> <img src='images/nav/blog.png'/> <img src='images/nav/contact.png'/>")
     end
 
     it 'supports \'scripts\' special rule' do
@@ -200,7 +200,7 @@ describe Emerald do
               type "text/javascript" src "js/main.js"
           EMR
         )
-      ).to eq("<script type='text/javascript' src='vendor/jquery.js'></script><script type='text/javascript' src='js/main.js'></script>")
+      ).to eq("<script type='text/javascript' src='vendor/jquery.js'></script> <script type='text/javascript' src='js/main.js'></script>")
     end
 
     it 'supports \'styles\' special rule' do
@@ -226,7 +226,7 @@ describe Emerald do
               href "css/footer.css" type "text/css"
           EMR
         )
-      ).to eq("<link href='css/main.css' type='text/css'/><link href='css/footer.css' type='text/css'/>")
+      ).to eq("<link href='css/main.css' type='text/css'/> <link href='css/footer.css' type='text/css'/>")
     end
 
     it 'supports \'metas\' base rule' do
@@ -239,7 +239,7 @@ describe Emerald do
               name "test-name-2" content "test-content-2"
           EMR
         )
-      ).to eq("<meta name='test-name' content='test-content'><meta name='test-name-2' content='test-content-2'>")
+      ).to eq("<meta name='test-name' content='test-content'> <meta name='test-name-2' content='test-content-2'>")
     end
   end
 end

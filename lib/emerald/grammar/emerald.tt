@@ -26,14 +26,14 @@ grammar Emerald
     (tag_statement / comment) newline <Line>
   end
 
-  # Base rule for keyword list
+  # Special rule for list
   rule list_special
     special_keyword newline lbrace newline
     (inline_literal_string newline)+
     rbrace newline <ListSpecial>
   end
 
-  # Base rule for keyword list (metas, scripts, styles)
+  # Base rule for list
   rule list_base
     base_keyword newline lbrace newline
     ((attr space+ inline_literal_string space*)+ newline)+

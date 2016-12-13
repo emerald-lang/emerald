@@ -7,21 +7,17 @@ require_relative 'node'
 # Base rule for lists of images, metas, styles, and scripts
 class ListBase < Node
   def to_html(context)
-    output = ''
-    elements[4].elements.each do |e|
-      temp = ''
-      e.elements[0].elements.each do |j|
-        temp += " #{j.elements[0].text_value}='#{j.elements[2].to_html(context)}'"
-      end
+    elements[4].elements.map do |e|
+      attrs = e.elements[0].elements.map do |j|
+        "#{j.elements[0].text_value}='#{j.elements[2].to_html(context)}'"
+      end.join(' ')
 
       case elements[0].text_value
-      when 'images' then output += "<img #{temp}/>"
-      when 'metas'  then output += "<meta #{temp}>"
-      when 'styles' then output += "<link #{temp}/>"
-      when 'scripts' then output += "<script #{temp}></script>"
+      when 'images'  then "<img #{attrs}/>"
+      when 'metas'   then "<meta #{attrs}>"
+      when 'styles'  then "<link #{attrs}/>"
+      when 'scripts' then "<script #{attrs}></script>"
       end
-    end
-
-    output
+    end.join("\n")
   end
 end
