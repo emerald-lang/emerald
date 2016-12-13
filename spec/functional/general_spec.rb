@@ -146,54 +146,100 @@ describe Emerald do
     ).to eq('<img />')
   end
 
-  it 'supports styles base rule' do
-    expect(
-      convert(
-        context: {},
-        input: <<~EMR,
-          styles
-            "css/main.css"
-            "css/footer.css"
-        EMR
-      )
-    ).to eq("<link rel='stylesheet' href=\"css/main.css\" /> <link rel='stylesheet' href=\"css/footer.css\" />")
-  end
+  context 'list rules' do
+    it 'supports \'images\' special rule' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            images
+              "images/nav/home.png"
+              "images/nav/about.png"
+              "images/nav/blog.png"
+              "images/nav/contact.png"
+          EMR
+        )
+      ).to eq("<img src=\"images/nav/home.png\"/> <img src=\"images/nav/about.png\"/> <img src=\"images/nav/blog.png\"/> <img src=\"images/nav/contact.png\"/>")
+    end
 
-  it 'supports styles attribute list rule' do
-    expect(
-      convert(
-        context: {},
-        input: <<~EMR,
-          styles
-            href "css/main.css" type "text/css"
-            href "css/footer.css" type "text/css"
-        EMR
-      )
-    ).to eq("<link href='css/main.css' type='text/css' /><link href='css/footer.css' type='text/css' />")
-  end
+    it 'supports \'images\' base rule' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            images
+              src "images/nav/home.png"
+              src "images/nav/about.png"
+              src "images/nav/blog.png"
+              src "images/nav/contact.png"
+          EMR
+        )
+      ).to eq("<img src='images/nav/home.png'/><img src='images/nav/about.png'/><img src='images/nav/blog.png'/><img src='images/nav/contact.png'/>")
+    end
 
-  it 'supports attribute style list declaration for one meta tag' do
-    expect(
-      convert(
-        context: {},
-        input: <<~EMR,
-          metas
-            name "test-name" content "test-content"
-        EMR
-      )
-    ).to eq("<meta name='test-name' content='test-content' >")
-  end
+    it 'supports \'scripts\' special rule' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            scripts
+              "vendor/jquery.js"
+              "js/main.js"
+          EMR
+        )
+      ).to eq("<script type='text/javascript' src=\"vendor/jquery.js\"></script> <script type='text/javascript' src=\"js/main.js\"></script>")
+    end
 
-  it 'supports attribute style list for multiple meta tags' do
-    expect(
-      convert(
-        context: {},
-        input: <<~EMR,
-          metas
-            name "test-name" content "test-content"
-            name "test-name-2" content "test-content-2"
-        EMR
-      )
-    ).to eq("<meta name='test-name' content='test-content' ><meta name='test-name-2' content='test-content-2' >")
+    it 'supports \'scripts\' base rule' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            scripts
+              type "text/javascript" src "vendor/jquery.js"
+              type "text/javascript" src "js/main.js"
+          EMR
+        )
+      ).to eq("<script type='text/javascript' src='vendor/jquery.js'></script><script type='text/javascript' src='js/main.js'></script>")
+    end
+
+    it 'supports \'styles\' special rule' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            styles
+              "css/main.css"
+              "css/footer.css"
+          EMR
+        )
+      ).to eq("<link rel='stylesheet' href=\"css/main.css\"/> <link rel='stylesheet' href=\"css/footer.css\"/>")
+    end
+
+    it 'supports \'styles\' base rule' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            styles
+              href "css/main.css" type "text/css"
+              href "css/footer.css" type "text/css"
+          EMR
+        )
+      ).to eq("<link href='css/main.css' type='text/css'/><link href='css/footer.css' type='text/css'/>")
+    end
+
+    it 'supports \'metas\' base rule' do
+      expect(
+        convert(
+          context: {},
+          input: <<~EMR,
+            metas
+              name "test-name" content "test-content"
+              name "test-name-2" content "test-content-2"
+          EMR
+        )
+      ).to eq("<meta name='test-name' content='test-content'><meta name='test-name-2' content='test-content-2'>")
+    end
   end
 end

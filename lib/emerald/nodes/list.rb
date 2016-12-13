@@ -4,40 +4,15 @@
 require 'treetop'
 require_relative 'node'
 
-# Rule for lists of styles, scripts, and metas
-class List < Node
-  def to_html(context)
-    if elements[4].elements[0].text_value.match(/^\"(.*?)\"/)
-      base_list_rule(elements[0].text_value)
-    else
-      list_attributes_rule(context, elements[0].text_value)
-    end
-  end
-
-  def base_list_rule(keyword)
+# Special rule for lists of images, styles, and scripts
+class ListSpecial < Node
+  def to_html(_context)
     elements[4].elements.map do |e|
-      case keyword
-      when 'styles'  then "<link rel='stylesheet' href=#{e.text_value.strip} />"
+      case elements[0].text_value
+      when 'images'  then "<img src=#{e.text_value.strip}/>"
+      when 'styles'  then "<link rel='stylesheet' href=#{e.text_value.strip}/>"
       when 'scripts' then "<script type='text/javascript' src=#{e.text_value.strip}></script>"
-      when 'metas' then ''
       end
     end.join("\n")
-  end
-
-  def list_attributes_rule(context, keyword)
-    output = ''
-    elements[4].elements.each do |e|
-      temp = ''
-      e.elements[0].elements.each do |j|
-        temp += "#{j.elements[0].text_value}='#{j.elements[2].to_html(context)}' "
-      end
-
-      case keyword
-      when 'metas' then output += "<meta #{temp} >"
-      when 'styles' then output += "<link #{temp} />"
-      when 'script' then output += "<script #{temp} ></script>"
-      end
-    end
-    output
   end
 end
