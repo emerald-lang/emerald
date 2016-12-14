@@ -5,14 +5,14 @@ require 'treetop'
 require_relative 'node'
 
 # Base rule for lists of images, metas, styles, and scripts
-class ListBase < Node
+class PairList < Node
   def to_html(context)
-    elements[4].elements.map do |e|
-      attrs = e.elements[0].elements.map do |j|
-        "#{j.elements[0].text_value}='#{j.elements[2].to_html(context)}'"
+    list_items.elements.map do |e|
+      attrs = e.pairs.elements.map do |j|
+        "#{j.attr.text_value}=\"#{j.literal.to_html(context)}\""
       end.join(' ')
 
-      case elements[0].text_value
+      case keyword.text_value
       when 'images'  then "<img #{attrs}/>"
       when 'metas'   then "<meta #{attrs}>"
       when 'styles'  then "<link #{attrs}/>"

@@ -8,11 +8,9 @@ grammar Emerald
   include Variables
 
   rule main
-    (scope / list_base / list_special / nested / line / comment)+ <Root>
+    (scope / pair_list / value_list / nested / line / comment)+ <Root>
   end
 
-  # A nested statement is a tag statement followed by a newline and an
-  # a block scoped by braces.
   rule nested
     tag_statement newline lbrace newline main rbrace newline <Nested>
   end
@@ -21,26 +19,22 @@ grammar Emerald
     fn:scope_fn lbrace newline body:main rbrace newline <Scope>
   end
 
-  # Comment has optional newline, so it's not included in the first sequence
   rule line
     (tag_statement / comment) newline <Line>
   end
 
-  # Special rule for list
-  rule list_special
-    special_keyword newline lbrace newline
-    (inline_literal_string newline)+
-    rbrace newline <ListSpecial>
+  rule value_list
+    keyword:special_keyword newline lbrace newline
+    list_items:(literal:inline_literal_string newline)+
+    rbrace newline <ValueList>
   end
 
-  # Base rule for list
-  rule list_base
-    base_keyword newline lbrace newline
-    ((attr space+ inline_literal_string space*)+ newline)+
-    rbrace newline <ListBase>
+  rule pair_list
+    keyword:base_keyword newline lbrace newline
+    list_items:(pairs:(attr:attr space+ literal:inline_literal_string space*)+ newline)+
+    rbrace newline <PairList>
   end
 
-  # Single line and multiline comments
   rule comment
     space* '*' space* text_content <Comment>
   end
