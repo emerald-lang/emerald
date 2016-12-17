@@ -49,9 +49,11 @@ describe Emerald::PreProcessor do
   output = walk(__dir__ + '/emerald/', true)
   expected = walk(__dir__ + '/intermediate/', false)
 
-  output.each do |key, value|
-    it "works for #{key}" do
-      expect(value).to eq(expected[key])
+  context 'general tests' do
+    output.each do |key, value|
+      it "works for #{key}" do
+        expect(value).to eq(expected[key])
+      end
     end
   end
 
