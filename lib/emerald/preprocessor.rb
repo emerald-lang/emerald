@@ -45,7 +45,7 @@ module Emerald
         check_new_indent(new_indent)
         @output += remove_indent_whitespace(line)
         @source_map[@output.lines.length] = {
-          source_line: line_number
+          source_line: line_number + 1
         }
         check_and_enter_literal(line)
       end

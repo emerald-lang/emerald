@@ -39,11 +39,11 @@ module Grammar
 
       lines = @source.split(/\n/)
       LINES_BEFORE.downto(1).each do |i|
-        messages << '    ' + lines[@line_number - i] if lines[@line_number - i]
+        messages << '    ' + lines[@line_number - i - 1] if lines[@line_number - i - 1]
       end
-      messages << '>>> ' + lines[@line_number]
+      messages << '>>> ' + lines[@line_number - 1]
       1.upto(LINES_AFTER).each do |i|
-        messages << '    ' + lines[@line_number + i] if lines[@line_number + i]
+        messages << '    ' + lines[@line_number + i - 1] if lines[@line_number + i - 1]
       end
 
       messages.join("\n")

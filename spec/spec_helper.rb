@@ -7,7 +7,7 @@ def whitespace_agnostic(str)
 end
 
 def convert(context:, input:, preserve_whitespace: false)
-  output = Emerald.convert(input, context, debug: true)
+  output = Emerald.convert(input, context)
   unless preserve_whitespace
     whitespace_agnostic output
   else
@@ -16,10 +16,15 @@ def convert(context:, input:, preserve_whitespace: false)
 end
 
 def preprocess(input, preserve_whitespace: false)
-  output = Emerald::PreProcessor.new.process_emerald(input)
+  output, _ = Emerald::PreProcessor.new.process_emerald(input)
   unless preserve_whitespace
     whitespace_agnostic output
   else
     output
   end
+end
+
+def source_map(input)
+  _, map = Emerald::PreProcessor.new.process_emerald(input)
+  map
 end
