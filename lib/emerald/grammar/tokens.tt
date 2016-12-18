@@ -3,8 +3,12 @@
 # nodes) for the Emerald language.
 #
 grammar Tokens
-  rule keyword
-    'metas' / 'scripts' / 'styles'
+  rule base_keyword
+    'images' / 'metas' / 'scripts' / 'styles'
+  end
+
+  rule special_keyword
+    'images' / 'scripts' / 'styles'
   end
 
   rule tag
