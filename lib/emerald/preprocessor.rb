@@ -23,12 +23,13 @@ module Emerald
       @b_count = 0
       @output = ''
       @encoder = HTMLEntities.new
+      @source_map = {}
     end
 
     # Process the emerald to remove indentation and replace with brace convention
     # for an easier time parsing with context free grammar
     def process_emerald(input)
-      input.each_line do |line|
+      input.each_line.with_index do |line, line_number|
         if @in_literal
           if line[0...-1].empty?
             new_indent = @current_indent
@@ -43,12 +44,15 @@ module Emerald
 
         check_new_indent(new_indent)
         @output += remove_indent_whitespace(line)
+        @source_map[@output.lines.length] = {
+          source_line: line_number + 1
+        }
         check_and_enter_literal(line)
       end
 
       close_tags(0)
 
-      @output
+      [@output, @source_map]
     end
 
     # Compares the value of the new_indent with the old indentation.

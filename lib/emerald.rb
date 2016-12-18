@@ -21,35 +21,46 @@ module Emerald
   class CLI < Thor
     class_option :beautify, :type => :boolean, :aliases => 'b'
 
+    def self.exit_on_failure?
+      true
+    end
+
     # Main emerald option, processes the emerald file, generates an abstract
     # syntax tree based on the output from the preprocessing.
     desc 'process', 'Process a file or folder (recursively) and converts it to emerald.'
     option :output, aliases: 'o'
-    option :verbose, :type => :boolean, :aliases => 'v'
     def process(file_name, context_file_name = nil)
-      output_name = options[:output] || file_name
-      context =
-        if context_file_name
-          JSON.parse(IO.read(context_file_name))
-        else
-          {}
-        end
+      begin
+        output_name = options[:output] || file_name
+        context =
+          if context_file_name
+            JSON.parse(IO.read(context_file_name))
+          else
+            {}
+          end
 
-      input = IO.read(file_name)
+        input = IO.read(file_name)
 
-      Emerald.write_html(
-        Emerald.convert(input, context, options[:verbose]),
-        output_name,
-        options['beautify']
-      )
+        Emerald.write_html(
+          Emerald.convert(input, context),
+          output_name,
+          options['beautify']
+        )
+      rescue Grammar::PreProcessorError, Grammar::ParserError => e
+        raise Thor::Error, e.message
+      end
     end
   end
 
-  def self.convert(input, context = {}, debug = false)
-    preprocessed_emerald = PreProcessor.new.process_emerald(input)
-    abstract_syntax_tree = Grammar.parse_grammar(preprocessed_emerald, debug: debug)
+  def self.convert(input, context = {})
+    preprocessed_emerald, source_map = PreProcessor.new.process_emerald(input)
+    abstract_syntax_tree = Grammar.parse_grammar(
+      preprocessed_emerald,
+      input,
+      source_map
+    )
 
-    abstract_syntax_tree.to_html(context)
+    return abstract_syntax_tree.to_html(context)
   end
 
   # Write html to file and beautify it if the beautify global option is set to

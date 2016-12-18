@@ -26,7 +26,7 @@ def get_new_hash(hash, file, new_path)
   if File.directory?(new_path)
     walk(new_path, true, hash)
   else
-    hash[file[/[^\.]+/]] = Emerald::PreProcessor.new.process_emerald(IO.read(new_path))
+    hash[file[/[^\.]+/]], _ = Emerald::PreProcessor.new.process_emerald(IO.read(new_path))
   end
 
   hash
@@ -54,6 +54,20 @@ describe Emerald::PreProcessor do
       it "works for #{key}" do
         expect(value).to eq(expected[key])
       end
+    end
+  end
+
+  context 'source maps' do
+    it 'maps lines from output to input' do
+      input = <<~EMR
+        div
+          h1 Test
+      EMR
+      map = {
+        1 => {source_line: 1},
+        3 => {source_line: 2}
+      }
+      expect(source_map(input)).to eq(map)
     end
   end
 
