@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'emerald/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'emerald'
+  spec.name          = 'emerald-lang'
   spec.version       = Emerald::VERSION
   spec.authors       = ['Andrew McBurney', 'Dave Pagurek', 'Yu Chen Hu']
   spec.email         = ['andrewrobertmcburney@gmail.com', 'davepagurek@gmail.com', 'me@yuchenhou.com']
