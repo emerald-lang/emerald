@@ -1,13 +1,32 @@
 <img src='emerald-logo.png' alt='Drawing' width='600px' />
 - A language agnostic templating engine designed with event driven applications in mind.
 
+# Usage
+```
+bin/emerald process some_html_file --beautify
+```
+
+# Setup
+```
+bundle install
+bundle exec rake setup
+```
+
+# Running tests
+```
+bundle exec rake test
+```
+
+
 # Todo:
 ### General
 - [x] Design final logo
+- [ ] Fix final newline compile error bug.
 
 ### Emerald
 #### Design
 - [x] Add 'thor' gem for making a command line interface.
+- [ ] Add component like feature, which lets user define their own component keywords, and the data they expect to pass in. Have an option to specify default parameters for components.
 
 #### Github
 - [x] Add continuous integration which runs unit tests to ensure nothing breaks when a new pull request is made.

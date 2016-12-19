@@ -1,0 +1,31 @@
+! doctype 5
+* emerald sample
+html
+{
+head
+{
+title Title of an article
+styles
+{
+"css/main.css"
+"css/styles.css"
+}
+}
+body
+{
+header
+{
+section(id="test" class="main-text")
+{
+h1 This is some sample text.
+}
+}
+footer
+{
+section
+{
+div <span id="title"></span> - <span id="info"></span>
+}
+}
+}
+}

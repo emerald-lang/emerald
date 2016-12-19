@@ -1,6 +1,11 @@
 .DS_Store
-target
-project/target
-
-# Bash File for testing
-test.sh
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+bin/pre-commit

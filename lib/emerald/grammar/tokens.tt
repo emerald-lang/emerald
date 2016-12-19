@@ -1,0 +1,57 @@
+#
+# Context free grammar of tokens (terminal
+# nodes) for the Emerald language.
+#
+grammar Tokens
+  rule base_keyword
+    'images' / 'metas' / 'scripts' / 'styles'
+  end
+
+  rule special_keyword
+    'images' / 'scripts' / 'styles'
+  end
+
+  rule tag
+    [a-z] [a-z1-9]*
+  end
+
+  rule attr
+    [a-z\-_]+
+  end
+
+  rule event
+    'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload'
+  end
+
+  rule equals
+    '='
+  end
+
+  rule comma
+    ','
+  end
+
+  rule lparen
+    '('
+  end
+
+  rule rparen
+    ')'
+  end
+
+  rule lbrace
+    "{"
+  end
+
+  rule rbrace
+    "}"
+  end
+
+  rule space
+    ' '
+  end
+
+  rule newline
+    [\n] <Node>
+  end
+end

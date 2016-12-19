@@ -1,0 +1,12 @@
+html
+  head
+    title Attributes Example
+
+  body
+    section Attributes follow parentheses. (
+      id    "header"
+      class "main-text"
+    )
+
+  footer
+    p Copyright Emerald Language 2016

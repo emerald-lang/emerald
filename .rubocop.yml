@@ -1,0 +1,17 @@
+Metrics/LineLength:
+  Max: 120
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 30
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false

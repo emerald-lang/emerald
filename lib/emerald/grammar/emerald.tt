@@ -1,0 +1,93 @@
+#
+# Context free grammar for the Emerald language.
+# Emerald: a preprocessor for html5.
+#
+grammar Emerald
+  include Tokens
+  include Scopes
+  include Variables
+
+  rule main
+    (scope / pair_list / value_list / nested / line / comment)+ <Root>
+  end
+
+  rule nested
+    tag_statement newline lbrace newline main rbrace newline <Nested>
+  end
+
+  rule scope
+    fn:scope_fn lbrace newline body:main rbrace newline <Scope>
+  end
+
+  rule line
+    (tag_statement / comment) newline <Line>
+  end
+
+  rule value_list
+    keyword:special_keyword newline lbrace newline
+    list_items:(literal:inline_literal_string newline)+
+    rbrace newline <ValueList>
+  end
+
+  rule pair_list
+    keyword:base_keyword newline lbrace newline
+    list_items:(pairs:(attr:attr space+ literal:inline_literal_string space*)+ newline)+
+    rbrace newline <PairList>
+  end
+
+  rule comment
+    space* '*' space* text_content <Comment>
+  end
+
+  rule text_content
+    multiline_literal / multiline_templateless_literal / inline_literal
+  end
+
+  rule multiline_literal
+    "->" space* newline
+    body:(variable / escaped / !'$' .)*
+    "$" <TextLiteral>
+  end
+
+  rule multiline_templateless_literal
+    ("=>" / "~>") space* newline
+    body:(escaped / !'$' .)*
+    "$" <TextLiteral>
+  end
+
+  rule inline_literal
+    body:( variable / escaped / !lparen !newline . )* <TextLiteral>
+  end
+
+  rule inline_literal_string
+    '"' body:( variable / escaped / !'"' . )* '"' <TextLiteral>
+  end
+
+  rule escaped
+    "\\" .
+  end
+
+  rule tag_statement
+    tag identifier:id_name? classes:class_name* space* body:text_content? attributes:attr_list? <TagStatement>
+  end
+
+  rule id_name
+    '#' name:([a-zA-Z_\-]+)
+  end
+
+  rule class_name
+    '.' name:([a-zA-Z_\-]+)
+  end
+
+  rule attr_list
+    lparen newline lbrace newline attributes rbrace newline rparen <AttributeList>
+  end
+
+  rule attributes
+    attribute* <Attributes>
+  end
+
+  rule attribute
+    attr space* inline_literal_string newline
+  end
+end
