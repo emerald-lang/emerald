@@ -3,16 +3,25 @@
 
 # Usage
 ```
-bin/emerald process some_html_file --beautify
+gem install emerald-lang
+emerald process some_html_file --beautify
 ```
 
-# Setup
+# Contributing
+## Setup
 ```
 bundle install
 bundle exec rake setup
 ```
 
-# Running tests
+## Running tests
 ```
 bundle exec rake test
+```
+
+## Pushing to Rubygems
+Update the `EMERALD_VERSION` constant, then:
+
+```
+rake release
 ```
