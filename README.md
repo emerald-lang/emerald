@@ -18,7 +18,6 @@ bundle exec rake setup
 ```
 bundle exec rake test
 ```
-
 ## Pushing to Rubygems
 Update the `EMERALD_VERSION` constant, then:
 
