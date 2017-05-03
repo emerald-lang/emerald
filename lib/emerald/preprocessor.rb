@@ -33,11 +33,11 @@ module Emerald
         if @in_literal
           if line[0...-1].empty?
             new_indent = @current_indent
-            line = " "*@current_indent + "\n"
+            line = " " * @current_indent + "\n"
           else
             new_indent = line.length - line.lstrip.length
           end
-        else 
+        else
           next if line.lstrip.empty?
           new_indent = line.length - line.lstrip.length
         end

@@ -1,5 +1,6 @@
 /**
- * Emerald - Language agnostic templating engine
+ * Emerald, the language agnostic templating engine.
+ * Copyright 2016, Emerald Language (MIT)
  */
 
 #include <cstring>

@@ -8,40 +8,86 @@
  * Protected constructor for Singleton Design Pattern
  */
 PreProcessor::PreProcessor() {
-  prev_indent = 0;
+  in_literal = false;
+  templateless_literal = false;
+  current_indent = 0;
   unclosed_indents = 0;
+  output = "";
 }
 
 /**
  * PreProcess text before it's parsed by context-free PEG grammar
  */
 std::vector<std::string> PreProcessor::process(std::vector<std::string> lines) {
+  int new_indent;
 
-  // Add 'INDENT' and 'DEDENT' tokens based on previous indentation values
-  for (int it = 0; it < lines.size(); it++) {
-    std::string line = lines[it];
-    std::string::size_type curr_indent = line.find_first_not_of(" \t");
-
-    // Modify current line text based on indentation
-    if (curr_indent != std::string::npos && curr_indent > prev_indent) {
-      unclosed_indents++;
-      lines.insert(lines.begin() + it, std::to_string(curr_indent) + " INDENT");
-      it ++;
-    } else if (curr_indent != std::string::npos && curr_indent < prev_indent) {
-      lines.insert(lines.begin() + it, std::to_string(curr_indent) + " DEDENT");
-      unclosed_indents--;
+  for (std::string & line : lines) {
+    if (in_literal) {
+    } else {
     }
 
-    // Changes the current indent if not empty line
-    if (curr_indent != std::string::npos)
-      prev_indent = curr_indent;
+    check_new_indent(new_indent);
   }
+}
 
-  // Close off any outstanding indents after preprocessor completes its pass
-  for (int i = 0; i < unclosed_indents; i++)
-    lines.push_back("0 DEDENT"); // need better alternative
+/**
+ * Compares the value of the new_indent with the old indentation. If the new
+ * indentation is greater than the current one - open tags, else close tags
+ */
+void PreProcessor::check_new_indent(int new_indent) {
+  if (new_indent > current_indent)
+    open_tags(new_indent);
+  else if (new_indent < current_indent)
+    close_tags(new_indent);
+}
 
-  // Return vector of modified lines
-  return lines;
+/**
+ *
+ */
+void PreProcessor::open_tags(int new_indent) {
+  if (!in_literal) {
+    output += "{\n";
+    unclosed_indents++;
+    current_indent = new_indent;
+  }
+}
 
+/**
+ *
+ */
+void PreProcessor::close_tags(int new_indent) {
+  if (in_literal)
+    close_literal(new_indent);
+  else
+    close_entered_tags(new_indent);
+
+  current_indent = new_indent;
+}
+
+/**
+ * Append closing braces if in literal and new indent is less than old one
+ */
+void PreProcessor::close_literal(int new_indent) {
+  output += "$\n";
+  in_literal = false;
+
+}
+
+/**
+ * Append closing braces if not in literal and new indent is less than old one
+ */
+void PreProcessor::close_entered_tags(int new_indent) {
+}
+
+/**
+ * Crop off only Emerald indent whitespace to preserve whitespace in the
+ * literal. Since $ is the end character, we need to escape it in the literal.
+ */
+void PreProcessor::remove_indent_whitespace(std::string line) {
+}
+
+/**
+ *
+ */
+void PreProcessor::check_and_enter_literal(std::string line) {
 }
