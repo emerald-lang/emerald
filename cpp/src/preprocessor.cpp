@@ -27,16 +27,21 @@ std::vector<std::string> PreProcessor::process(std::vector<std::string> lines) {
 
   for (std::string & line : lines) {
     if (in_literal) {
+      // To accommodate empty lines in multiline literals which are part of the literal
+      // TODO: link to test case
       if () {
-        // still need to do this bit
+        new_indent = current_indent;
       } else {
         new_indent = line.length - boost::trim_left_copy(line);
       }
     } else {
+      // TODO: next if
       new_indent = line.length - boost::trim_left_copy(line);
     }
 
     check_new_indent(new_indent);
+
+    // TODO: source map
 
     output += remove_indent_whitespace(line);
     check_and_enter_literal(line);
@@ -94,7 +99,7 @@ void PreProcessor::close_literal(const int& new_indent) {
 /**
  * Append closing braces if not in literal and new indent is less than old one
  */
-void PreProcessor::close_entered_tags(int new_indent) {
+void PreProcessor::close_entered_tags(const int& new_indent) {
   for (int i = 1; i < (current_indent - new_indent) / 2; i++) {
     output += "}\n";
     unclosed_indents--;
@@ -112,8 +117,7 @@ std::string PreProcessor::remove_indent_whitespace(std::string line) {
     if (templateless_literal)
       boost::replace_all(cropped, "\\", "\\\\");
 
-    if (!preserve_html_literal)
-      cropped = htmlentities.encode(cropped);
+    // TODO: need to do htmlentities
 
     return boost::replace_all_copy(cropped, "$", "\\$");
   } else {

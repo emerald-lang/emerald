@@ -1,7 +1,7 @@
 CXX = g++ -std=c++14
 CXXFLAGS = -Wall -O -g -stdlib=libc++
 OBJECTS = src/main.cpp src/grammar.cpp src/preprocessor.cpp
-LIBS = -L/usr/local/lib/ -lboost_system-mt
+LIBS = -I/usr/local/include -L/usr/local/lib
 EXEC = emerald
 
 ${EXEC} : ${OBJECTS}
