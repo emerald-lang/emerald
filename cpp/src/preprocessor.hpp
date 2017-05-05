@@ -1,6 +1,7 @@
 #ifndef PREPROCESSOR_H
 #define PREPROCESSOR_H
 
+#include <map>
 #include <string>
 
 /**
@@ -37,6 +38,7 @@ private:
   bool in_literal, templateless_literal, preserve_html_literal;
   int current_indent, unclosed_indents;
   std::string output;
+  std::map<int, int> source_map;
 };
 
 #endif // PREPROCESSOR_H

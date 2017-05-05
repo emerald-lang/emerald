@@ -29,14 +29,15 @@ std::vector<std::string> PreProcessor::process(std::vector<std::string> lines) {
     if (in_literal) {
       // To accommodate empty lines in multiline literals which are part of the literal
       // TODO: link to test case
-      if () {
+      if (line.substr(0, line.length() - 1).empty()) {
         new_indent = current_indent;
+        line = std::string(current_indent, ' ') + "\n";
       } else {
-        new_indent = line.length - boost::trim_left_copy(line);
+        new_indent = line.length() - boost::trim_left_copy(line);
       }
     } else {
-      // TODO: next if
-      new_indent = line.length - boost::trim_left_copy(line);
+      if (boost::trim_left_copy(line).empty()) continue;
+      new_indent = line.length() - boost::trim_left_copy(line);
     }
 
     check_new_indent(new_indent);
@@ -63,7 +64,7 @@ void PreProcessor::check_new_indent(const int& new_indent) {
 /**
  *
  */
-void PreProcessor::open_tags(int new_indent) {
+void PreProcessor::open_tags(const int& new_indent) {
   if (!in_literal) {
     output += "{\n";
     unclosed_indents++;
@@ -146,3 +147,4 @@ void PreProcessor::check_and_enter_literal(const std::string& line) {
     templateless_literal = true;
     preserve_html_literal = true;
   }
+}
