@@ -41,7 +41,7 @@ std::map<int, int> PreProcessor::get_source_map() {
 void PreProcessor::process(std::vector<std::string> lines) {
   // Append newline character to the end of each line
   for (std::string &line : lines) {
-    line = "\n" + line;
+    line = line + "\n";
   }
 
   int new_indent;
@@ -134,7 +134,7 @@ void PreProcessor::close_entered_tags(const int& new_indent) {
  */
 std::string PreProcessor::remove_indent_whitespace(std::string line) {
   if (in_literal) {
-    std::string cropped = line;
+    std::string cropped = line.substr(current_indent);
 
     if (templateless_literal)
       boost::replace_all(cropped, "\\", "\\\\");

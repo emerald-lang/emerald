@@ -4,6 +4,10 @@
 #include <vector>
 #include <boost/algorithm/string/join.hpp>
 
+std::string concat(const std::vector<std::string> &v) {
+  return boost::algorithm::join(v, "\n") + "\n";
+}
+
 TEST_CASE("source maps", "[preprocessor]") {
 
   SECTION("mapping lines from output to input") {
@@ -29,7 +33,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == boost::algorithm::join(output, "\n"));
+    REQUIRE(p.get_output() == concat(output));
   }
 
   // TODO: fix test
@@ -44,7 +48,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == boost::algorithm::join(output, "\n"));;
+    REQUIRE(p.get_output() == concat(output));
   }
 
   SECTION("skipping HTML entity encoding for ~> literals") {
@@ -58,7 +62,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == boost::algorithm::join(output, "\n"));;
+    REQUIRE(p.get_output() == concat(output));
   }
 
   SECTION("escaping dollar signs") {
@@ -72,7 +76,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == boost::algorithm::join(output, "\n"));;
+    REQUIRE(p.get_output() == concat(output));
   }
 
   SECTION("preserving empty lines") {
@@ -90,6 +94,6 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == boost::algorithm::join(output, "\n"));;
+    REQUIRE(p.get_output() == concat(output));
   }
 }
