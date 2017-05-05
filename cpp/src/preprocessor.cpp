@@ -11,18 +11,34 @@
 /**
  * Protected constructor for Singleton Design Pattern
  */
-PreProcessor::PreProcessor() {
+PreProcessor::PreProcessor(const std::vector<std::string> lines) {
   in_literal = false;
   templateless_literal = false;
   current_indent = 0;
   unclosed_indents = 0;
   output = "";
+
+  process(lines);
+}
+
+/**
+ * Returns processed output
+ */
+std::string PreProcessor::get_output() {
+  return output;
+}
+
+/**
+ * Returns source map of lines to line numbers for error logging
+ */
+std::map<int, int> PreProcessor::get_source_map() {
+  return source_map;
 }
 
 /**
  * PreProcess text before it's parsed by context-free PEG grammar
  */
-std::vector<std::string> PreProcessor::process(std::vector<std::string> lines) {
+void PreProcessor::process(std::vector<std::string> lines) {
   int new_indent;
 
   for (std::string & line : lines) {
@@ -33,11 +49,11 @@ std::vector<std::string> PreProcessor::process(std::vector<std::string> lines) {
         new_indent = current_indent;
         line = std::string(current_indent, ' ') + "\n";
       } else {
-        new_indent = line.length() - boost::trim_left_copy(line);
+        new_indent = line.length() - boost::trim_left_copy(line).length();
       }
     } else {
       if (boost::trim_left_copy(line).empty()) continue;
-      new_indent = line.length() - boost::trim_left_copy(line);
+      new_indent = line.length() - boost::trim_left_copy(line).length();
     }
 
     check_new_indent(new_indent);

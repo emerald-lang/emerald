@@ -31,7 +31,8 @@ int main(int argc, char** argv) {
       lines.push_back(line);
 
     // Preprocess the emerald source code
-    lines = PreProcessor::get_instance().process(lines);
+    PreProcessor processor(lines);
+    std::string output = processor.get_output();
 
     // Get parser member from singleton 'Grammar' class
     peg::parser parser = Grammar::get_instance().get_parser();

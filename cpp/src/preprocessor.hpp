@@ -11,22 +11,12 @@
 class PreProcessor {
 
 public:
-  static PreProcessor& get_instance() {
-    static PreProcessor instance;
-    return instance;
-  }
-
-  PreProcessor(PreProcessor const&)            = delete; // Copy constructor
-  PreProcessor& operator=(PreProcessor const&) = delete; // Copy assignment
-  PreProcessor(PreProcessor&&)                 = delete; // Move constructor
-  PreProcessor& operator=(PreProcessor&&)      = delete; // Move assignment
-
-  std::vector<std::string> process(std::vector<std::string>);
-
-protected:
-  PreProcessor();
+  PreProcessor(std::vector<std::string>);
+  std::string get_output();
+  std::map<int, int> get_source_map();
 
 private:
+  void process(std::vector<std::string>);
   void check_new_indent(const int&);
   void open_tags(const int&);
   void close_tags(const int&);
@@ -39,6 +29,7 @@ private:
   int current_indent, unclosed_indents;
   std::string output;
   std::map<int, int> source_map;
+
 };
 
 #endif // PREPROCESSOR_H
