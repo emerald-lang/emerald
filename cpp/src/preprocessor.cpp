@@ -46,7 +46,9 @@ void PreProcessor::process(std::vector<std::string> lines) {
 
   int new_indent;
 
-  for (std::string & line : lines) {
+  for (int line_number = 0; line_number < lines.size(); line_number++) {
+    std::string &line = lines[line_number];
+
     if (in_literal) {
       // To accommodate empty lines in multiline literals which are part of the literal
       // TODO: link to test case
@@ -62,10 +64,8 @@ void PreProcessor::process(std::vector<std::string> lines) {
     }
 
     check_new_indent(new_indent);
-
-    // TODO: source map
-
     output += remove_indent_whitespace(line);
+    source_map[count(output.begin(), output.end(), '\n')] = line_number+1;
     check_and_enter_literal(line);
   }
   close_tags(0);
