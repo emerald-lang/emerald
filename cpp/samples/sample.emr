@@ -1,0 +1,45 @@
+* Emerald Language
+
+doctype html
+
+html
+  head
+    styles
+      "css/main.css"
+      "css/vendor/bootstrap.min.css"
+
+    scripts
+      "js/script.js"
+      "js/other_script.js"
+
+    style
+      var black = #333
+      var blue = #0066ff
+
+  body
+    header
+      h1 Emerald
+      h2 An html5 markup language designed with event driven
+      applications in mind.
+
+    main
+      section
+        h1 Why use Emerald?
+        p Emerald allows you to scope events and styles to html
+        elements in an elegant, clean way.
+
+      figure
+        figcaption Here's an example of elements scoped in a
+        button here.
+
+        button Click me. (
+          click -> console.log("I was clicked!")
+          hover -> console.log("I was hovered!")
+        )
+
+    footer (
+      hover ->
+        this.border = 1px solid @blue
+        this.text-shadow = 0px 0px 8px 2px rgba(0,0,0,0.3)
+    )
+      p Like what you see? Check out the docs for more samples.

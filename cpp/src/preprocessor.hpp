@@ -26,15 +26,15 @@ protected:
   PreProcessor();
 
 private:
-  void check_new_indent(int);
-  void open_tags(int);
-  void close_tags(int);
-  void close_literal(int);
-  void close_entered_tags(int);
-  void remove_indent_whitespace(std::string);
-  void check_and_enter_literal(std::string);
+  void check_new_indent(const int&);
+  void open_tags(const int&);
+  void close_tags(const int&);
+  void close_literal(const int&);
+  void close_entered_tags(const int&);
+  std::string remove_indent_whitespace(std::string);
+  void check_and_enter_literal(const std::string&);
 
-  bool in_literal, templateless_literal;
+  bool in_literal, templateless_literal, preserve_html_literal;
   int current_indent, unclosed_indents;
   std::string output;
 };
