@@ -7,10 +7,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "preprocessor.hpp"
+#include "htmlencode.hpp"
 
-/**
- * Protected constructor for Singleton Design Pattern
- */
 PreProcessor::PreProcessor(const std::vector<std::string> lines) {
   in_literal = false;
   templateless_literal = false;
@@ -136,10 +134,13 @@ std::string PreProcessor::remove_indent_whitespace(std::string line) {
   if (in_literal) {
     std::string cropped = line.substr(current_indent);
 
-    if (templateless_literal)
+    if (templateless_literal) {
       boost::replace_all(cropped, "\\", "\\\\");
+    }
 
-    // TODO: need to do htmlentities
+    if (!preserve_html_literal) {
+      cropped = html_encode(cropped.c_str());
+    }
 
     return boost::replace_all_copy(cropped, "$", "\\$");
   } else {

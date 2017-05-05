@@ -1,9 +1,9 @@
 CXX = g++ -std=c++14
 CXXFLAGS = -Wall -O -g -stdlib=libc++
-OBJECTS = src/grammar.cpp src/preprocessor.cpp
+OBJECTS = src/grammar.cpp src/preprocessor.cpp src/htmlencode.cpp
 CLI_OBJECTS = src/main.cpp 
 TESTS = $(wildcard test/*.cpp)
-LIBS = -I/usr/local/include -L/usr/local/lib
+LIBS = 
 EXEC = emerald
 TEST_EXEC = emerald_test
 

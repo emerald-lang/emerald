@@ -36,7 +36,6 @@ TEST_CASE("multiline literals", "[preprocessor]") {
     REQUIRE(p.get_output() == concat(output));
   }
 
-  // TODO: fix test
   SECTION("encoding HTML entities") {
     std::vector<std::string> input = {
       "h1 =>",

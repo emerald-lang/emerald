@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "peglib.h"
+#include "../lib/peglib.h"
 
 /**
  * Singleton class for transforming Emerald code into intermediate
