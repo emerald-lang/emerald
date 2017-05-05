@@ -39,6 +39,11 @@ std::map<int, int> PreProcessor::get_source_map() {
  * PreProcess text before it's parsed by context-free PEG grammar
  */
 void PreProcessor::process(std::vector<std::string> lines) {
+  // Append newline character to the end of each line
+  for (std::string &line : lines) {
+    line = "\n" + line;
+  }
+
   int new_indent;
 
   for (std::string & line : lines) {
