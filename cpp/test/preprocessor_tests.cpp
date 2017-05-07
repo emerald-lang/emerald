@@ -50,6 +50,20 @@ TEST_CASE("multiline literals", "[preprocessor]") {
     REQUIRE(p.get_output() == concat(output));
   }
 
+  SECTION("encoding utf8 characters without semantic names") {
+    std::vector<std::string> input = {
+      "h1 =>",
+      "  👌"
+    };
+    std::vector<std::string> output = {
+      "h1 =>",
+      "&#128076;",
+      "$"
+    };
+    PreProcessor p(input);
+    REQUIRE(p.get_output() == concat(output));
+  }
+
   SECTION("skipping HTML entity encoding for ~> literals") {
     std::vector<std::string> input = {
       "h1 ~>",
