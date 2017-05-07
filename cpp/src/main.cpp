@@ -37,21 +37,7 @@ int main(int argc, char** argv) {
     // Get parser member from singleton 'Grammar' class
     peg::parser parser = Grammar::get_instance().get_parser();
 
-    // Parse the file input
-    for (auto &line : lines) {
-      parsed= "";
-      parser.parse(line.c_str(), parsed);
-
-      // Only update the line if there's a rule for it
-      if (parsed != "")
-        line = parsed;
-    }
-
-    std::ofstream fout("temp.html");
-
-    // Write out the final lines
-    for (auto const &line : lines)
-      fout << line << std::endl;
+    std::cout << output << std::endl;
 
   } catch (const std::ifstream::failure& e) {
     std::cout << "Exception opening/reading file" << std::endl;

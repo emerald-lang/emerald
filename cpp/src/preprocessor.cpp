@@ -7,10 +7,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include "preprocessor.hpp"
+#include "htmlencode.hpp"
 
-/**
- * Protected constructor for Singleton Design Pattern
- */
 PreProcessor::PreProcessor(const std::vector<std::string> lines) {
   in_literal = false;
   templateless_literal = false;
@@ -39,9 +37,16 @@ std::map<int, int> PreProcessor::get_source_map() {
  * PreProcess text before it's parsed by context-free PEG grammar
  */
 void PreProcessor::process(std::vector<std::string> lines) {
+  // Append newline character to the end of each line
+  for (std::string &line : lines) {
+    line = line + "\n";
+  }
+
   int new_indent;
 
-  for (std::string & line : lines) {
+  for (int line_number = 0; line_number < lines.size(); line_number++) {
+    std::string &line = lines[line_number];
+
     if (in_literal) {
       // To accommodate empty lines in multiline literals which are part of the literal
       // TODO: link to test case
@@ -57,10 +62,8 @@ void PreProcessor::process(std::vector<std::string> lines) {
     }
 
     check_new_indent(new_indent);
-
-    // TODO: source map
-
     output += remove_indent_whitespace(line);
+    source_map[count(output.begin(), output.end(), '\n')] = line_number+1;
     check_and_enter_literal(line);
   }
   close_tags(0);
@@ -129,12 +132,15 @@ void PreProcessor::close_entered_tags(const int& new_indent) {
  */
 std::string PreProcessor::remove_indent_whitespace(std::string line) {
   if (in_literal) {
-    std::string cropped = line;
+    std::string cropped = line.substr(current_indent);
 
-    if (templateless_literal)
+    if (templateless_literal) {
       boost::replace_all(cropped, "\\", "\\\\");
+    }
 
-    // TODO: need to do htmlentities
+    if (!preserve_html_literal) {
+      cropped = html_encode(cropped.c_str());
+    }
 
     return boost::replace_all_copy(cropped, "$", "\\$");
   } else {

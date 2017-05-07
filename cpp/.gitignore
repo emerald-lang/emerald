@@ -29,13 +29,10 @@
 *.out
 *.app
 
-# Third party libraries
-peglib.h
-catch.hpp
-
 # personal notes
 todo.md
 
 # from g++
 emerald
+emerald_test
 emerald.DSYM

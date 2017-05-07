@@ -29,7 +29,6 @@ private:
   int current_indent, unclosed_indents;
   std::string output;
   std::map<int, int> source_map;
-
 };
 
 #endif // PREPROCESSOR_H
