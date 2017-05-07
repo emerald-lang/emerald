@@ -11,3 +11,4 @@ dependencies:
 test:
   override:
     - bundle exec rake test
+    - cd cpp && make test
