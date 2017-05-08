@@ -4,6 +4,8 @@ machine:
       2.3.2
 
 dependencies:
+  pre:
+    - sudo apt-get install libboost-all-dev
   override:
     - bundle install:
         timeout: 240
