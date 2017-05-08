@@ -4,10 +4,6 @@ machine:
       2.3.2
 
 dependencies:
-  pre:
-    - sudo apt-get update; sudo apt-get install gcc-5; sudo apt-get install g++-5
-    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 100
-    - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 100
   override:
     - bundle install:
         timeout: 240
