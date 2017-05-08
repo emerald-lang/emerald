@@ -1,5 +1,5 @@
 CXX = g++ -std=c++11
-CXXFLAGS = -Wall -O -g -stdlib=libc++
+CXXFLAGS = -Wall -O -g
 OBJECTS = src/grammar.cpp src/preprocessor.cpp src/htmlencode.cpp
 CLI_OBJECTS = src/main.cpp 
 TESTS = $(wildcard test/*.cpp)
@@ -17,4 +17,4 @@ test: ${TEST_EXEC}
 	./${TEST_EXEC}
 
 clean:
-	rm $(EXEC)
+	rm $(EXEC) ${TEST_EXEC}
