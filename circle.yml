@@ -4,6 +4,8 @@ machine:
       2.3.2
 
 dependencies:
+  pre:
+    - sudo apt-get install libboost-all-dev
   override:
     - bundle install:
         timeout: 240
@@ -11,3 +13,4 @@ dependencies:
 test:
   override:
     - bundle exec rake test
+    - cd cpp && make test
