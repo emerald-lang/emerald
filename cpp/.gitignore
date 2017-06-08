@@ -36,3 +36,7 @@ todo.md
 emerald
 emerald_test
 emerald.DSYM
+
+# From pip
+dist/
+Emerald.egg-info/
