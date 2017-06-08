@@ -1,5 +1,8 @@
-<img src='emerald-logo.png' alt='Drawing' width='600px' />
-- A language agnostic templating engine designed with event driven applications in mind.
+<p align="center">
+  <img src='emerald-logo.png' alt='Drawing' width='600px' />
+</p>
+
+![Emerald Language](https://raw.githubusercontent.com/emerald-lang/emerald-emacs/master/emerald.png)
 
 # Usage
 ```
