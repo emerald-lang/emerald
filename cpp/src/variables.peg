@@ -1,0 +1,5 @@
+R"(
+variable      <- '|' variable_name '|'
+
+variable_name <- [a-zA-Z0-9_]+ ('.' variable_name)*
+)"

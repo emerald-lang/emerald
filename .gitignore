@@ -9,3 +9,4 @@
 /spec/reports/
 /tmp/
 bin/pre-commit
+tags

@@ -1,0 +1,27 @@
+R"(
+base_keyword        <- 'images' / 'metas' / 'scripts' / 'styles'
+
+special_keyword     <- 'images' / 'scripts' / 'styles'
+
+tag                 <- [a-z] [a-z1-9]*
+
+attr                <- [a-z\-_]+
+
+event               <- 'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload'
+
+equals              <- '='
+
+comma               <- ','
+
+lparen              <- '('
+
+rparen              <- ')'
+
+lbrace              <- '{'
+
+rbrace              <- '}'
+
+space               <- ' '
+
+nl                  <- [\n]
+)"
