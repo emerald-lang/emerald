@@ -14,7 +14,8 @@ TEST_CASE("accepting valid Emerald", "[grammar]") {
     "    p Test"
   };
 
-  REQUIRE(Grammar::get_instance().valid(PreProcessor(input).get_output()));
+  PreProcessor p(input);
+  REQUIRE(Grammar::get_instance().valid(p.get_output()));
 }
 
 TEST_CASE("failing invalid Emerald", "[grammar]") {
@@ -27,5 +28,6 @@ TEST_CASE("failing invalid Emerald", "[grammar]") {
     "    p Test"
   };
 
-  REQUIRE(!Grammar::get_instance().valid(PreProcessor(input).get_output()));
+  PreProcessor p(input);
+  REQUIRE(!Grammar::get_instance().valid(p.get_output()));
 }
