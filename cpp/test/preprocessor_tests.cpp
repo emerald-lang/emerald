@@ -1,15 +1,7 @@
-#include "catch.hpp"
+#include "test_helper.hpp"
 #include "../src/preprocessor.hpp"
-#include <string>
-#include <vector>
-#include <boost/algorithm/string/join.hpp>
-
-std::string concat(const std::vector<std::string> &v) {
-  return boost::algorithm::join(v, "\n") + "\n";
-}
 
 TEST_CASE("source maps", "[preprocessor]") {
-
   SECTION("mapping lines from output to input") {
     std::vector<std::string> input = {
       "div",
@@ -33,7 +25,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 
   SECTION("encoding HTML entities") {
@@ -47,7 +39,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 
   SECTION("encoding utf8 characters without semantic names") {
@@ -61,7 +53,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 
   SECTION("skipping HTML entity encoding for ~> literals") {
@@ -75,7 +67,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 
   SECTION("escaping dollar signs") {
@@ -89,7 +81,7 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 
   SECTION("preserving empty lines") {
@@ -107,6 +99,6 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "$"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 }
