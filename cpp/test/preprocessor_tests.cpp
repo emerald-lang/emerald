@@ -116,7 +116,7 @@ TEST_CASE("converting nesting") {
       "}"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 
   SECTION("adding braces around attributes") {
@@ -133,6 +133,6 @@ TEST_CASE("converting nesting") {
       ")"
     };
     PreProcessor p(input);
-    REQUIRE(p.get_output() == concat(output));
+    REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 }
