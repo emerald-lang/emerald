@@ -1,9 +1,9 @@
 R"(
 ROOT               <- (scope / pair_list / value_list / nested / line / comment)+
 
-nested             <- tag_statement nl lbrace nl main rbrace nl
+nested             <- tag_statement nl lbrace nl ROOT rbrace nl
 
-scope              <- $fn< scope_fn > lbrace nl $body< main > rbrace nl
+scope              <- $fn< scope_fn > lbrace nl $body< ROOT > rbrace nl
 
 line               <- (tag_statement / comment) nl
 
@@ -21,15 +21,15 @@ ml_templess_lit    <- ('=>' / '~>') space* nl $body< (escaped / !'$' .)* > '$'
 
 inline_literal     <- $body< (variable / escaped / !lparen !nl .)* >
 
-inline_lit_str     <- ''' $body< (variable / escaped / !''' .)* > '''
+inline_lit_str     <- '"' $body< (variable / escaped / !'"' .)* > '"'
 
-escaped            <- '\' .
+escaped            <- '\\' .
 
-tag_statement      <- tag $identifier< id_name? > $classes< class_name* > space* $body< text_Content? > $attributes< attr_list? >
+tag_statement      <- tag $identifier< id_name? > $classes< class_name* > space* $body< text_content? > $attributes< attr_list? >
 
-id_name            <- '#' $name< [a-zA-Z_\-]+ >
+id_name            <- '#' $name< ([a-zA-Z_] / '-')+ >
 
-class_name         <- '.' $name< [a-zA-X_\-]+ >
+class_name         <- '.' $name< ([a-zA-X_] / '-')+ >
 
 attr_list          <- lparen nl lbrace nl attributes rbrace nl rparen
 

@@ -5,7 +5,7 @@ special_keyword     <- 'images' / 'scripts' / 'styles'
 
 tag                 <- [a-z] [a-z1-9]*
 
-attr                <- [a-z\-_]+
+attr                <- ([a-z_] / '-')+
 
 event               <- 'onabort' / 'onclick' / 'onhover' / 'onbeforeprint' / 'onbeforeunload'
 

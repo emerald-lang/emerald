@@ -102,3 +102,37 @@ TEST_CASE("multiline literals", "[preprocessor]") {
     REQUIRE(p.get_output() == TestHelper::concat(output));
   }
 }
+
+TEST_CASE("converting nesting") {
+  SECTION("adding braces around nested tags") {
+    std::vector<std::string> input = {
+      "div",
+      "  p test"
+    };
+    std::vector<std::string> output = {
+      "div",
+      "{",
+      "p test",
+      "}"
+    };
+    PreProcessor p(input);
+    REQUIRE(p.get_output() == concat(output));
+  }
+
+  SECTION("adding braces around attributes") {
+    std::vector<std::string> input = {
+      "h1 test (",
+      "  class \"title\"",
+      ")"
+    };
+    std::vector<std::string> output = {
+      "h1 test (",
+      "{",
+      "class \"title\"",
+      "}",
+      ")"
+    };
+    PreProcessor p(input);
+    REQUIRE(p.get_output() == concat(output));
+  }
+}

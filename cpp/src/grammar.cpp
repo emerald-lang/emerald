@@ -10,7 +10,7 @@
 Grammar::Grammar() : emerald_parser(syntax) {
 
   emerald_parser["ROOT"] = [](const peg::SemanticValues& sv) -> std::string {
-    return "todo: make this real output";
+    return sv.str();
   };
 
   emerald_parser.enable_packrat_parsing();
@@ -24,8 +24,7 @@ peg::parser Grammar::get_parser() {
 }
 
 bool Grammar::valid(const std::string &input) {
-  std::cout << input << std::endl;
   std::string output;
   emerald_parser.parse(input.c_str(), output);
-  return output != "";
+  return output.length() == input.length();
 }
