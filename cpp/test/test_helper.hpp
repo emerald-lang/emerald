@@ -2,6 +2,7 @@
 #define TEST_HELPER_H
 
 #include "catch.hpp"
+#include "../src/preprocessor.hpp"
 
 #include <string>
 #include <vector>
