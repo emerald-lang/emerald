@@ -9,11 +9,14 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/join.hpp>
+#include <json.hpp>
+
+using json = nlohmann::json;
 
 namespace TestHelper {
-  std::string concat(const std::vector<std::string>);
+  std::string concat(std::vector<std::string>);
   std::string whitespace_agnostic(std::string);
-  std::string convert(bool);
+  std::string convert(const std::vector<std::string>, json, bool = false);
 }
 
 #endif

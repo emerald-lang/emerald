@@ -5,6 +5,7 @@ CLI_OBJECTS = src/main.cpp
 TESTS = $(wildcard test/*.cpp)
 EXEC = emerald
 TEST_EXEC = emerald_test
+LIBS = -lboost_regex -I/usr/local/homebrew/Cellar/nlohmann_json/1.1.0/include
 
 ${EXEC} : ${CLI_OBJECTS} ${OBJECTS}
 	${CXX} ${CLI_OBJECTS} ${OBJECTS} ${CXXFLAGS} -o ${EXEC} ${LIBS}

@@ -120,7 +120,7 @@ void PreProcessor::close_literal(const int& new_indent) {
  * Append closing braces if not in literal and new indent is less than old one
  */
 void PreProcessor::close_entered_tags(const int& new_indent) {
-  for (int i = 1; i < (current_indent - new_indent) / 2; i++) {
+  for (int i = 1; i <= (current_indent - new_indent) / 2; i++) {
     output += "}\n";
     unclosed_indents--;
   }
