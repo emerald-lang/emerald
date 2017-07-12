@@ -1,6 +1,6 @@
 #include "test_helper.hpp"
 
-TEST_CASE("scope", "[general]") {
+TEST_CASE("scope", "[grammar]") {
 
   SECTION("can determine truthiness") {
     std::vector<std::string> input = {
@@ -171,4 +171,4 @@ TEST_CASE("scope", "[general]") {
 
   } // SECTION("with")
 
-} // TEST_CASE("scope", "[general]")
+} // TEST_CASE("scope", "[grammar]")
