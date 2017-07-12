@@ -1,9 +1,9 @@
 #ifndef TEST_HELPER_H
 #define TEST_HELPER_H
 
-#include "catch.hpp"
-#include "../src/preprocessor.hpp"
+#include "../lib/catch.hpp"
 #include "../lib/json.hpp"
+#include "../src/preprocessor.hpp"
 
 #include <string>
 #include <vector>
