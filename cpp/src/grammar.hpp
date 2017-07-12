@@ -35,7 +35,6 @@ private:
   // PEG parser
   peg::parser emerald_parser;
 
-public:
   // Grammar rules
   static constexpr const auto syntax =
     #include "grammar.peg"

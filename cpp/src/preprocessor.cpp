@@ -44,7 +44,7 @@ void PreProcessor::process(std::vector<std::string> lines) {
 
   int new_indent;
 
-  for (unsigned int line_number = 0; line_number < lines.size(); line_number++) {
+  for (int line_number = 0; line_number < lines.size(); line_number++) {
     std::string &line = lines[line_number];
 
     if (in_literal) {
