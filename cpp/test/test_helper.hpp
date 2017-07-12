@@ -3,6 +3,7 @@
 
 #include "catch.hpp"
 #include "../src/preprocessor.hpp"
+#include "../lib/json.hpp"
 
 #include <string>
 #include <vector>
@@ -10,7 +11,6 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/join.hpp>
-#include <json.hpp>
 
 using json = nlohmann::json;
 
