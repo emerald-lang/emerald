@@ -24,6 +24,8 @@ public:
 
   peg::parser get_parser();
 
+  bool valid(const std::string &input);
+
 protected:
   Grammar();
 
@@ -34,14 +36,17 @@ private:
   peg::parser emerald_parser;
 
   // Grammar rules
-  static constexpr const auto syntax = R"(
-    # Non-terminal nodes
-    ROOT               <- NUMBER / LPAREN / RPAREN
-    NUMBER             <- < [0-9]+ >
-    LPAREN             <- '('
-    RPAREN             <- ')'
-    %whitespace        <- [ \t]*
-  )";
+  static constexpr const auto syntax =
+    #include "grammar.peg"
+      "\n"
+    #include "tokens.peg"
+      "\n"
+    #include "scopes.peg"
+      "\n"
+    #include "variables.peg"
+      "\n"
+    R"(%whitespace        <- [ \t]*)"
+  ;
 
 };
 

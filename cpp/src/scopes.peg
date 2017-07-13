@@ -1,0 +1,17 @@
+R"(
+scope_fn     <- (given / unless / each / with) nl
+
+given        <- 'given' space* boolean_expr
+
+unless       <- 'unless' space* boolean_expr
+
+with         <- 'with' space* variable_name
+
+each         <- 'each' space* $collection< variable_name > space* 'as' space* $val_name< variable_name > $indexed< (',' space* $key_name< variable_name >)? >
+
+boolean_expr <- binary_expr / unary_expr
+
+binary_expr  <- $lhs< unary_expr > space+ $op< 'and' / 'or' > space+ $rhs< boolean_expr >
+
+unary_expr   <- $negated< ('not' space+)? > ($val< variable_name > / '(' space* $val< boolean_expr > space* ')')
+)"

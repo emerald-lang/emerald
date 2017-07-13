@@ -110,7 +110,7 @@ void PreProcessor::close_literal(const int& new_indent) {
   output += "$\n";
   in_literal = false;
 
-  for (int i = 2; i < (current_indent - new_indent) / 2; i++) {
+  for (int i = 2; i <= (current_indent - new_indent) / 2; i++) {
     output += "}\n";
     unclosed_indents--;
   }
