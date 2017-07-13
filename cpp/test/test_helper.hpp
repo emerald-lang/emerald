@@ -1,7 +1,8 @@
 #ifndef TEST_HELPER_H
 #define TEST_HELPER_H
 
-#include "catch.hpp"
+#include "../lib/catch.hpp"
+#include "../lib/json.hpp"
 #include "../src/preprocessor.hpp"
 
 #include <string>
@@ -10,7 +11,6 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/join.hpp>
-#include <json.hpp>
 
 using json = nlohmann::json;
 

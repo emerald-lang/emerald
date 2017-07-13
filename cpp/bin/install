@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Install dependencies for MacOS
-brew tap nlohmann/json
-brew install nlohmann_json
