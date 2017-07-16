@@ -5,6 +5,8 @@
 
 #include "../lib/peglib.h"
 
+#include "nodes/node.hpp"
+
 /**
  * Singleton class for transforming Emerald code into intermediate
  * representation to be parsed by the PEG grammar
@@ -12,18 +14,13 @@
 class Grammar {
 
 public:
-  static Grammar& get_instance() {
-    static Grammar instance;
-    return instance;
-  }
-
   Grammar(Grammar const&)            = delete; // Copy constructor
   Grammar& operator=(Grammar const&) = delete; // Copy assignment
   Grammar(Grammar&&)                 = delete; // Move constructor
   Grammar& operator=(Grammar&&)      = delete; // Move assignment
 
+  static Grammar& get_instance();
   peg::parser get_parser();
-
   bool valid(const std::string &input);
 
 protected:
