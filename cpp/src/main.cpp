@@ -31,13 +31,24 @@
 #include "grammar.hpp"
 #include "preprocessor.hpp"
 
+void print_usage() {
+  std::cout << "usage: emerald PATH [--ast]" << std::endl;
+  exit(0);
+}
+
+void exit_and_error() {
+  std::cerr << "Error, could not open input file." << std::endl;
+  exit(0);
+}
+
 /**
  * Try to open file passed in from command line, and parse file input with
  * Emerald grammar
  */
 int main(int argc, char** argv) {
-  std::string line;
-  std::string parsed;
+  if (argc < 1) print_usage();
+
+  std::string line, parsed;
   std::vector<std::string> lines;
 
   // Try to open a file from name passed in from command line
@@ -45,9 +56,11 @@ int main(int argc, char** argv) {
     // Get text input from file
     std::ifstream input_file(argv[1]);
 
+    // Exit if it fails
+    if (input_file.fail()) exit_and_error();
+
     // Get file input line by line
-    while (std::getline(input_file, line))
-      lines.push_back(line);
+    while (std::getline(input_file, line)) lines.push_back(line);
 
     // Preprocess the emerald source code
     PreProcessor processor(lines);
@@ -56,8 +69,10 @@ int main(int argc, char** argv) {
     // Get parser member from singleton 'Grammar' class
     peg::parser parser = Grammar::get_instance().get_parser();
 
-    std::cout << output << std::endl;
+    // Parse preprocessed string
+    parser.parse(output.c_str(), parsed);
 
+    std::cout << parsed << std::endl;
   } catch (const std::ifstream::failure& e) {
     std::cout << "Exception opening/reading file" << std::endl;
   }

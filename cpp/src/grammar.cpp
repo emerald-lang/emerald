@@ -3,22 +3,26 @@
 #include <iostream>
 
 #include "grammar.hpp"
+#include "nodes/root.hpp"
 
-/**
- * Initialize grammar for Emerald
- */
 Grammar::Grammar() : emerald_parser(syntax) {
 
-  emerald_parser["ROOT"] = [](const peg::SemanticValues& sv) -> std::string {
-    return sv.str();
+  emerald_parser["ROOT"] = [](const peg::SemanticValues& sv) -> NodePtr {
+    NodePtrs nodes;
+    for (unsigned int i = 0; i < sv.size(); i++) nodes.push_back(sv[i].get<NodePtr>());
+
+    return NodePtr(new Root(nodes));
   };
 
   emerald_parser.enable_packrat_parsing();
+
 }
 
-/**
- * Returns initialized Emerald PEG
- */
+Grammar& Grammar::get_instance() {
+  static Grammar instance;
+  return instance;
+}
+
 peg::parser Grammar::get_parser() {
   return emerald_parser;
 }
