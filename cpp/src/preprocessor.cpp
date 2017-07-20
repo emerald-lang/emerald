@@ -54,6 +54,9 @@ std::string PreProcessor::process(std::vector<std::string> lines) {
 
 /**
  * To accommodate empty lines in multiline literals which are part of the literal
+ *
+ * NOTE: Normally, we just discard blank lines. But in literals, we want to
+ * preserve spacing, but also not consider it a dedent
  */
 void PreProcessor::process_line_in_literal(std::string& line, int& new_indent) {
   if (line.substr(0, line.length() - 1).empty()) {
@@ -104,18 +107,14 @@ void PreProcessor::close_tags(const int& new_indent) {
 void PreProcessor::close_literal(const int& new_indent) {
   output += "$\n";
   in_literal = false;
-
-  for (int i = 2; i <= (current_indent - new_indent) / 2; i++) {
-    output += "}\n";
-    unclosed_indents--;
-  }
+  close_entered_tags(new_indent, 2);
 }
 
 /**
  * Append closing braces if not in literal and new indent is less than old one
  */
-void PreProcessor::close_entered_tags(const int& new_indent) {
-  for (int i = 1; i <= (current_indent - new_indent) / 2; i++) {
+void PreProcessor::close_entered_tags(const int& new_indent, int index) {
+  for (int i = index; i <= (current_indent - new_indent) / 2; i++) {
     output += "}\n";
     unclosed_indents--;
   }

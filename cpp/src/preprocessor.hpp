@@ -21,7 +21,7 @@ private:
   void open_tags(const int&);
   void close_tags(const int&);
   void close_literal(const int&);
-  void close_entered_tags(const int&);
+  void close_entered_tags(const int&, int = 1);
   std::string remove_indent_whitespace(std::string);
   void check_and_enter_literal(const std::string&);
 
