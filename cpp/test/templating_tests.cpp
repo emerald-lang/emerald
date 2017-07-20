@@ -82,7 +82,7 @@ TEST_CASE("templating", "[grammar]") {
       std::vector<std::string> input = {
         "h1 Hello, \\\\||name|"
       };
-      const char *output = "<h1>Hello, \Dave</h1>";
+      const char *output = "<h1>Hello, \\Dave</h1>";
 
       REQUIRE(TestHelper::convert(input, { "name", "Dave" }) == output);
     }

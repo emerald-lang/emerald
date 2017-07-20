@@ -9,21 +9,12 @@
 #include "preprocessor.hpp"
 #include "htmlencode.hpp"
 
-PreProcessor::PreProcessor(const std::vector<std::string> lines) {
+PreProcessor::PreProcessor() {
   in_literal = false;
   templateless_literal = false;
   current_indent = 0;
   unclosed_indents = 0;
   output = "";
-
-  process(lines);
-}
-
-/**
- * Returns processed output
- */
-std::string PreProcessor::get_output() {
-  return output;
 }
 
 /**
@@ -36,26 +27,17 @@ std::map<int, int> PreProcessor::get_source_map() {
 /**
  * PreProcess text before it's parsed by context-free PEG grammar
  */
-void PreProcessor::process(std::vector<std::string> lines) {
-  // Append newline character to the end of each line
-  for (std::string &line : lines) {
-    line = line + "\n";
-  }
-
+std::string PreProcessor::process(std::vector<std::string> lines) {
   int new_indent;
 
-  for (int line_number = 0; line_number < lines.size(); line_number++) {
+  // Append newline character to the end of each line
+  std::transform(lines.begin(), lines.end(), lines.begin(), [](std::string line) { return line + "\n"; });
+
+  for (unsigned int line_number = 0; line_number < lines.size(); line_number++) {
     std::string &line = lines[line_number];
 
     if (in_literal) {
-      // To accommodate empty lines in multiline literals which are part of the literal
-      // TODO: link to test case
-      if (line.substr(0, line.length() - 1).empty()) {
-        new_indent = current_indent;
-        line = std::string(current_indent, ' ') + "\n";
-      } else {
-        new_indent = line.length() - boost::trim_left_copy(line).length();
-      }
+      process_line_in_literal(line, new_indent);
     } else {
       if (boost::trim_left_copy(line).empty()) continue;
       new_indent = line.length() - boost::trim_left_copy(line).length();
@@ -63,10 +45,26 @@ void PreProcessor::process(std::vector<std::string> lines) {
 
     check_new_indent(new_indent);
     output += remove_indent_whitespace(line);
-    source_map[count(output.begin(), output.end(), '\n')] = line_number+1;
+    source_map[count(output.begin(), output.end(), '\n')] = line_number + 1;
     check_and_enter_literal(line);
   }
   close_tags(0);
+  return output;
+}
+
+/**
+ * To accommodate empty lines in multiline literals which are part of the literal
+ *
+ * NOTE: Normally, we just discard blank lines. But in literals, we want to
+ * preserve spacing, but also not consider it a dedent
+ */
+void PreProcessor::process_line_in_literal(std::string& line, int& new_indent) {
+  if (line.substr(0, line.length() - 1).empty()) {
+    new_indent = current_indent;
+    line = std::string(current_indent, ' ') + "\n";
+  } else {
+    new_indent = line.length() - boost::trim_left_copy(line).length();
+  }
 }
 
 /**
@@ -74,32 +72,32 @@ void PreProcessor::process(std::vector<std::string> lines) {
  * indentation is greater than the current one - open tags, else close tags
  */
 void PreProcessor::check_new_indent(const int& new_indent) {
-  if (new_indent > current_indent)
+  if (new_indent > current_indent) {
     open_tags(new_indent);
-  else if (new_indent < current_indent)
+  } else if (new_indent < current_indent) {
     close_tags(new_indent);
-}
-
-/**
- *
- */
-void PreProcessor::open_tags(const int& new_indent) {
-  if (!in_literal) {
-    output += "{\n";
-    unclosed_indents++;
-    current_indent = new_indent;
   }
 }
 
 /**
  *
  */
-void PreProcessor::close_tags(const int& new_indent) {
-  if (in_literal)
-    close_literal(new_indent);
-  else
-    close_entered_tags(new_indent);
+void PreProcessor::open_tags(const int& new_indent) {
+  if (!in_literal) return;
+  output += "{\n";
+  unclosed_indents++;
+  current_indent = new_indent;
+}
 
+/**
+ *
+ */
+void PreProcessor::close_tags(const int& new_indent) {
+  if (in_literal) {
+    close_literal(new_indent);
+  } else {
+    close_entered_tags(new_indent);
+  }
   current_indent = new_indent;
 }
 
@@ -109,18 +107,14 @@ void PreProcessor::close_tags(const int& new_indent) {
 void PreProcessor::close_literal(const int& new_indent) {
   output += "$\n";
   in_literal = false;
-
-  for (int i = 2; i <= (current_indent - new_indent) / 2; i++) {
-    output += "}\n";
-    unclosed_indents--;
-  }
+  close_entered_tags(new_indent, 2);
 }
 
 /**
  * Append closing braces if not in literal and new indent is less than old one
  */
-void PreProcessor::close_entered_tags(const int& new_indent) {
-  for (int i = 1; i <= (current_indent - new_indent) / 2; i++) {
+void PreProcessor::close_entered_tags(const int& new_indent, int index) {
+  for (int i = index; i <= (current_indent - new_indent) / 2; i++) {
     output += "}\n";
     unclosed_indents--;
   }

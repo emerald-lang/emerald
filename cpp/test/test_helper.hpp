@@ -3,6 +3,7 @@
 
 #include "../lib/catch.hpp"
 #include "../lib/json.hpp"
+#include "../src/grammar.hpp"
 #include "../src/preprocessor.hpp"
 
 #include <string>

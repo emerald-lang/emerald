@@ -48,6 +48,7 @@ void exit_and_error() {
 int main(int argc, char** argv) {
   if (argc < 1) print_usage();
 
+  PreProcessor processor;
   std::string line, parsed;
   std::vector<std::string> lines;
 
@@ -63,8 +64,7 @@ int main(int argc, char** argv) {
     while (std::getline(input_file, line)) lines.push_back(line);
 
     // Preprocess the emerald source code
-    PreProcessor processor(lines);
-    std::string output = processor.get_output();
+    std::string output = processor.process(lines);
 
     // Get parser member from singleton 'Grammar' class
     peg::parser parser = Grammar::get_instance().get_parser();
