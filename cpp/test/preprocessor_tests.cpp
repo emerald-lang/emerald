@@ -2,18 +2,23 @@
 #include "../src/preprocessor.hpp"
 
 TEST_CASE("source maps", "[preprocessor]") {
+
   SECTION("mapping lines from output to input") {
     std::vector<std::string> input = {
       "div",
       "  test"
     };
-    PreProcessor p(input);
+
+    PreProcessor p;
+    p.process(input);
     REQUIRE(p.get_source_map()[1] == 1);
     REQUIRE(p.get_source_map()[3] == 2);
   }
-}
+
+} // TEST_CASE("source maps", "[preprocessor]")
 
 TEST_CASE("multiline literals", "[preprocessor]") {
+
   SECTION("preprocessing multiline literals") {
     std::vector<std::string> input = {
       "h1 =>",
@@ -24,8 +29,9 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "This is a multiline literal",
       "$"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
 
   SECTION("encoding HTML entities") {
@@ -38,8 +44,9 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "&lt;div&gt;",
       "$"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
 
   SECTION("encoding utf8 characters without semantic names") {
@@ -52,8 +59,9 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "&#128076;",
       "$"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
 
   SECTION("skipping HTML entity encoding for ~> literals") {
@@ -66,8 +74,9 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "<div>",
       "$"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
 
   SECTION("escaping dollar signs") {
@@ -80,8 +89,9 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "Thi\\$ i\\$ a multiline literal",
       "$"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
 
   SECTION("preserving empty lines") {
@@ -98,12 +108,15 @@ TEST_CASE("multiline literals", "[preprocessor]") {
       "line",
       "$"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
-}
+
+} // TEST_CASE("multiline literals", "[preprocessor]")
 
 TEST_CASE("converting nesting") {
+
   SECTION("adding braces around nested tags") {
     std::vector<std::string> input = {
       "div",
@@ -115,8 +128,9 @@ TEST_CASE("converting nesting") {
       "p test",
       "}"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
 
   SECTION("adding braces around attributes") {
@@ -132,7 +146,9 @@ TEST_CASE("converting nesting") {
       "}",
       ")"
     };
-    PreProcessor p(input);
-    REQUIRE(p.get_output() == TestHelper::concat(output));
+
+    PreProcessor p;
+    REQUIRE(p.process(input) == TestHelper::concat(output));
   }
-}
+
+} // TEST_CASE("converting nesting")

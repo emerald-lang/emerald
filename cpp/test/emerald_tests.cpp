@@ -1,7 +1,6 @@
 #define CATCH_CONFIG_MAIN
 
 #include "test_helper.hpp"
-#include "../src/preprocessor.hpp"
 #include "../src/grammar.hpp"
 
 TEST_CASE("accepting valid Emerald", "[grammar]") {
@@ -14,8 +13,8 @@ TEST_CASE("accepting valid Emerald", "[grammar]") {
     "    p Test"
   };
 
-  PreProcessor p(input);
-  REQUIRE(Grammar::get_instance().valid(p.get_output()));
+  PreProcessor p;
+  REQUIRE(Grammar::get_instance().valid(p.process(input)));
 }
 
 TEST_CASE("failing invalid Emerald", "[grammar]") {
@@ -28,6 +27,6 @@ TEST_CASE("failing invalid Emerald", "[grammar]") {
     "    p Test"
   };
 
-  PreProcessor p(input);
-  REQUIRE(!Grammar::get_instance().valid(p.get_output()));
+  PreProcessor p;
+  REQUIRE(!Grammar::get_instance().valid(p.process(input)));
 }

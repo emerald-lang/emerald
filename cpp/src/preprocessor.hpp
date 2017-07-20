@@ -11,12 +11,12 @@
 class PreProcessor {
 
 public:
-  PreProcessor(std::vector<std::string>);
-  std::string get_output();
+  PreProcessor();
+  std::string process(std::vector<std::string>);
   std::map<int, int> get_source_map();
 
 private:
-  void process(std::vector<std::string>);
+  void process_line_in_literal(std::string&, int&);
   void check_new_indent(const int&);
   void open_tags(const int&);
   void close_tags(const int&);
@@ -29,6 +29,7 @@ private:
   int current_indent, unclosed_indents;
   std::string output;
   std::map<int, int> source_map;
+
 };
 
 #endif // PREPROCESSOR_H
