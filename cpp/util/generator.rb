@@ -65,7 +65,7 @@ module Emerald
       EOF
 
       update_file("src/grammar.cpp", "#include \"nodes/#{name}.hpp\"\n", "// [END] Include nodes")
-      update_file("src/grammar.cpp", grammar_rule, "emerald_parser.enable_packrat_parsing();")
+      update_file("src/grammar.cpp", grammar_rule, "// Terminals")
     end
 
     private
