@@ -31,15 +31,13 @@ inline_lit_str     <- '"' $body< (variable / escaped / !'"' .)* > '"'
 
 escaped            <- '\\' .
 
-tag_statement      <- tag $identifier< id_name? > $classes< class_name* > space* $body< text_content? > $attributes< attr_list? >
+tag_statement      <- tag $identifier< id_name? > $classes< class_name* > ~space* $body< text_content? > $attributes< attributes? >
 
 id_name            <- '#' $name< ([a-zA-Z_] / '-')+ >
 
-class_name         <- '.' $name< ([a-zA-X_] / '-')+ >
+class_name         <- '.' $name< ([a-zA-Z_] / '-')+ >
 
-attr_list          <- lparen nl lbrace nl attributes rbrace nl rparen
+attr_list          <- ~lparen ~nl ~lbrace ~nl attribute* ~rbrace ~nl ~rparen
 
-attributes         <- attribute*
-
-attribute          <- attr space* inline_lit_str nl
+attribute          <- attr ~space* inline_lit_str ~nl
 )"

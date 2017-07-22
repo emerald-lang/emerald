@@ -9,7 +9,6 @@ module Emerald
     def node(name)
       write_header_file(name)
       write_source_file(name)
-      update_grammar_header_file(name)
       update_grammar_source_file(name)
     end
 
@@ -54,10 +53,6 @@ module Emerald
       create_file("src/nodes/#{name}.cpp", file_contents)
     end
 
-    def update_grammar_header_file(name)
-      update_file("src/grammar.hpp", "#include \"nodes/#{name}.hpp\"\n", "// [END] Include nodes")
-    end
-
     def update_grammar_source_file(name)
       grammar_rule = <<-EOF
   emerald_parser["#{name}"] =
@@ -69,6 +64,7 @@ module Emerald
 
       EOF
 
+      update_file("src/grammar.cpp", "#include \"nodes/#{name}.hpp\"\n", "// [END] Include nodes")
       update_file("src/grammar.cpp", grammar_rule, "emerald_parser.enable_packrat_parsing();")
     end
 
