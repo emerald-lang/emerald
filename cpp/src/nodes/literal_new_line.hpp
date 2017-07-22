@@ -1,5 +1,5 @@
-#ifndef LINE_H
-#define LINE_H
+#ifndef LITERALNEWLINE_H
+#define LITERALNEWLINE_H
 
 #include "node.hpp"
 
@@ -15,4 +15,4 @@ private:
 
 };
 
-#endif // LINE_H
+#endif // LITERALNEWLINE_H

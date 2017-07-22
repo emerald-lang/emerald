@@ -4,6 +4,7 @@
 #include "node.hpp"
 
 class Attribute : public Node {
+
 public:
   Attribute(std::string key, NodePtr value);
 
@@ -12,6 +13,7 @@ public:
 private:
   std::string key;
   NodePtr value;
+
 };
 
-#endif
+#endif // ATTRIBUTE_H

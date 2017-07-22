@@ -4,6 +4,7 @@
 #include "node.hpp"
 
 class Attributes : public Node {
+
 public:
   Attributes(NodePtrs attributes);
 
@@ -11,6 +12,7 @@ public:
 
 private:
   NodePtrs attributes;
-}
 
-#endif
+};
+
+#endif // ATTRIBUTES_H

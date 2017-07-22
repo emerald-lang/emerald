@@ -1,7 +1,7 @@
 #include "literal_new_line.hpp"
 
-LiteralNewLine::LiteralNewLine(NodePtr literal_new_line) : literal_new_line(literal_new_line) {}
+LiteralNewLine::LiteralNewLine(NodePtr inline_lit_str) : inline_lit_str(inline_lit_str) {}
 
 std::string LiteralNewLine::to_html(Json &context) {
-  return literal_new_line->to_html(context);
+  return inline_lit_str->to_html(context);
 }

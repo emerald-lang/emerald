@@ -1,49 +1,49 @@
 R"(
-ROOT               <- (scope / pair_list / value_list / nested / line / comment)+
+ROOT                   <- (scope / pair_list / value_list / nested / line / comment)+
 
-nested             <- tag_statement ~nl ~lbrace ~nl ROOT ~rbrace ~nl
+nested                 <- tag_statement ~nl ~lbrace ~nl ROOT ~rbrace ~nl
 
-scope              <- $fn< scope_fn > ~lbrace ~nl $body< ROOT > ~rbrace ~nl
+scope                  <- $fn< scope_fn > ~lbrace ~nl $body< ROOT > ~rbrace ~nl
 
-line               <- (tag_statement / comment) ~nl
+line                   <- (tag_statement / comment) ~nl
 
-value_list         <- special_keyword ~nl ~lbrace ~nl literal_new_line+ ~rbrace ~nl
+value_list             <- special_keyword ~nl ~lbrace ~nl literal_new_line+ ~rbrace ~nl
 
-literal_new_line   <- inline_lit_str ~nl
+literal_new_line       <- inline_lit_str ~nl
 
-pair_list          <- base_keyword ~nl ~lbrace ~nl attr_lit_newline+ ~rbrace ~nl
+pair_list              <- base_keyword ~nl ~lbrace ~nl key_value_pairs+ ~rbrace ~nl
 
-attr_lit_newline   <- attribute_literal+ ~nl
+scoped_key_value_pairs <- key_value_pair+ ~nl
 
-attribute_literal  <- attr ~space+ inline_lit_str space*
+key_value_pair         <- attr ~space+ inline_lit_str space*
 
-comment            <- space* '*' space* text_content
+comment                <- ~space* ~'*' ~space* text_content
 
-text_content       <- multiline_literal / ml_templess_lit / inline_literal
+text_content           <- multiline_literal / ml_templess_lit / inline_literal
 
-multiline_literal  <- ~'->' ~space* ~nl (variable / escaped / ml_lit_content)* ~'$'
+multiline_literal      <- ~'->' ~space* ~nl (variable / escaped / ml_lit_content)* ~'$'
 
-ml_templess_lit    <- ~('=>' / '~>') ~space* ~nl (escaped / ml_lit_content)* ~'$'
+ml_templess_lit        <- ~('=>' / '~>') ~space* ~nl (escaped / ml_lit_content)* ~'$'
 
-inline_literal     <- (variable / escaped / il_lit_content)*
+inline_literal         <- (variable / escaped / il_lit_content)*
 
-inline_lit_str     <- ~'"' (variable / escaped / il_lit_content)* ~'"'
+inline_lit_str         <- ~'"' (variable / escaped / il_lit_content)* ~'"'
 
-ml_lit_content     <- !'$' .
+ml_lit_content         <- !'$' .
 
-il_lit_content     <- !lparen !nl .
+il_lit_content         <- !lparen !nl .
 
-il_lit_str_content <- !'"' .
+il_lit_str_content     <- !'"' .
 
-escaped            <- '\\' .
+escaped                <- '\\' .
 
-tag_statement      <- tag $identifier< id_name? > $classes< class_name* > ~space* $body< text_content? > $attributes< attributes? >
+tag_statement          <- tag $identifier< id_name? > $classes< class_name* > ~space* $body< text_content? > $attributes< attributes? >
 
-id_name            <- '#' $name< ([a-zA-Z_] / '-')+ >
+id_name                <- '#' $name< ([a-zA-Z_] / '-')+ >
 
-class_name         <- '.' $name< ([a-zA-Z_] / '-')+ >
+class_name             <- '.' $name< ([a-zA-Z_] / '-')+ >
 
-attr_list          <- ~lparen ~nl ~lbrace ~nl attribute* ~rbrace ~nl ~rparen
+attr_list              <- ~lparen ~nl ~lbrace ~nl attribute* ~rbrace ~nl ~rparen
 
-attribute          <- attr ~space* inline_lit_str ~nl
+attribute              <- attr ~space* inline_lit_str ~nl
 )"
