@@ -4,14 +4,14 @@
 #include "node.hpp"
 
 class Attribute : public Node {
-  public:
-    Attribute(std::string key, NodePtr value);
+public:
+  Attribute(std::string key, NodePtr value);
 
-    std::string to_html(Json &context) override;
+  std::string to_html(Json &context) override;
 
-  private:
-    std::string key;
-    NodePtr value;
+private:
+  std::string key;
+  NodePtr value;
 };
 
 #endif
