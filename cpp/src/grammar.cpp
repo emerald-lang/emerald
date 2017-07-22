@@ -15,6 +15,9 @@
 #include "nodes/attribute.hpp"
 #include "nodes/attributes.hpp"
 #include "nodes/tag_statement.hpp"
+#include "nodes/text_literal.hpp"
+#include "nodes/text_literal_content.hpp"
+#include "nodes/escaped.hpp"
 // [END] Include nodes
 
 namespace {
@@ -114,6 +117,38 @@ Grammar::Grammar() : emerald_parser(syntax) {
       std::string key = sv[0].get<std::string>();
       NodePtr value = sv[1].get<NodePtr>();
       return NodePtr(new Attribute(key, value));
+    };
+
+  std::vector<std::string> literals = {
+    "multiline_literal", "inline_literal", "inline_lit_str"
+  };
+  for (std::string string_rule : literals) {
+    emerald_parser[string_rule.c_str()] =
+      [](const peg::SemanticValues& sv) -> NodePtr {
+        NodePtrs body = repeated<NodePtr>(sv, 0);
+
+        return NodePtr(new TextLiteral(body));
+      };
+  }
+
+  std::vector<std::string> literal_contents = {
+    "ml_lit_content", "il_lit_content", "il_lit_str_content"
+  };
+  for (std::string string_rule_content : literal_contents) {
+    emerald_parser[string_rule_content.c_str()] =
+      [](const peg::SemanticValues& sv) -> NodePtr {
+        return NodePtr(new TextLiteralContent(sv.str()));
+      };
+  }
+
+  emerald_parser["escaped"] =
+    [](const peg::SemanticValues& sv) -> NodePtr {
+      return NodePtr(new Escaped(sv.str()));
+    };
+
+  emerald_parser["text_content"] =
+    [](const peg::SemanticValues& sv) -> NodePtr {
+      return sv[0].get<NodePtr>();
     };
 
   // Terminals

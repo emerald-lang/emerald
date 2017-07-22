@@ -21,13 +21,19 @@ comment            <- space* '*' space* text_content
 
 text_content       <- multiline_literal / ml_templess_lit / inline_literal
 
-multiline_literal  <- '->' space* nl $body< (variable / escaped / !'$' .)* > '$'
+multiline_literal  <- ~'->' ~space* ~nl (variable / escaped / ml_lit_content)* ~'$'
 
-ml_templess_lit    <- ('=>' / '~>') space* nl $body< (escaped / !'$' .)* > '$'
+ml_templess_lit    <- ~('=>' / '~>') ~space* ~nl (escaped / ml_lit_content)* ~'$'
 
-inline_literal     <- $body< (variable / escaped / !lparen !nl .)* >
+inline_literal     <- (variable / escaped / il_lit_content)*
 
-inline_lit_str     <- '"' $body< (variable / escaped / !'"' .)* > '"'
+inline_lit_str     <- ~'"' (variable / escaped / il_lit_content)* ~'"'
+
+ml_lit_content     <- !'$' .
+
+il_lit_content     <- !lparen !nl .
+
+il_lit_str_content <- !'"' .
 
 escaped            <- '\\' .
 
