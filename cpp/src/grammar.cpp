@@ -125,9 +125,10 @@ Grammar::Grammar() : emerald_parser(syntax) {
     "id_name"
   };
   for (std::string rule_name : terminals) {
-    emerald_parser[rule_name.c_str()] = [](const peg::SemanticValues& sv) -> std::string {
-      return sv.str();
-    };
+    emerald_parser[rule_name.c_str()] =
+      [](const peg::SemanticValues& sv) -> std::string {
+        return sv.str();
+      };
   }
 
   emerald_parser.enable_packrat_parsing();
