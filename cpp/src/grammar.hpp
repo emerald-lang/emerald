@@ -5,15 +5,6 @@
 
 #include "../lib/peglib.h"
 
-// [START] Include nodes
-#include "nodes/node.hpp"
-#include "nodes/root.hpp"
-#include "nodes/nested.hpp"
-#include "nodes/scope.hpp"
-#include "nodes/line.hpp"
-#include "nodes/value_list.hpp"
-// [END] Include nodes
-
 /**
  * Singleton class for transforming Emerald code into intermediate
  * representation to be parsed by the PEG grammar
