@@ -1,15 +1,21 @@
 R"(
 ROOT               <- (scope / pair_list / value_list / nested / line / comment)+
 
-nested             <- tag_statement nl lbrace nl ROOT rbrace nl
+nested             <- tag_statement ~nl ~lbrace ~nl ROOT ~rbrace ~nl
 
-scope              <- $fn< scope_fn > lbrace nl $body< ROOT > rbrace nl
+scope              <- $fn< scope_fn > ~lbrace ~nl $body< ROOT > ~rbrace ~nl
 
-line               <- (tag_statement / comment) nl
+line               <- (tag_statement / comment) ~nl
 
-value_list         <- $keyword< special_keyword > nl lbrace nl $list_items< ($literal< inline_lit_str > nl)+ > rbrace nl
+value_list         <- special_keyword ~nl ~lbrace ~nl literal_new_line+ ~rbrace ~nl
 
-pair_list          <- $keyword< base_keyword > nl lbrace nl $list_items< ($pairs< ($attr< attr > space+ $literal< inline_lit_str > space*)+ > nl)+ > rbrace nl
+literal_new_line   <- inline_lit_str ~nl
+
+pair_list          <- base_keyword ~nl ~lbrace ~nl attr_lit_newline+ ~rbrace ~nl
+
+attr_lit_newline   <- attribute_literal+ ~nl
+
+attribute_literal  <- attr ~space+ inline_lit_str space*
 
 comment            <- space* '*' space* text_content
 

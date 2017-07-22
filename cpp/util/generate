@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "thor"
+require_relative "generator.rb"
+
+module Emerald
+  class CLI < Thor
+    desc "node <node_name>", "Generates new default node for grammar."
+    def node(name)
+      Emerald::Generator.new.node(name)
+    end
+  end
+end
+
+Emerald::CLI.start(ARGV)

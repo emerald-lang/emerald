@@ -10,8 +10,10 @@
 typedef const nlohmann::json Json;
 
 class Node {
-  public:
-    virtual std::string to_html(Json &context) = 0;
+
+public:
+  virtual std::string to_html(Json &context) = 0;
+
 };
 
 typedef std::shared_ptr<Node> NodePtr;

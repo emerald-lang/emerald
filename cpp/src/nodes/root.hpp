@@ -4,13 +4,15 @@
 #include "node.hpp"
 
 class Root : public Node {
-  public:
-    Root(NodePtrs);
 
-    std::string to_html(Json &context) override;
+public:
+  Root(NodePtrs);
 
-  private:
-    NodePtrs elements;
+  std::string to_html(Json &context) override;
+
+private:
+  NodePtrs elements;
+
 };
 
 #endif // ROOT_H
