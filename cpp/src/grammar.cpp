@@ -6,7 +6,7 @@
 
 // [START] Include nodes
 #include "nodes/node.hpp"
-#include "nodes/root.hpp"
+#include "nodes/node_list.hpp"
 #include "nodes/nested.hpp"
 #include "nodes/scope.hpp"
 #include "nodes/line.hpp"
@@ -18,6 +18,10 @@
 #include "nodes/text_literal.hpp"
 #include "nodes/text_literal_content.hpp"
 #include "nodes/escaped.hpp"
+#include "nodes/pair_list.hpp"
+#include "nodes/comment.hpp"
+#include "nodes/scoped_key_value_pairs.hpp"
+#include "nodes/key_value_pair.hpp"
 // [END] Include nodes
 
 namespace {
@@ -33,9 +37,11 @@ namespace {
   std::vector<T> repeated(const peg::SemanticValues& sv, size_t i) {
     std::vector<T> contents;
     const peg::SemanticValues repeated_node = sv[i].get<peg::SemanticValues>();
+
     for (unsigned int n = 0; n < repeated_node.size(); n++) {
       contents.push_back(repeated_node[n].get<T>());
     }
+
     return contents;
   }
 }
@@ -43,7 +49,7 @@ namespace {
 Grammar::Grammar() : emerald_parser(syntax) {
   emerald_parser["ROOT"] = [](const peg::SemanticValues& sv) -> NodePtr {
       NodePtrs nodes = repeated<NodePtr>(sv, 0);
-      return NodePtr(new Root(nodes));
+      return NodePtr(new NodeList(nodes));
     };
 
   emerald_parser["nested"] =
@@ -72,7 +78,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
   emerald_parser["value_list"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
       NodePtr keyword = sv[0].get<NodePtr>();
-      NodePtrs literals = sv[1].get<NodePtrs>();
+      NodePtrs literals = repeated<NodePtr>(sv, 1);
 
       return NodePtr(new ValueList(keyword, literals));
     };
@@ -86,10 +92,32 @@ Grammar::Grammar() : emerald_parser(syntax) {
 
   emerald_parser["pair_list"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
-      NodePtr base_keyword = sv[0].get<NodePtr>();
-      NodePtr attr_lit_newline = sv[1].get<NodePtr>();
+      NodePtrs nodes;
+      std::string base_keyword = sv[0].get<std::string>();
+      std::vector<const peg::SemanticValues> semantic_values = repeated<const peg::SemanticValues>(sv, 1);
 
-      return NodePtr(new PairList(base_keyword, attr_lit_newline));
+      std::transform(semantic_values.begin(), semantic_values.end(), nodes.begin(),
+        [=](const peg::SemanticValues& svs) {
+          NodePtrs pairs = repeated<NodePtr>(svs, 0);
+          return NodePtr(new ScopedKeyValuePairs(base_keyword, pairs));
+        });
+
+      return NodePtr(new NodeList(nodes));
+    };
+
+  emerald_parser["key_value_pair"] =
+    [](const peg::SemanticValues& sv) -> NodePtr {
+      std::string key = sv[0].get<std::string>();
+      NodePtr value = sv[1].get<NodePtr>();
+
+      return NodePtr(new KeyValuePair(key, value));
+    };
+
+  emerald_parser["comment"] =
+    [](const peg::SemanticValues& sv) -> NodePtr {
+      NodePtr text_content = sv[0].get<NodePtr>();
+
+      return NodePtr(new Comment(text_content));
     };
 
   emerald_parser["tag_statement"] =
@@ -119,9 +147,6 @@ Grammar::Grammar() : emerald_parser(syntax) {
       return NodePtr(new Attribute(key, value));
     };
 
-  std::vector<std::string> literals = {
-    "multiline_literal", "inline_literal", "inline_lit_str"
-  };
   for (std::string string_rule : literals) {
     emerald_parser[string_rule.c_str()] =
       [](const peg::SemanticValues& sv) -> NodePtr {
@@ -131,9 +156,6 @@ Grammar::Grammar() : emerald_parser(syntax) {
       };
   }
 
-  std::vector<std::string> literal_contents = {
-    "ml_lit_content", "il_lit_content", "il_lit_str_content"
-  };
   for (std::string string_rule_content : literal_contents) {
     emerald_parser[string_rule_content.c_str()] =
       [](const peg::SemanticValues& sv) -> NodePtr {
@@ -152,13 +174,6 @@ Grammar::Grammar() : emerald_parser(syntax) {
     };
 
   // Terminals
-
-  std::vector<std::string> terminals = {
-    "attr",
-    "tag",
-    "class_name",
-    "id_name"
-  };
   for (std::string rule_name : terminals) {
     emerald_parser[rule_name.c_str()] =
       [](const peg::SemanticValues& sv) -> std::string {

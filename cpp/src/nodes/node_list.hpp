@@ -1,12 +1,12 @@
-#ifndef ROOT_H
-#define ROOT_H
+#ifndef NODELIST_H
+#define NODELIST_H
 
 #include "node.hpp"
 
-class Root : public Node {
+class NodeList : public Node {
 
 public:
-  Root(NodePtrs);
+  NodeList(NodePtrs);
 
   std::string to_html(Json &context) override;
 
@@ -15,4 +15,4 @@ private:
 
 };
 
-#endif // ROOT_H
+#endif // NODELIST_H
