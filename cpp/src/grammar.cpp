@@ -9,7 +9,6 @@
 #include "nodes/node_list.hpp"
 #include "nodes/boolean.hpp"
 #include "nodes/scope_fn.hpp"
-#include "nodes/nested.hpp"
 #include "nodes/scope.hpp"
 #include "nodes/line.hpp"
 #include "nodes/value_list.hpp"
@@ -58,14 +57,6 @@ Grammar::Grammar() : emerald_parser(syntax) {
   emerald_parser["ROOT"] = [](const peg::SemanticValues& sv) -> NodePtr {
       NodePtrs nodes = repeated<NodePtr>(sv, 0);
       return NodePtr(new NodeList(nodes));
-    };
-
-  emerald_parser["nested"] =
-    [](const peg::SemanticValues& sv) -> NodePtr {
-      NodePtr tag_statement = sv[0].get<NodePtr>();
-      NodePtr root = sv[1].get<NodePtr>();
-
-      return NodePtr(new Nested(tag_statement, root));
     };
 
   emerald_parser["scope"] =
@@ -135,8 +126,11 @@ Grammar::Grammar() : emerald_parser(syntax) {
       std::vector<std::string> class_names = repeated<std::string>(sv, 2);
       NodePtr body = present(sv, 3) ? sv[3].get<NodePtr>() : NodePtr();
       NodePtr attributes = present(sv, 4) ? sv[4].get<NodePtr>() : NodePtr();
+      NodePtr nested =
+        present(sv, 5) ? sv[5].get<peg::SemanticValues>()[0].get<NodePtr>() : NodePtr();
 
-      return NodePtr(new TagStatement(tag_name, id_name, class_names, body, attributes));
+      return NodePtr(
+        new TagStatement(tag_name, id_name, class_names, body, attributes, nested));
     };
 
   emerald_parser["attr_list"] =
