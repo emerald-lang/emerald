@@ -30,6 +30,7 @@
 #include "nodes/conditional.hpp"
 #include "nodes/variable_name.hpp"
 #include "nodes/variable.hpp"
+#include "nodes/scope.hpp"
 // [END] Include nodes
 
 namespace {
@@ -58,14 +59,6 @@ Grammar::Grammar() : emerald_parser(syntax) {
   emerald_parser["ROOT"] = [](const peg::SemanticValues& sv) -> NodePtr {
       NodePtrs nodes = repeated<NodePtr>(sv, 0);
       return NodePtr(new NodeList(nodes));
-    };
-
-  emerald_parser["scope"] =
-    [](const peg::SemanticValues& sv) -> NodePtr {
-      NodePtr scope_fn = sv[0].get<NodePtr>();
-      NodePtr root = sv[1].get<NodePtr>();
-
-      return NodePtr(new Scope(scope_fn, root));
     };
 
   emerald_parser["line"] =
@@ -251,6 +244,14 @@ Grammar::Grammar() : emerald_parser(syntax) {
       std::string name = sv.token(0);
 
       return NodePtr(new Variable(name));
+    };
+
+  emerald_parser["scope"] =
+    [](const peg::SemanticValues& sv) -> NodePtr {
+      ScopeFnPtr scope_fn = sv[0].get<ScopeFnPtr>();
+      NodePtr body = sv[1].get<NodePtr>();
+
+      return NodePtr(new Scope(scope_fn, body));
     };
 
   // Terminals

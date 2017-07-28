@@ -2,16 +2,17 @@
 #define SCOPE_H
 
 #include "node.hpp"
+#include "scope_fn.hpp"
 
 class Scope : public Node {
 
 public:
-  Scope(NodePtr scope_fn, NodePtr body);
+  Scope(ScopeFnPtr scope_fn, NodePtr body);
 
   std::string to_html(Json &context) override;
 
 private:
-  NodePtr scope_fn;
+  ScopeFnPtr scope_fn;
   NodePtr body;
 
 };

@@ -1,7 +1,7 @@
 R"(
 ROOT                   <- (scope / pair_list / value_list / line / comment)+
 
-scope                  <- $fn< scope_fn > ~lbrace ~nl $body< ROOT > ~rbrace ~nl
+scope                  <- scope_fn ~lbrace ~nl ROOT ~rbrace ~nl
 
 line                   <- (tag_statement / comment) ~nl
 

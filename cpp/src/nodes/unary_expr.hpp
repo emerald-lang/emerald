@@ -2,7 +2,7 @@
 #define UNARYEXPR_H
 
 #include "boolean.hpp"
-#include "node.hpp";
+#include "node.hpp"
 
 class UnaryExpr : public Boolean {
 
