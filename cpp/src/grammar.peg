@@ -37,7 +37,7 @@ il_lit_str_content     <- !'"' .
 
 escaped                <- '\\' .
 
-tag_statement          <- tag $identifier< id_name? > $classes< class_name* > ~space* $body< text_content? > $attributes< attributes? >
+tag_statement          <- tag id_name? class_name* ~space* text_content? attr_list?
 
 id_name                <- '#' $name< ([a-zA-Z_] / '-')+ >
 
