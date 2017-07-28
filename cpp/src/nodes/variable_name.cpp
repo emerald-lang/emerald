@@ -2,14 +2,6 @@
 
 VariableName::VariableName(std::string name) : name(name) {}
 
-std::string VariableName::to_html(Json &context) {
-  if (context[name].is_primitive()) {
-    return context[name];
-  } else {
-    return "";
-  }
-}
-
 // Uses Javascript truthiness conventions
 bool VariableName::truthy(Json &context) const {
   if (context[name].is_boolean()) {

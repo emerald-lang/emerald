@@ -29,6 +29,7 @@
 #include "nodes/with.hpp"
 #include "nodes/conditional.hpp"
 #include "nodes/variable_name.hpp"
+#include "nodes/variable.hpp"
 // [END] Include nodes
 
 namespace {
@@ -243,6 +244,13 @@ Grammar::Grammar() : emerald_parser(syntax) {
       std::string name = sv.str();
 
       return BooleanPtr(new VariableName(name));
+    };
+
+  emerald_parser["variable"] =
+    [](const peg::SemanticValues& sv) -> NodePtr {
+      std::string name = sv.token(0);
+
+      return NodePtr(new Variable(name));
     };
 
   // Terminals
