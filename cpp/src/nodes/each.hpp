@@ -16,6 +16,12 @@ private:
   std::string collection_name;
   std::string val_name;
   std::string key_name;
+
+  std::string each_in_collection(
+    const Json& collection,
+    NodePtr body,
+    const Json& context,
+    bool key_is_index) const;
 };
 
 #endif // EACH_H
