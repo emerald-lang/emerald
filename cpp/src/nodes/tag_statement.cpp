@@ -6,13 +6,15 @@ TagStatement::TagStatement(
   std::string id,
   std::vector<std::string> classes,
   NodePtr body,
-  NodePtr attributes
+  NodePtr attributes,
+  NodePtr nested
 ):
   tag_name(tag_name),
   id(id),
   classes(classes),
   body(body),
   attributes(attributes),
+  nested(nested),
   self_closing(void_tags.find(tag_name) != void_tags.end())
 {}
 
@@ -26,9 +28,15 @@ std::string TagStatement::to_html(Json &context) {
   if (self_closing) {
     return opening_tag(context);
   } else {
-    return opening_tag(context) +
-      (body ? body->to_html(context) : "") +
-      closing_tag();
+    std::string result = opening_tag(context);
+    if (body) {
+      result += body->to_html(context);
+    } else if (nested) {
+      result += nested->to_html(context);
+    }
+    result += closing_tag();
+
+    return result;
   }
 }
 

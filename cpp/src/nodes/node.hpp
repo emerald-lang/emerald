@@ -7,7 +7,7 @@
 
 #include "../../lib/json.hpp"
 
-typedef const nlohmann::json Json;
+typedef nlohmann::json Json;
 
 class Node {
 

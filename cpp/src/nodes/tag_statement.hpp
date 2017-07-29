@@ -11,7 +11,8 @@ public:
       std::string id,
       std::vector<std::string> classes,
       NodePtr body,
-      NodePtr attributes
+      NodePtr attributes,
+      NodePtr nested
   );
 
   std::string to_html(Json &context) override;
@@ -31,6 +32,7 @@ private:
   std::vector<std::string> classes;
   NodePtr body;
   NodePtr attributes;
+  NodePtr nested;
 };
 
 #endif
