@@ -25,7 +25,7 @@ key_value_pair         <- attr ~space+ inline_lit_str space*
 
 comment                <- ~space* ~'*' ~space* text_content
 
-text_content           <- multiline_literal / ml_templess_lit / inline_literal
+text_content           <- multiline_literal / ml_templess_lit / inline_literals_node
 
 multiline_literal      <- ~'->' ~space* ~nl ml_lit_str_quoteds ~'$'
 
@@ -43,6 +43,8 @@ ml_templess_lit_str_q  <- escaped / ml_lit_content
 ################################
 # Inline literals strings
 ################################
+
+inline_literals_node   <- inline_literals
 
 inline_literals        <- inline_literal*
 

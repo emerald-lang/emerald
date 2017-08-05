@@ -16,7 +16,6 @@
 #include "nodes/attribute.hpp"
 #include "nodes/attributes.hpp"
 #include "nodes/tag_statement.hpp"
-#include "nodes/text_literal.hpp"
 #include "nodes/text_literal_content.hpp"
 #include "nodes/escaped.hpp"
 #include "nodes/pair_list.hpp"
@@ -89,7 +88,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
     [](const peg::SemanticValues& sv) -> NodePtr {
       NodePtrs nodes;
       std::string base_keyword = sv[0].get<std::string>();
-      std::vector<const peg::SemanticValues> semantic_values = sv[1].get<const peg::SemanticValues>();
+      std::vector<const peg::SemanticValues> semantic_values = sv[1].get<std::vector<const peg::SemanticValues>>();
 
       std::transform(semantic_values.begin(), semantic_values.end(), nodes.begin(),
         [=](const peg::SemanticValues& svs) {
@@ -153,12 +152,6 @@ Grammar::Grammar() : emerald_parser(syntax) {
   emerald_parser["escaped"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
       return NodePtr(new Escaped(sv.str()));
-    };
-
-  emerald_parser["multiline_literal"] =
-    [](const peg::SemanticValues& sv) -> NodePtr {
-      NodePtrs nodes = sv[0].get<NodePtrs>();
-      return NodePtr(new NodeList(nodes, ""));
     };
 
   emerald_parser["unary_expr"] =
@@ -249,11 +242,19 @@ Grammar::Grammar() : emerald_parser(syntax) {
     };
 
   // Repeated Nodes
+  const std::vector<std::string> repeated_nodes = {
+    "statements", "literal_new_lines", "key_value_pairs", "ml_lit_str_quoteds",
+    "ml_templess_lit_str_qs", "inline_literals", "il_lit_str_quoteds"
+  };
   for (std::string repeated_node : repeated_nodes) {
     emerald_parser[repeated_node.c_str()] = repeated<NodePtr>();
   }
 
   // Wrapper Nodes
+  const std::vector<std::string> wrapper_nodes = {
+    "statement", "text_content", "ml_lit_str_quoted", "ml_templess_lit_str_q",
+    "inline_literal", "il_lit_str_quoted"
+  };
   for (std::string wrapper_node : wrapper_nodes) {
     emerald_parser[wrapper_node.c_str()] =
       [](const peg::SemanticValues& sv) -> NodePtr {
@@ -262,16 +263,22 @@ Grammar::Grammar() : emerald_parser(syntax) {
   }
 
   // Literals
+  const std::vector<std::string> literals = {
+    "multiline_literal", "inline_lit_str", "inline_literals_node"
+  };
   for (std::string string_rule : literals) {
     emerald_parser[string_rule.c_str()] =
       [](const peg::SemanticValues& sv) -> NodePtr {
         NodePtrs body = repeated<NodePtr>(sv, 0);
 
-        return NodePtr(new TextLiteral(body));
+        return NodePtr(new NodeList(body, ""));
       };
   }
 
   // Literal Contents
+  const std::vector<std::string> literal_contents = {
+    "ml_lit_content", "il_lit_content", "il_lit_str_content"
+  };
   for (std::string string_rule_content : literal_contents) {
     emerald_parser[string_rule_content.c_str()] =
       [](const peg::SemanticValues& sv) -> NodePtr {
@@ -280,6 +287,9 @@ Grammar::Grammar() : emerald_parser(syntax) {
   }
 
   // Terminals
+  const std::vector<std::string> terminals = {
+    "attr", "tag", "class_name", "id_name"
+  };
   for (std::string rule_name : terminals) {
     emerald_parser[rule_name.c_str()] =
       [](const peg::SemanticValues& sv) -> std::string {
