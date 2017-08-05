@@ -57,9 +57,10 @@ namespace {
 }
 
 Grammar::Grammar() : emerald_parser(syntax) {
-  emerald_parser["ROOT"] = [](const peg::SemanticValues& sv) -> NodePtr {
-      NodePtrs nodes = repeated<NodePtr>(sv, 0);
-      return NodePtr(new NodeList(nodes));
+  emerald_parser["ROOT"] =
+    [](const peg::SemanticValues& sv) -> NodePtr {
+      NodePtrs nodes = sv[0].get<NodePtrs>();
+      return NodePtr(new NodeList(nodes, "\n"));
     };
 
   emerald_parser["line"] =
@@ -72,7 +73,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
   emerald_parser["value_list"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
       NodePtr keyword = sv[0].get<NodePtr>();
-      NodePtrs literals = repeated<NodePtr>(sv, 1);
+      NodePtrs literals = sv[1].get<NodePtrs>();
 
       return NodePtr(new ValueList(keyword, literals));
     };
@@ -88,15 +89,22 @@ Grammar::Grammar() : emerald_parser(syntax) {
     [](const peg::SemanticValues& sv) -> NodePtr {
       NodePtrs nodes;
       std::string base_keyword = sv[0].get<std::string>();
-      std::vector<const peg::SemanticValues> semantic_values = repeated<const peg::SemanticValues>(sv, 1);
+      std::vector<const peg::SemanticValues> semantic_values = sv[1].get<const peg::SemanticValues>();
 
       std::transform(semantic_values.begin(), semantic_values.end(), nodes.begin(),
         [=](const peg::SemanticValues& svs) {
-          NodePtrs pairs = repeated<NodePtr>(svs, 0);
+          NodePtrs pairs = svs[0].get<NodePtrs>();
           return NodePtr(new ScopedKeyValuePairs(base_keyword, pairs));
         });
 
-      return NodePtr(new NodeList(nodes));
+      return NodePtr(new NodeList(nodes, "\n"));
+    };
+
+  emerald_parser["scoped_key_value_pairs"] = repeated<const peg::SemanticValues>();
+
+  emerald_parser["scoped_key_value_pair"] =
+    [](const peg::SemanticValues& sv) -> const peg::SemanticValues {
+      return sv;
     };
 
   emerald_parser["key_value_pair"] =
@@ -142,30 +150,15 @@ Grammar::Grammar() : emerald_parser(syntax) {
       return NodePtr(new Attribute(key, value));
     };
 
-  for (std::string string_rule : literals) {
-    emerald_parser[string_rule.c_str()] =
-      [](const peg::SemanticValues& sv) -> NodePtr {
-        NodePtrs body = repeated<NodePtr>(sv, 0);
-
-        return NodePtr(new TextLiteral(body));
-      };
-  }
-
-  for (std::string string_rule_content : literal_contents) {
-    emerald_parser[string_rule_content.c_str()] =
-      [](const peg::SemanticValues& sv) -> NodePtr {
-        return NodePtr(new TextLiteralContent(sv.str()));
-      };
-  }
-
   emerald_parser["escaped"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
       return NodePtr(new Escaped(sv.str()));
     };
 
-  emerald_parser["text_content"] =
+  emerald_parser["multiline_literal"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
-      return sv[0].get<NodePtr>();
+      NodePtrs nodes = sv[0].get<NodePtrs>();
+      return NodePtr(new NodeList(nodes, ""));
     };
 
   emerald_parser["unary_expr"] =
@@ -254,6 +247,37 @@ Grammar::Grammar() : emerald_parser(syntax) {
 
       return NodePtr(new Scope(scope_fn, body));
     };
+
+  // Repeated Nodes
+  for (std::string repeated_node : repeated_nodes) {
+    emerald_parser[repeated_node.c_str()] = repeated<NodePtr>();
+  }
+
+  // Wrapper Nodes
+  for (std::string wrapper_node : wrapper_nodes) {
+    emerald_parser[wrapper_node.c_str()] =
+      [](const peg::SemanticValues& sv) -> NodePtr {
+        return sv[0].get<NodePtr>();
+      };
+  }
+
+  // Literals
+  for (std::string string_rule : literals) {
+    emerald_parser[string_rule.c_str()] =
+      [](const peg::SemanticValues& sv) -> NodePtr {
+        NodePtrs body = repeated<NodePtr>(sv, 0);
+
+        return NodePtr(new TextLiteral(body));
+      };
+  }
+
+  // Literal Contents
+  for (std::string string_rule_content : literal_contents) {
+    emerald_parser[string_rule_content.c_str()] =
+      [](const peg::SemanticValues& sv) -> NodePtr {
+        return NodePtr(new TextLiteralContent(sv.str()));
+      };
+  }
 
   // Terminals
   for (std::string rule_name : terminals) {

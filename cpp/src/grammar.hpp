@@ -43,6 +43,16 @@ private:
     R"(%whitespace        <- [ \t]*)"
   ;
 
+  const std::vector<std::string> repeated_nodes = {
+    "statements", "literal_new_lines", "key_value_pairs", "ml_lit_str_quoteds",
+    "ml_templess_lit_str_qs", "inline_literals", "il_lit_str_quoteds"
+  };
+
+  const std::vector<std::string> wrapper_nodes = {
+    "statement", "text_content", "ml_lit_str_quoted", "ml_templess_lit_str_q",
+    "inline_literal", "il_lit_str_quoted"
+  };
+
   const std::vector<std::string> literals = {
     "multiline_literal", "inline_literal", "inline_lit_str"
   };
