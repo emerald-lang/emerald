@@ -25,6 +25,8 @@ key_value_pair         <- attr ~space+ inline_lit_str space*
 
 comment                <- ~space* ~'*' ~space* text_content
 
+maybe_text_content     <- text_content?
+
 text_content           <- multiline_literal / ml_templess_lit / inline_literals_node
 
 multiline_literal      <- ~'->' ~space* ~nl ml_lit_str_quoteds ~'$'
@@ -64,13 +66,21 @@ il_lit_str_content     <- !'"' .
 
 escaped                <- '\\' .
 
-tag_statement          <- tag id_name? class_names ~space* text_content? attr_list? (~nl ~lbrace ~nl ROOT ~rbrace ~nl)?
+tag_statement          <- tag maybe_id_name class_names ~space* maybe_text_content maybe_attr_list maybe_nested_tag
+
+maybe_nested_tag       <- nested_tag?
+
+nested_tag             <- ~nl ~lbrace ~nl ROOT ~rbrace ~nl
+
+maybe_id_name          <- id_name?
 
 id_name                <- '#' $name< ([a-zA-Z_] / '-')+ >
 
 class_names            <- class_name*
 
 class_name             <- '.' $name< ([a-zA-Z_] / '-')+ >
+
+maybe_attr_list        <- attr_list?
 
 attr_list              <- ~lparen ~nl ~lbrace ~nl attributes ~rbrace ~nl ~rparen
 

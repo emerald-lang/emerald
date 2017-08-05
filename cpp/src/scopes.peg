@@ -1,17 +1,25 @@
 R"(
-scope_fn     <- (given / unless / each / with) ~nl
+scope_fn       <- (given / unless / each / with) ~nl
 
-given        <- ~'given' ~space* boolean_expr
+given          <- ~'given' ~space* boolean_expr
 
-unless       <- ~'unless' ~space* boolean_expr
+unless         <- ~'unless' ~space* boolean_expr
 
-with         <- ~'with' ~space* variable_name
+with           <- ~'with' ~space* variable_name
 
-each         <- ~'each' ~space* variable_name ~space* ~'as' ~space* ~variable_name (~',' ~space* ~variable_name)? >
+each           <- ~'each' ~space* variable_name ~space* ~'as' ~space* ~variable_name maybe_key_name >
 
-boolean_expr <- binary_expr / unary_expr
+maybe_key_name <- key_name?
 
-binary_expr  <- unary_expr ~space+ ('and' / 'or') ~space+ boolean_expr
+key_name       <- ~',' ~space* variable_name
 
-unary_expr   <- ('not' space+)? (variable_name / ~'(' ~space* boolean_expr ~space* ~')')
+boolean_expr   <- binary_expr / unary_expr
+
+binary_expr    <- unary_expr ~space+ ('and' / 'or') ~space+ boolean_expr
+
+unary_expr     <- maybe_negation (variable_name / ~'(' ~space* boolean_expr ~space* ~')')
+
+maybe_negation <- negation?
+
+negation       <- 'not' space+
 )"
