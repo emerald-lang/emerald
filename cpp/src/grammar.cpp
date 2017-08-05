@@ -34,7 +34,7 @@
 namespace {
   // Helper function to turn a maybe rule (one element, made optional with a ?) into its value or a default
   template<typename T>
-   std::function<T(const peg::SemanticValues&)> optional(T default_value) {
+  std::function<T(const peg::SemanticValues&)> optional(T default_value) {
     return [=](const peg::SemanticValues &sv) -> T {
       if (sv.size() > 0) {
         return sv[0].get<T>();
