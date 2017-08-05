@@ -127,11 +127,13 @@ Grammar::Grammar() : emerald_parser(syntax) {
 
   emerald_parser["maybe_id_name"] = optional<std::string>("");
 
+  emerald_parser["class_names"] = repeated<std::string>();
+
   emerald_parser["tag_statement"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
       std::string tag_name = sv[0].get<std::string>();
       std::string id_name = sv[1].get<std::string>();
-      std::vector<std::string> class_names = repeated<std::string>(sv, 2);
+      std::vector<std::string> class_names = sv[2].get<std::vector<std::string>>();
       NodePtr body = sv[3].get<NodePtr>();
       NodePtr attributes = sv[4].get<NodePtr>();
       NodePtr nested = sv[5].get<NodePtr>();
@@ -142,7 +144,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
 
   emerald_parser["attr_list"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
-      NodePtrs nodes = repeated<NodePtr>(sv, 0);
+      NodePtrs nodes = sv[0].get<NodePtrs>();
 
       return NodePtr(new Attributes(nodes));
     };
@@ -258,7 +260,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
   // Repeated Nodes
   const std::vector<std::string> repeated_nodes = {
     "statements", "literal_new_lines", "key_value_pairs", "ml_lit_str_quoteds",
-    "ml_templess_lit_str_qs", "inline_literals", "il_lit_str_quoteds"
+    "ml_templess_lit_str_qs", "inline_literals", "il_lit_str_quoteds", "attributes"
   };
   for (std::string repeated_node : repeated_nodes) {
     emerald_parser[repeated_node.c_str()] = repeated<NodePtr>();
@@ -283,7 +285,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
   for (std::string string_rule : literals) {
     emerald_parser[string_rule.c_str()] =
       [](const peg::SemanticValues& sv) -> NodePtr {
-        NodePtrs body = repeated<NodePtr>(sv, 0);
+        NodePtrs body = sv[0].get<NodePtrs>();
 
         return NodePtr(new NodeList(body, ""));
       };
