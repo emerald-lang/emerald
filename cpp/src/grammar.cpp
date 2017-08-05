@@ -43,15 +43,16 @@ namespace {
   // Helper to turn the repeated (+ or *) ith token into a vector of
   // a given type
   template<typename T>
-  std::vector<T> repeated(const peg::SemanticValues& sv, size_t i) {
-    std::vector<T> contents;
-    const peg::SemanticValues repeated_node = sv[i].get<peg::SemanticValues>();
+  std::function<std::vector<T>(const peg::SemanticValues&)> repeated() {
+    return [](const peg::SemanticValues& sv) -> std::vector<T> {
+      std::vector<T> contents;
 
-    for (unsigned int n = 0; n < repeated_node.size(); n++) {
-      contents.push_back(repeated_node[n].get<T>());
-    }
+      for (unsigned int n = 0; n < sv.size(); n++) {
+        contents.push_back(sv[n].get<T>());
+      }
 
-    return contents;
+      return contents;
+    };
   }
 }
 
