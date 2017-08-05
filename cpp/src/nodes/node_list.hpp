@@ -6,12 +6,13 @@
 class NodeList : public Node {
 
 public:
-  NodeList(NodePtrs);
+  NodeList(NodePtrs, std::string);
 
   std::string to_html(Json &context) override;
 
 private:
   NodePtrs elements;
+  std::string delimiter;
 
 };
 

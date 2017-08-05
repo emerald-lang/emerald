@@ -43,18 +43,6 @@ private:
     R"(%whitespace        <- [ \t]*)"
   ;
 
-  const std::vector<std::string> literals = {
-    "multiline_literal", "inline_literal", "inline_lit_str"
-  };
-
-  const std::vector<std::string> literal_contents = {
-    "ml_lit_content", "il_lit_content", "il_lit_str_content"
-  };
-
-  const std::vector<std::string> terminals = {
-    "attr", "tag", "class_name", "id_name"
-  };
-
 };
 
 #endif // GRAMMAR_H
