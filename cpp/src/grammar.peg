@@ -1,17 +1,25 @@
 R"(
-ROOT                   <- (scope / pair_list / value_list / line / comment)+
+ROOT                   <- statements
+
+statements             <- (scope / pair_list / value_list / line / comment)+
 
 scope                  <- scope_fn ~lbrace ~nl ROOT ~rbrace ~nl
 
 line                   <- (tag_statement / comment) ~nl
 
-value_list             <- special_keyword ~nl ~lbrace ~nl literal_new_line+ ~rbrace ~nl
+value_list             <- special_keyword ~nl ~lbrace ~nl literal_new_lines ~rbrace ~nl
+
+literal_new_lines      <- literal_newline+
 
 literal_new_line       <- inline_lit_str ~nl
 
-pair_list              <- base_keyword ~nl ~lbrace ~nl key_value_pairs+ ~rbrace ~nl
+pair_list              <- base_keyword ~nl ~lbrace ~nl scoped_key_value_pairs ~rbrace ~nl
 
-scoped_key_value_pairs <- key_value_pair+ ~nl
+scoped_key_value_pairs <- scoped_key_value_pair+
+
+scoped_key_value_pair  <- key_value_pairs ~nl
+
+key_value_pairs        <- key_value_pair+
 
 key_value_pair         <- attr ~space+ inline_lit_str space*
 
@@ -19,13 +27,32 @@ comment                <- ~space* ~'*' ~space* text_content
 
 text_content           <- multiline_literal / ml_templess_lit / inline_literal
 
-multiline_literal      <- ~'->' ~space* ~nl (variable / escaped / ml_lit_content)* ~'$'
+multiline_literal      <- ~'->' ~space* ~nl ml_lit_str_quoteds ~'$'
 
-ml_templess_lit        <- ~('=>' / '~>') ~space* ~nl (escaped / ml_lit_content)* ~'$'
+ml_templess_lit        <- ~('=>' / '~>') ~space* ~nl ml_templess_lit_str_qs ~'$'
 
-inline_literal         <- (variable / escaped / il_lit_content)*
+ml_lit_str_quoteds     <- ml_lit_str_quoted*
 
-inline_lit_str         <- ~'"' (variable / escaped / il_lit_content)* ~'"'
+ml_lit_str_quoted      <- variable / escaped / ml_lit_content
+
+# Jesus forgive me.
+ml_templess_lit_str_qs <- ml_templess_lit_str_q*
+
+ml_templess_lit_str_q  <- escaped / ml_lit_content
+
+################################
+# Inline literals strings
+################################
+
+inline_literals        <- inline_literal*
+
+inline_literal         <- variable / escaped / il_lit_content
+
+inline_lit_str         <- ~'"' il_lit_str_quoteds ~'"'
+
+il_lit_str_quoteds     <- il_lit_str_quoted*
+
+il_lit_str_quoted      <- variable / escaped / il_lit_content
 
 ml_lit_content         <- !'$' .
 
@@ -35,13 +62,17 @@ il_lit_str_content     <- !'"' .
 
 escaped                <- '\\' .
 
-tag_statement          <- tag id_name? class_name* ~space* text_content? attr_list? (~nl ~lbrace ~nl ROOT ~rbrace ~nl)?
+tag_statement          <- tag id_name? class_names ~space* text_content? attr_list? (~nl ~lbrace ~nl ROOT ~rbrace ~nl)?
 
 id_name                <- '#' $name< ([a-zA-Z_] / '-')+ >
 
+class_names            <- class_name*
+
 class_name             <- '.' $name< ([a-zA-Z_] / '-')+ >
 
-attr_list              <- ~lparen ~nl ~lbrace ~nl attribute* ~rbrace ~nl ~rparen
+attr_list              <- ~lparen ~nl ~lbrace ~nl attributes ~rbrace ~nl ~rparen
+
+attributes             <- attribute*
 
 attribute              <- attr ~space* inline_lit_str ~nl
 )"
