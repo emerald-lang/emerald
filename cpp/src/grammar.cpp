@@ -18,7 +18,6 @@
 #include "nodes/tag_statement.hpp"
 #include "nodes/text_literal_content.hpp"
 #include "nodes/escaped.hpp"
-#include "nodes/pair_list.hpp"
 #include "nodes/comment.hpp"
 #include "nodes/scoped_key_value_pairs.hpp"
 #include "nodes/key_value_pair.hpp"
@@ -33,14 +32,19 @@
 // [END] Include nodes
 
 namespace {
-  // Helper function to check if the optional (?) ith token in a rule
-  // matched anything
-  bool present(const peg::SemanticValues& sv, size_t i) {
-    return !sv.token(i).empty();
+  // Helper function to turn a maybe rule (one element, made optional with a ?) into its value or a default
+  template<typename T>
+  std::function<T(const peg::SemanticValues&)> optional(T default_value) {
+    return [=](const peg::SemanticValues &sv) -> T {
+      if (sv.size() > 0) {
+        return sv[0].get<T>();
+      } else {
+        return default_value;
+      }
+    };
   }
 
-  // Helper to turn the repeated (+ or *) ith token into a vector of
-  // a given type
+  // Helper to turn plural rules (one element, repeated with + or *) into a vector of a given type
   template<typename T>
   std::function<std::vector<T>(const peg::SemanticValues&)> repeated() {
     return [](const peg::SemanticValues& sv) -> std::vector<T> {
@@ -121,15 +125,18 @@ Grammar::Grammar() : emerald_parser(syntax) {
       return NodePtr(new Comment(text_content));
     };
 
+  emerald_parser["maybe_id_name"] = optional<std::string>("");
+
+  emerald_parser["class_names"] = repeated<std::string>();
+
   emerald_parser["tag_statement"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
       std::string tag_name = sv[0].get<std::string>();
-      std::string id_name = present(sv, 1) ? sv[1].get<std::string>() : "";
-      std::vector<std::string> class_names = repeated<std::string>(sv, 2);
-      NodePtr body = present(sv, 3) ? sv[3].get<NodePtr>() : NodePtr();
-      NodePtr attributes = present(sv, 4) ? sv[4].get<NodePtr>() : NodePtr();
-      NodePtr nested =
-        present(sv, 5) ? sv[5].get<peg::SemanticValues>()[0].get<NodePtr>() : NodePtr();
+      std::string id_name = sv[1].get<std::string>();
+      std::vector<std::string> class_names = sv[2].get<std::vector<std::string>>();
+      NodePtr body = sv[3].get<NodePtr>();
+      NodePtr attributes = sv[4].get<NodePtr>();
+      NodePtr nested = sv[5].get<NodePtr>();
 
       return NodePtr(
         new TagStatement(tag_name, id_name, class_names, body, attributes, nested));
@@ -137,7 +144,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
 
   emerald_parser["attr_list"] =
     [](const peg::SemanticValues& sv) -> NodePtr {
-      NodePtrs nodes = repeated<NodePtr>(sv, 0);
+      NodePtrs nodes = sv[0].get<NodePtrs>();
 
       return NodePtr(new Attributes(nodes));
     };
@@ -154,9 +161,16 @@ Grammar::Grammar() : emerald_parser(syntax) {
       return NodePtr(new Escaped(sv.str()));
     };
 
+  emerald_parser["maybe_negation"] = optional<bool>(false);
+
+  emerald_parser["negation"] =
+    [](const peg::SemanticValues& sv) -> bool {
+      return true;
+    };
+
   emerald_parser["unary_expr"] =
     [](const peg::SemanticValues& sv) -> BooleanPtr {
-      bool negated = present(sv, 0);
+      bool negated = sv[0].get<bool>();
       BooleanPtr expr = sv[1].get<BooleanPtr>();
 
       return BooleanPtr(new UnaryExpr(negated, expr));
@@ -184,11 +198,13 @@ Grammar::Grammar() : emerald_parser(syntax) {
       return sv[0].get<BooleanPtr>();
     };
 
+  emerald_parser["maybe_key_name"] = optional<std::string>("");
+
   emerald_parser["each"] =
     [](const peg::SemanticValues& sv) -> ScopeFnPtr {
       std::string collection_name = sv[0].get<std::string>();
       std::string val_name = sv[1].get<std::string>();
-      std::string key_name = present(sv,2) ? sv[2].get<std::string>() : "";
+      std::string key_name = sv[2].get<std::string>();
 
       return ScopeFnPtr(new Each(collection_name, val_name, key_name));
     };
@@ -244,7 +260,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
   // Repeated Nodes
   const std::vector<std::string> repeated_nodes = {
     "statements", "literal_new_lines", "key_value_pairs", "ml_lit_str_quoteds",
-    "ml_templess_lit_str_qs", "inline_literals", "il_lit_str_quoteds"
+    "ml_templess_lit_str_qs", "inline_literals", "il_lit_str_quoteds", "attributes"
   };
   for (std::string repeated_node : repeated_nodes) {
     emerald_parser[repeated_node.c_str()] = repeated<NodePtr>();
@@ -253,7 +269,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
   // Wrapper Nodes
   const std::vector<std::string> wrapper_nodes = {
     "statement", "text_content", "ml_lit_str_quoted", "ml_templess_lit_str_q",
-    "inline_literal", "il_lit_str_quoted"
+    "inline_literal", "il_lit_str_quoted", "nested_tag"
   };
   for (std::string wrapper_node : wrapper_nodes) {
     emerald_parser[wrapper_node.c_str()] =
@@ -269,7 +285,7 @@ Grammar::Grammar() : emerald_parser(syntax) {
   for (std::string string_rule : literals) {
     emerald_parser[string_rule.c_str()] =
       [](const peg::SemanticValues& sv) -> NodePtr {
-        NodePtrs body = repeated<NodePtr>(sv, 0);
+        NodePtrs body = sv[0].get<NodePtrs>();
 
         return NodePtr(new NodeList(body, ""));
       };
@@ -286,9 +302,16 @@ Grammar::Grammar() : emerald_parser(syntax) {
       };
   }
 
+  const std::vector<std::string> optional_nodes = {
+    "maybe_text_content", "maybe_nested_tag", "maybe_attr_list"
+  };
+  for (std::string rule_name : optional_nodes) {
+    emerald_parser[rule_name.c_str()] = optional<NodePtr>(NodePtr());
+  }
+
   // Terminals
   const std::vector<std::string> terminals = {
-    "attr", "tag", "class_name", "id_name"
+    "attr", "tag", "class_name", "id_name", "key_name"
   };
   for (std::string rule_name : terminals) {
     emerald_parser[rule_name.c_str()] =
