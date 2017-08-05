@@ -18,7 +18,6 @@
 #include "nodes/tag_statement.hpp"
 #include "nodes/text_literal_content.hpp"
 #include "nodes/escaped.hpp"
-#include "nodes/pair_list.hpp"
 #include "nodes/comment.hpp"
 #include "nodes/scoped_key_value_pairs.hpp"
 #include "nodes/key_value_pair.hpp"
@@ -33,14 +32,19 @@
 // [END] Include nodes
 
 namespace {
-  // Helper function to check if the optional (?) ith token in a rule
-  // matched anything
-  bool present(const peg::SemanticValues& sv, size_t i) {
-    return !sv.token(i).empty();
+  // Helper function to turn a maybe rule (one element, made optional with a ?) into its value or a default
+  template<typename T>
+  T optional(T default_value) {
+    return [=](const peg::SemanticValues &sv) -> T {
+      if (sv.size() > 0) {
+        return sv[0].get<T>();
+      } else {
+        return default_value;
+      }
+    };
   }
 
-  // Helper to turn the repeated (+ or *) ith token into a vector of
-  // a given type
+  // Helper to turn plural rules (one element, repeated with + or *) into a vector of a given type
   template<typename T>
   std::function<std::vector<T>(const peg::SemanticValues&)> repeated() {
     return [](const peg::SemanticValues& sv) -> std::vector<T> {
