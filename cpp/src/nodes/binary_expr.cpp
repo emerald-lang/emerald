@@ -5,8 +5,8 @@ const std::string BinaryExpr::OR_STR = "or";
 
 BinaryExpr::BinaryExpr(BooleanPtr lhs, Operator op, BooleanPtr rhs):
   lhs(lhs),
-  op(op),
-  rhs(rhs)
+  rhs(rhs),
+  op(op)
 {}
 
 bool BinaryExpr::truthy(Json &context) const {

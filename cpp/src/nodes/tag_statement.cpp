@@ -27,16 +27,10 @@ std::set<std::string> TagStatement::void_tags = {
 std::string TagStatement::to_html(Json &context) {
   if (self_closing) {
     return opening_tag(context);
+  } else if (body) {
+    return opening_tag(context) + body->to_html(context) + closing_tag();
   } else {
-    std::string result = opening_tag(context);
-    if (body) {
-      result += body->to_html(context);
-    } else if (nested) {
-      result += nested->to_html(context);
-    }
-    result += closing_tag();
-
-    return result;
+    return opening_tag(context) + nested->to_html(context) + closing_tag();
   }
 }
 
