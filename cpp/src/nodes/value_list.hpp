@@ -8,7 +8,7 @@ class ValueList : public Node {
 public:
   ValueList(NodePtr keyword, NodePtrs literals);
 
-  std::string check_keyword(std::string keyword);
+  std::string check_keyword(NodePtr element, Json &context);
   std::string to_html(Json &context) override;
 
 private:

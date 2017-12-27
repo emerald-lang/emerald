@@ -18,12 +18,7 @@ std::string Each::to_html(NodePtr body, Json &context) const {
   }
 }
 
-std::string Each::each_in_collection(
-  const Json& collection,
-  NodePtr body,
-  const Json& context,
-  bool key_is_index) const {
-
+std::string Each::each_in_collection(const Json& collection, NodePtr body, const Json& context, bool key_is_index) const {
   std::vector<std::string> iterations;
 
   // For each element in the collection
